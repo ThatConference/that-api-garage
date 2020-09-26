@@ -1,0 +1,3 @@
+extend type PublicProfile @key(fields: "id") {
+  id: ID! @external
+}

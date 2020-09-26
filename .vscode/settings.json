@@ -1,0 +1,23 @@
+{
+  "editor.rulers": [80],
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": true,
+  "prettier.tabWidth": 2,
+  "editor.tabSize": 2,
+  "editor.formatOnSaveTimeout": 1500,
+  "editor.snippetSuggestions": "top",
+  "peacock.color": "cyan",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#FF7F00",
+    "titleBar.inactiveBackground": "#FF7F00",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveForeground": "#15202b",
+    "statusBar.background": "#FF7F00",
+    "statusBarItem.hoverBackground": "#00ff00",
+    "statusBar.foreground": "#15202b"
+  },
+  "peacock.affectActivityBar": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
