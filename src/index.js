@@ -73,16 +73,31 @@ function createUserContext(req, res, next) {
     const headerValues = req.headers['that-enable-mocks'].split(',');
     const mocks = headerValues.map(i => i.trim().toUpperCase());
 
-    return !!mocks.includes('NOTIFICATIONS');
+    return mocks.includes('GARAGE');
   };
 
-  const correlationId = req.headers['that-correlation-id']
-    ? req.headers['that-correlation-id']
-    : uuidv4();
+  const correlationId =
+    req.headers['that-correlation-id'] &&
+    req.headers['that-correlation-id'] !== 'undefined'
+      ? req.headers['that-correlation-id']
+      : uuidv4();
 
   Sentry.configureScope(scope => {
     scope.setTag('correlationId', correlationId);
   });
+
+  let site;
+  if (req.headers['that-site']) {
+    site = req.headers['that-site'];
+  } else if (req.headers['x-forwarded-for']) {
+    // eslint-disable-next-line no-useless-escape
+    const rxHost = /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i;
+    const refererHost = req.headers['x-forwarded-for'];
+    const host = refererHost.match(rxHost);
+    if (host) [, site] = host;
+  } else {
+    site = 'www.thatconference.com';
+  }
 
   req.userContext = {
     locale: req.headers.locale,
@@ -90,7 +105,7 @@ function createUserContext(req, res, next) {
     correlationId,
     sentry: Sentry,
     enableMocking: enableMocking(),
-    firestore: new Firestore(),
+    site,
   };
 
   next();

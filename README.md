@@ -1,6 +1,8 @@
-# THAT Notifications Api
+# THAT Garage Api
 
-[![Actions Status](https://github.com/ThatConference/that-api-notifications/workflows/Push%20Master%20CI/badge.svg)](https://github.com/ThatConference/that-api-notifications/workflows/actions)
+Our collection of entities which don't belong in the other api services.
+
+[![Actions Status](https://github.com/ThatConference/that-api-garage/workflows/Push%20Master%20CI/badge.svg)](https://github.com/ThatConference/that-api-garage/workflows/actions)
 
 ## Dependencies
 
@@ -13,7 +15,7 @@
 
 setup notes:
 
-- we use nodenv to manage node.js - https://github.com/nodenv/nodenv
+- we use nodenv to manage node.js - [https://github.com/nodenv/nodenv](https://github.com/nodenv/nodenv)
 
 ## .env
 
@@ -28,4 +30,4 @@ The main development starting point is `npm run start:watch`
 
 ## Endpoints
 
-- Endpoint: http://localhost:8005/ or http://localhost:8005/graphql
+- Endpoint: [http://localhost:8005/](http://localhost:8005/) or [http://localhost:8005/graphql](http://localhost:8005/graphql)
