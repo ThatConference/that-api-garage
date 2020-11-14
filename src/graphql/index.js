@@ -78,7 +78,11 @@ const createServer = ({ dataSources }) => {
         dlog('validated token: %o', validatedToken);
         context = {
           ...context,
-          user: validatedToken,
+          user: {
+            ...validatedToken,
+            site: req.userContext.site,
+            correlationId: req.userContext.correlationId,
+          },
         };
       }
 

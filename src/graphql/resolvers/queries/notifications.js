@@ -4,7 +4,7 @@ const dlog = debug('that:api:notifications:query:NotificationsQuery');
 
 export const fieldResolvers = {
   NotificationsQuery: {
-    all: (_, __, { dataSources }) => {
+    all: () => {
       dlog('all');
       throw new Error('Not implemented yet.');
     },
