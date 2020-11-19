@@ -19,7 +19,7 @@ let version;
   version = p.version;
 })();
 
-const dlog = debug('that:api:notifications:index');
+const dlog = debug('that:api:garage:index');
 const defaultVersion = `that-api-gateway@${version}`;
 const firestore = new Firestore();
 const api = connect();
@@ -32,7 +32,7 @@ Sentry.init({
 });
 
 Sentry.configureScope(scope => {
-  scope.setTag('thatApp', 'that-api-notifications');
+  scope.setTag('thatApp', 'that-api-garage');
 });
 
 const createConfig = () => ({
@@ -46,8 +46,8 @@ const graphServer = apolloGraphServer(createConfig());
 
 const useSentry = async (req, res, next) => {
   Sentry.addBreadcrumb({
-    category: 'that-api-notifications',
-    message: 'notifications init',
+    category: 'that-api-garage',
+    message: 'garage init',
     level: Sentry.Severity.Info,
   });
   next();
@@ -103,7 +103,6 @@ function createUserContext(req, res, next) {
     locale: req.headers.locale,
     authToken: req.headers.authorization,
     correlationId,
-    sentry: Sentry,
     enableMocking: enableMocking(),
     site,
   };

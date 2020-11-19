@@ -1,0 +1,18 @@
+type Partnership implements ProductBase @key(fields: "id") {
+  "The unique id of the product"
+  id: ID!
+
+  "the official displayed name of the product"
+  name: String!
+
+  "A description of the product"
+  description: String!
+
+  "What type of product is this (enum)"
+  type: ProductType!
+
+  "The price of the product"
+  price: Float!
+
+  # Partnership specific fields
+}

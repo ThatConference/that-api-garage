@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const dlog = debug('that:api:notifications:query:NotificationsQuery');
+const dlog = debug('that:api:garage:query:NotificationsQuery');
 
 export const fieldResolvers = {
   NotificationsQuery: {

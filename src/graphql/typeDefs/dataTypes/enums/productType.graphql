@@ -1,0 +1,6 @@
+enum ProductType {
+  TICKET
+  MEMBERSHIP
+  PARTNERSHIP
+  FOOD
+}

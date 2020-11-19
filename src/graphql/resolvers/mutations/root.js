@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const dlog = debug('that:api:notifications:mutations:root');
+const dlog = debug('that:api:garage:mutations:root');
 
 const resolvers = {
   notifications: () => {

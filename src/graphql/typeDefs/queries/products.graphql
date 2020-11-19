@@ -1,0 +1,7 @@
+type ProductsQuery {
+  "a list of all products, paged"
+  all: PagedProducts
+
+  "return a specific product"
+  product: Product!
+}

@@ -1,7 +1,12 @@
 import debug from 'debug';
 
-const dlog = debug('that:api:notifications:mutations:NotificationsMutation');
+const dlog = debug('that:api:garage:mutations:NotificationsMutation');
 
 export const fieldResolvers = {
-  NotificationsMutation: {},
+  NotificationsMutation: {
+    create: () => {
+      dlog('create');
+      throw new Error('Not implemented yet.');
+    },
+  },
 };
