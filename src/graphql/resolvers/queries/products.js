@@ -5,9 +5,12 @@ const dlog = debug('that:api:garage:query:ProductsQuery');
 
 export const fieldResolvers = {
   ProductsQuery: {
-    all: () => {
-      dlog('all called');
-      return {};
+    all: (_, { pageSize = 20, cursor }, { dataSources: { firestore } }) => {
+      dlog('all called with page size %d', pageSize);
+      return productStore(firestore).getPaged({
+        pageSize,
+        cursor,
+      });
     },
 
     product: (_, { productId }, { dataSources: { firestore } }) => {

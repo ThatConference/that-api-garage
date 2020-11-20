@@ -1,7 +1,9 @@
 import debug from 'debug';
+import { utility } from '@thatconference/api';
 import { productDateForge } from '../../lib/productDateForge';
 
 const dlog = debug('that:api:garage:datasources:firebase:product');
+const { dateForge } = utility.firestoreDateForge;
 
 const collectionName = 'products';
 
@@ -43,9 +45,48 @@ const product = dbInstance => {
   }
 
   function getBatch(ids) {
+    get('getBatched called %d ids', ids.length);
     if (!Array.isArray(ids))
       throw new Error('getBatch must receive an array of ids');
     return Promise.all(ids.map(id => get(id)));
+  }
+
+  async function getPaged({ pageSize, cursor }) {
+    dlog('get paged called');
+    let query = productCollection
+      .orderBy('createdAt', 'asc')
+      .limit(pageSize || 20);
+
+    if (cursor) {
+      const curObject = Buffer.from(cursor, 'base64').toString('utf8');
+      const { curCreatedAt } = JSON.parse(curObject);
+      query = query.startAfter(new Date(curCreatedAt));
+    }
+    const { size, docs } = await query.get();
+    dlog('found %d records', size);
+
+    const products = docs.map(doc => {
+      const r = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      return productDateForge(r);
+    });
+
+    const lastdoc = products[products.length - 1];
+    let newCursor = '';
+    if (lastdoc) {
+      const cpieces = JSON.stringify({
+        curCreatedAt: dateForge(lastdoc.createdAt),
+      });
+      newCursor = Buffer.from(cpieces, 'utf8').toString('base64');
+    }
+
+    return {
+      products,
+      cursor: newCursor,
+      count: products.length,
+    };
   }
 
   async function create({ newProduct, userId }) {
@@ -72,6 +113,7 @@ const product = dbInstance => {
   return {
     get,
     getBatch,
+    getPaged,
     create,
     update,
   };
