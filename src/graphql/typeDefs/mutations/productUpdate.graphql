@@ -1,0 +1,13 @@
+"Update a product by type of product"
+type ProductUpdate {
+  "update a ticket type product"
+  ticket(ticket: TicketUpdateInput!): Ticket! @auth(requires: "admin")
+
+  "update a membership type product"
+  membership(membership: MembershipUpdateInput!): Membership!
+    @auth(requires: "admin")
+
+  "update a partnership type product"
+  partnership(partnership: PartnershipUpdateInput!): Partnership!
+    @auth(requires: "admin")
+}

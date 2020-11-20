@@ -1,4 +1,5 @@
 import debug from 'debug';
+import productStore from '../../../dataSources/cloudFirestore/product';
 
 const dlog = debug('that:api:garage:query:ProductsQuery');
 
@@ -9,9 +10,10 @@ export const fieldResolvers = {
       return {};
     },
 
-    product: () => {
+    product: (_, { productId }, { dataSources: { firestore } }) => {
       dlog('product called');
-      return {};
+      return productStore(firestore).get(productId);
+      // return { productId };
     },
   },
 };

@@ -27,4 +27,16 @@ export const fieldResolvers = {
       return result;
     },
   },
+  Ticket: {
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+  },
+  Membership: {
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+  },
+  Partnership: {
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+  },
 };

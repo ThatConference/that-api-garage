@@ -65,17 +65,6 @@ const useSentry = async (req, res, next) => {
  *
  */
 function createUserContext(req, res, next) {
-  const enableMocking = () => {
-    if (!req.headers['that-enable-mocks']) return false;
-
-    dlog('mocking enabled');
-
-    const headerValues = req.headers['that-enable-mocks'].split(',');
-    const mocks = headerValues.map(i => i.trim().toUpperCase());
-
-    return mocks.includes('GARAGE');
-  };
-
   const correlationId =
     req.headers['that-correlation-id'] &&
     req.headers['that-correlation-id'] !== 'undefined'
@@ -103,7 +92,7 @@ function createUserContext(req, res, next) {
     locale: req.headers.locale,
     authToken: req.headers.authorization,
     correlationId,
-    enableMocking: enableMocking(),
+    enableMocking: false,
     site,
   };
 

@@ -1,7 +1,4 @@
 type Query {
-  "Not Implemented!!"
-  notifications: NotificationsQuery
-
   "Products sold, etc."
   products: ProductsQuery
 }

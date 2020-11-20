@@ -14,8 +14,19 @@ type Membership implements ProductBase @key(fields: "id") {
   "The price of the product"
   price: Float!
 
-  # Membership specific fields
+  "date and time product was created"
+  createdAt: Date!
 
-  "duraion of membership"
+  "member who created product"
+  createdBy: PublicProfile!
+
+  "date and time product last updated"
+  lastUpdatedAt: Date!
+
+  "member who last updated product"
+  lastUpdatedBy: PublicProfile!
+
+  # Membership specific fields
+  "duraion of membership in days"
   durationInDays: Int
 }

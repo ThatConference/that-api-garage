@@ -46,7 +46,7 @@ describe('Product type tests', () => {
       expect(productTypeEnums.length).toBeGreaterThan(0);
     });
     productTypeEnums.forEach(pte => {
-      it(`${pte} will resolve to something`, () => {
+      it(`${pte} will resolve to typeof string`, () => {
         const result = fieldResolvers.Product.__resolveType({ type: pte });
         expect(typeof result).toBe('string');
       });

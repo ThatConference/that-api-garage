@@ -1,0 +1,13 @@
+"create a product by type of product"
+type ProductCreate {
+  "create a ticket type product"
+  ticket(ticket: TicketCreateInput!): Ticket! @auth(requires: "admin")
+
+  "create a membership type product"
+  membership(membership: MembershipCreateInput!): Membership!
+    @auth(requires: "adming")
+
+  "create a partnership type product"
+  partnership(partnership: PartnershipCreateInput!): Partnership!
+    @auth(requires: "admin")
+}

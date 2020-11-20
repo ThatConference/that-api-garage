@@ -1,0 +1,4 @@
+type ProductMutation {
+  "update specific Product"
+  update: ProductUpdate @auth(requires: "admin")
+}

@@ -14,5 +14,17 @@ type Ticket implements ProductBase @key(fields: "id") {
   "The price of the product"
   price: Float!
 
+  "date and time product was created"
+  createdAt: Date!
+
+  "member who created product"
+  createdBy: PublicProfile!
+
+  "date and time product last updated"
+  lastUpdatedAt: Date!
+
+  "member who last updated product"
+  lastUpdatedBy: PublicProfile!
+
   # Ticket specific fields
 }

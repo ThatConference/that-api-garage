@@ -1,3 +1,4 @@
 type Mutation {
-  notifications: NotificationsMutation @auth(requires: "admin")
+  "Product type mutations"
+  products: ProductsMutation @auth(requires: "admin")
 }
