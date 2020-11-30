@@ -20,7 +20,7 @@ let version;
 })();
 
 const dlog = debug('that:api:garage:index');
-const defaultVersion = `that-api-gateway@${version}`;
+const defaultVersion = `that-api-garage@${version}`;
 const firestore = new Firestore();
 const api = connect();
 

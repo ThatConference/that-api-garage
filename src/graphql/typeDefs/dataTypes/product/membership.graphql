@@ -1,3 +1,4 @@
+"A termed membership for access to events and other special things"
 type Membership implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!

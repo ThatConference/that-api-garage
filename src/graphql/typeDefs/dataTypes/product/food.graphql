@@ -1,3 +1,4 @@
+"Provides acces to food at events which provide it. WIP"
 type Food implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!

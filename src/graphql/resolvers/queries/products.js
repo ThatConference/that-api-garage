@@ -16,7 +16,6 @@ export const fieldResolvers = {
     product: (_, { productId }, { dataSources: { firestore } }) => {
       dlog('product called');
       return productStore(firestore).get(productId);
-      // return { productId };
     },
   },
 };

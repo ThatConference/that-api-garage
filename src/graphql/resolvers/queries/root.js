@@ -4,7 +4,7 @@ const dlog = debug('that:api:garage:query');
 
 const resolvers = {
   products: () => {
-    dlog('root products mutation called');
+    dlog('root products called');
     return {};
   },
 };

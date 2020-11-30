@@ -1,3 +1,4 @@
+"A partnership agreement for and event"
 type Partnership implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!
