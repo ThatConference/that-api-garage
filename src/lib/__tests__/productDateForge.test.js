@@ -1,11 +1,3 @@
-// Required for @thatconference/api
-process.env.INFLUX_TOKEN = 'TEST_INFLUX_TOKEN_VALUE';
-process.env.INFLUX_ORG_ID = 'TEST_INFLUX_ORG_ID_VALUE';
-process.env.INFLUX_BUCKET_ID = 'INFLUX_BUCKET_ID';
-process.env.INFLUX_HOST = 'INFLUX_HOST';
-
-const productDateForge = require('../productDateForge').productDateForge;
-
 const product = {
   name: 'Our testing product',
   description: 'a product object used for testing',
@@ -20,14 +12,27 @@ const copy = {
   ...product,
 };
 
-afterAll(() => {
-  delete process.env.INFLUX_TOKEN;
-  delete process.env.INFLUX_ORG_ID;
-  delete process.env.INFLUX_BUCKET_ID;
-  delete process.env.INFLUX_HOST;
-});
+describe('productDateForge tests', () => {
+  let productDateForge;
+  const originalEnv = process.env;
 
-describe('productDateForge test', () => {
+  beforeAll(() => {
+    jest.resetModules();
+    process.env = { ...originalEnv }; // puts a copy on process.env
+
+    // Required for @thatconference/api
+    process.env.INFLUX_TOKEN = 'TEST_INFLUX_TOKEN_VALUE';
+    process.env.INFLUX_ORG_ID = 'TEST_INFLUX_ORG_ID_VALUE';
+    process.env.INFLUX_BUCKET_ID = 'INFLUX_BUCKET_ID';
+    process.env.INFLUX_HOST = 'INFLUX_HOST';
+
+    productDateForge = require('../productDateForge').productDateForge;
+  });
+
+  afterAll(() => {
+    process.env = originalEnv;
+  });
+
   describe('productDateForge should not mutate non-date fields', () => {
     it('type, createdBy and lastUpdatedBy will remain the same', () => {
       const forged = productDateForge(product);
@@ -35,17 +40,17 @@ describe('productDateForge test', () => {
       expect(forged.createdBy).toBe(copy.createdBy);
       expect(forged.lastUpdatedBy).toBe(copy.lastUpdatedBy);
     });
-  });
 
-  describe('string dates will return as Date types', () => {
-    const forged = productDateForge(product);
-    expect(forged.createdAt).toBeInstanceOf(Date);
-    expect(forged.lastUpdatedAt).toBeInstanceOf(Date);
-  });
+    it('string dates will return as Date types', () => {
+      const forged = productDateForge(product);
+      expect(forged.createdAt).toBeInstanceOf(Date);
+      expect(forged.lastUpdatedAt).toBeInstanceOf(Date);
+    });
 
-  describe('string dates will be the correct date', () => {
-    const forged = productDateForge(product);
-    expect(forged.createdAt).toStrictEqual(new Date(copy.createdAt));
-    expect(forged.lastUpdatedAt).toStrictEqual(new Date(copy.lastUpdatedAt));
+    it('string dates will be the correct date', () => {
+      const forged = productDateForge(product);
+      expect(forged.createdAt).toStrictEqual(new Date(copy.createdAt));
+      expect(forged.lastUpdatedAt).toStrictEqual(new Date(copy.lastUpdatedAt));
+    });
   });
 });
