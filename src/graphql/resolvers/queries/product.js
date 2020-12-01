@@ -22,6 +22,7 @@ export const fieldResolvers = {
           result = 'Food';
           break;
         default:
+          throw new Error('Resolver encountered unknown product type');
       }
       dlog('result: %s', result);
       return result;

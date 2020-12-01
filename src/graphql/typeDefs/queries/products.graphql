@@ -3,5 +3,5 @@ type ProductsQuery {
   all(pageSize: Int, cursor: String): PagedProducts!
 
   "return a specific product"
-  product(productId: ID!): Product!
+  product(productId: ID!): Product
 }

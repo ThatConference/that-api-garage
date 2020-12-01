@@ -70,6 +70,7 @@ const product = dbInstance => {
         id: doc.id,
         ...doc.data(),
       };
+      dlog('go forge');
       return productDateForge(r);
     });
 

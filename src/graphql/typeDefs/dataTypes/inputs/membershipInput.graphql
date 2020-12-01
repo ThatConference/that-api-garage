@@ -7,15 +7,21 @@ input MembershipCreateInput {
 
   "The price of the product"
   price: Float!
+
+  "The Duration of membership"
+  durationInDays: Int!
 }
 
 input MembershipUpdateInput {
   "the official displayed name of the product"
-  name: String!
+  name: String
 
   "A description of the product"
-  description: String!
+  description: String
 
   "The price of the product"
-  price: Float!
+  price: Float
+
+  "The Duration of membership"
+  durationInDays: Int
 }
