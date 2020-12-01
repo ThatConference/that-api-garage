@@ -20,6 +20,13 @@ const copy = {
   ...product,
 };
 
+afterAll(() => {
+  delete process.env.INFLUX_TOKEN;
+  delete process.env.INFLUX_ORG_ID;
+  delete process.env.INFLUX_BUCKET_ID;
+  delete process.env.INFLUX_HOST;
+});
+
 describe('productDateForge test', () => {
   describe('productDateForge should not mutate non-date fields', () => {
     it('type, createdBy and lastUpdatedBy will remain the same', () => {

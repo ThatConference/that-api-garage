@@ -5,7 +5,7 @@ type ProductCreate {
 
   "create a membership type product"
   membership(membership: MembershipCreateInput!): Membership!
-    @auth(requires: "adming")
+    @auth(requires: "admin")
 
   "create a partnership type product"
   partnership(partnership: PartnershipCreateInput!): Partnership!
