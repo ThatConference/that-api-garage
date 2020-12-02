@@ -1,0 +1,22 @@
+type Order @key(fields: "id") {
+  "Unique id of the order"
+  id: ID!
+  "The member who placed this order"
+  member: PublicProfile
+  "The event associated with this order"
+  event: Event
+  "A partner assocated with this order"
+  partner: Partner
+  "Products purchased with this order"
+  products: [Product]
+  "The date the order was created"
+  orderDate: Date!
+  "The stripe reference of this order at stripe"
+  stripeRef: String
+  "The total amount of this order"
+  total: Float!
+  "The date this order was created"
+  createdAt: Date!
+  "The date this order was last updated"
+  updatedAt: Date!
+}

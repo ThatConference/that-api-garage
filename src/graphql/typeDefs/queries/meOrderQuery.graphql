@@ -1,0 +1,6 @@
+type MeOrderQuery {
+  "All orders for logged in member"
+  all: PagedOrders!
+  "One specific order for logged in member"
+  order(orderId: ID!): Order
+}
