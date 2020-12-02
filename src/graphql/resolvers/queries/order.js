@@ -8,5 +8,7 @@ export const fieldResolvers = {
     partner: ({ partner: id }) => ({ id }),
     event: ({ event: id }) => ({ id }),
     products: () => {},
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
   },
 };

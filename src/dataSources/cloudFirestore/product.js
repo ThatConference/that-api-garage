@@ -45,7 +45,7 @@ const product = dbInstance => {
   }
 
   function getBatch(ids) {
-    get('getBatched called %d ids', ids.length);
+    dlog('getBatch called %d ids', ids.length);
     if (!Array.isArray(ids))
       throw new Error('getBatch must receive an array of ids');
     return Promise.all(ids.map(id => get(id)));

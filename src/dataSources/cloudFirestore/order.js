@@ -20,6 +20,40 @@ const scrubOrder = ({ order, isNew, userId }) => {
   return scrubbedOrder;
 };
 
-const order = dbInstance => {};
+const order = dbInstance => {
+  dlog('instance created');
+
+  const orderCollection = dbInstance.collection(collectionName);
+
+  function get(id) {
+    dlog('get called %s', id);
+    return orderCollection
+      .doc(id)
+      .get()
+      .then(doc => {
+        let result = null;
+        if (doc.exists) {
+          result = {
+            id: doc.data(),
+            ...doc.data(),
+          };
+          // TODO Date Forge
+        }
+        return result;
+      });
+  }
+
+  function getBatch(ids) {
+    if (!Array.isArray(ids))
+      throw new Error('getBatch must receive an array of ids');
+    dlog('getBatch called %d ids', ids.length);
+    return Promise.all(ids.map(id => get(id)));
+  }
+
+  return {
+    get,
+    getBatch,
+  };
+};
 
 export default order;
