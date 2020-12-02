@@ -1,0 +1,2 @@
+"A product sold and/or distributed"
+union Product = Ticket | Membership | Partnership | Food

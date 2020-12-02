@@ -1,8 +1,0 @@
-type Notification @key(fields: "id") {
-  id: ID!
-  message: String
-
-  sentAt: Date
-  createdAt: Date
-  scheduledFor: Date
-}

@@ -7,14 +7,14 @@ import { buildFederatedSchema } from '@apollo/federation';
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
 import { security, graph } from '@thatconference/api';
-import _ from 'lodash';
+import { isNil } from 'lodash';
 
 // Graph Types and Resolvers
 import typeDefsRaw from './typeDefs';
 import resolvers from './resolvers';
 import directives from './directives';
 
-const dlog = debug('that:api:notifications:graphServer');
+const dlog = debug('that:api:garage:graphServer');
 const jwtClient = security.jwt();
 const { lifecycle } = graph.events;
 
@@ -56,7 +56,7 @@ const createServer = ({ dataSources }) => {
       dlog('building graphql user context');
       let context = {};
 
-      if (!_.isNil(req.headers.authorization)) {
+      if (!isNil(req.headers.authorization)) {
         dlog('validating token for %o:', req.headers.authorization);
         Sentry.addBreadcrumb({
           category: 'graphql context',
@@ -95,7 +95,7 @@ const createServer = ({ dataSources }) => {
           return {
             executionDidStart(requestContext) {
               lifecycle.emit('executionDidStart', {
-                service: 'that:api:notifications',
+                service: 'that:api:garage',
                 requestContext,
               });
             },

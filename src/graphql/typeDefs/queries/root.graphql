@@ -1,3 +1,4 @@
 type Query {
-  notifications: NotificationsQuery
+  "Products sold, etc."
+  products: ProductsQuery
 }

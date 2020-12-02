@@ -1,0 +1,10 @@
+type PagedProducts {
+  "The products in the current page"
+  products: [Product]!
+
+  "A cursor to pass back for the next page of date"
+  cursor: String!
+
+  "The number of records in this page"
+  count: Int!
+}

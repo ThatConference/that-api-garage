@@ -1,0 +1,7 @@
+type ProductsMutation {
+  "Mutation to create a new product"
+  create: ProductCreate @auth(requires: "admin")
+
+  "Mutations specific to a particular Product"
+  product(productId: ID!): ProductMutation @auth(requires: "admin")
+}

@@ -1,0 +1,7 @@
+type ProductsQuery {
+  "a list of all products, paged"
+  all(pageSize: Int, cursor: String): PagedProducts!
+
+  "return a specific product"
+  product(productId: ID!): Product
+}

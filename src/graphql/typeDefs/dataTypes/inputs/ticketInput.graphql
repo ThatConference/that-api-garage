@@ -1,0 +1,21 @@
+input TicketCreateInput {
+  "the official displayed name of the product"
+  name: String!
+
+  "A description of the product"
+  description: String!
+
+  "The price of the product"
+  price: Float!
+}
+
+input TicketUpdateInput {
+  "the official displayed name of the product"
+  name: String
+
+  "A description of the product"
+  description: String
+
+  "The price of the product"
+  price: Float
+}
