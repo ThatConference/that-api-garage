@@ -7,6 +7,7 @@ export const fieldResolvers = {
   OrdersQuery: {
     all: (_, { pageSize = 20, cursor }, { dataSources: { firestore } }) => {
       dlog('all called with page size %d', pageSize);
+      // No max page size
       return orderStore(firestore).getPaged({
         pageSize,
         cursor,
@@ -18,9 +19,9 @@ export const fieldResolvers = {
       return orderStore(firestore).get(orderId);
     },
 
-    me: (_, __, { dataSources: { firestore }, user }) => {
+    me: (_, __, { user }) => {
       dlog('me called');
-      return [];
+      return { user };
     },
   },
 };

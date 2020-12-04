@@ -2,7 +2,9 @@ import debug from 'debug';
 import { utility } from '@thatconference/api';
 
 const dlog = debug('that:api:garage:datasources:firebase:product');
-const { dateForge } = utility.firestoreDateForge;
+const { dateForge, entityDateForge } = utility.firestoreDateForge;
+const forgeFields = ['createdAt', 'lastUpdatedAt', 'orderDate'];
+const orderDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'orders';
 
@@ -37,7 +39,7 @@ const order = dbInstance => {
             id: doc.data(),
             ...doc.data(),
           };
-          // TODO Date Forge
+          result = orderDateForge(result);
         }
         return result;
       });
@@ -50,9 +52,115 @@ const order = dbInstance => {
     return Promise.all(ids.map(id => get(id)));
   }
 
+  async function getPaged({ pageSize, cursor }) {
+    dlog('get page called');
+    let query = orderCollection
+      .orderBy('createdAt', 'desc')
+      .limit(pageSize || 20);
+
+    if (cursor) {
+      const curObject = Buffer.from(cursor, 'base64').toString('utf8');
+      const { curCreatedAt } = JSON.parse(curObject);
+      if (!curCreatedAt) throw new Error('Invalid cursor provided');
+      query = query.startAfter(new Date(curCreatedAt));
+    }
+    const { size, docs } = await query.get();
+    dlog('found %d records', size);
+
+    const orders = docs.map(doc => {
+      const r = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      return orderDateForge(r);
+    });
+
+    const lastdoc = orders[orders.length - 1];
+    let newCursor = '';
+    if (lastdoc) {
+      const cpieces = JSON.stringify({
+        curCreatedAt: dateForge(lastdoc.createdAt),
+      });
+      newCursor = Buffer.from(cpieces, 'utf8').toString('base64');
+    }
+
+    return {
+      orders,
+      cursor: newCursor,
+      count: orders.length,
+    };
+  }
+
+  function getMe({ user, orderId }) {
+    dlog(`get ${orderId} for user ${user.sub}`);
+    return orderCollection
+      .doc(orderId)
+      .get()
+      .then(doc => {
+        let result = null;
+        if (doc.exists) {
+          result = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          result = orderDateForge(result);
+          if (result.member !== user.sub) result = null;
+        }
+        return result;
+      });
+  }
+
+  async function getPagedMe({ user, pageSize, cursor }) {
+    dlog(`getPagedMe called with pagesize %d`, pageSize);
+    if (pageSize > 100)
+      throw new Error('Max page size of 100 exceeded, %d', pageSize);
+
+    let query = orderCollection
+      .orderBy('createdAt', 'desc')
+      .where('member', '==', user.sub)
+      .limit(pageSize || 20);
+
+    if (cursor) {
+      const curObject = Buffer.from(cursor, 'base64').toString('utf8');
+      const { curCreatedAt, curMember } = JSON.parse(curObject);
+      if (curMember !== user.sub) throw new Error('Invalid cursor profived');
+      if (!curCreatedAt) throw new Error('Invalid cursor provided');
+      query = query.startAfter(new Date(curCreatedAt));
+    }
+    const { size, docs } = await query.get();
+    dlog('found %d records', size);
+
+    const orders = docs.map(doc => {
+      const r = {
+        id: doc.id,
+        ...doc.data(),
+      };
+      return orderDateForge(r);
+    });
+
+    const lastdoc = orders[orders.length - 1];
+    let newCursor = '';
+    if (lastdoc) {
+      const cpieces = JSON.stringify({
+        curCreatedAt: dateForge(lastdoc.createdAt),
+        curMember: user.sub,
+      });
+      newCursor = Buffer.from(cpieces, 'utf8').toString('base64');
+    }
+
+    return {
+      orders,
+      cursor: newCursor,
+      count: orders.length,
+    };
+  }
+
   return {
     get,
     getBatch,
+    getPaged,
+    getMe,
+    getPagedMe,
   };
 };
 
