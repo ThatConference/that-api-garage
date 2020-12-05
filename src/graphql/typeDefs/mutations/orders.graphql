@@ -1,0 +1,6 @@
+type OrdersMutation {
+  "Mutation to crate a new Order"
+  create(order: OrderCreateInput!): Order! @auth(requires: "admin")
+  "mutations specifict to a particular Order"
+  order(orderId: ID!): OrderMutation @auth(requires: "admin")
+}

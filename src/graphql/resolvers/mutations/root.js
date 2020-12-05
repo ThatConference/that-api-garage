@@ -7,6 +7,10 @@ const resolvers = {
     dlog('root:products mutation called');
     return {};
   },
+  orders: () => {
+    dlog('root:orders mutation called');
+    return {};
+  },
 };
 
 export default resolvers;

@@ -36,7 +36,7 @@ const order = dbInstance => {
         let result = null;
         if (doc.exists) {
           result = {
-            id: doc.data(),
+            id: doc.id,
             ...doc.data(),
           };
           result = orderDateForge(result);
@@ -155,12 +155,38 @@ const order = dbInstance => {
     };
   }
 
+  async function create({ newOrder, user }) {
+    dlog('create called');
+    const scrubbedOrder = scrubOrder({
+      order: newOrder,
+      isNew: true,
+      userId: user.sub,
+    });
+    const newDoc = await orderCollection.add(scrubbedOrder);
+
+    return get(newDoc.id);
+  }
+
+  async function update({ orderId, upOrder, user }) {
+    dlog(`updated called for %s by %s`, orderId, user.sub);
+    const scrubbedOrder = scrubOrder({
+      order: upOrder,
+      userId: user.sub,
+    });
+    const docRef = orderCollection.doc(orderId);
+    await docRef.update(scrubbedOrder);
+
+    return get(docRef.id);
+  }
+
   return {
     get,
     getBatch,
     getPaged,
     getMe,
     getPagedMe,
+    create,
+    update,
   };
 };
 

@@ -10,9 +10,12 @@ import { security, graph } from '@thatconference/api';
 import { isNil } from 'lodash';
 
 // Graph Types and Resolvers
+import DataLoader from 'dataloader';
 import typeDefsRaw from './typeDefs';
 import resolvers from './resolvers';
 import directives from './directives';
+import productStore from '../dataSources/cloudFirestore/product';
+import orderStore from '../dataSources/cloudFirestore/order';
 
 const dlog = debug('that:api:garage:graphServer');
 const jwtClient = security.jwt();
@@ -47,8 +50,54 @@ const createServer = ({ dataSources }) => {
 
     dataSources: () => {
       dlog('creating dataSources');
+      const { firestore } = dataSources;
+
+      const productLoader = new DataLoader(ids =>
+        productStore(firestore)
+          .getBatch(ids)
+          .then(products => {
+            if (products.includes(null)) {
+              Sentry.withScope(scope => {
+                scope.setLevel('error');
+                scope.setContext(
+                  `Assigned products dont exist in products collection`,
+                  { ids },
+                  { products },
+                );
+                Sentry.captureMessage(
+                  `Assigned products dont exist in products collection`,
+                );
+              });
+            }
+            return ids.map(id => products.find(p => p && p.id === id));
+          }),
+      );
+
+      const orderLoader = new DataLoader(ids =>
+        orderStore(firestore)
+          .getBatch(ids)
+          .then(orders => {
+            if (orders.includes(null)) {
+              Sentry.withScope(scope => {
+                scope.setLevel('error');
+                scope.setContext(
+                  `Assigned orders dont exist in orders collection`,
+                  { ids },
+                  { orders },
+                );
+                Sentry.captureMessage(
+                  `Assigned orders dont exist in orders collection`,
+                );
+              });
+            }
+            return ids.map(id => orders.find(o => o && o.id === id));
+          }),
+      );
+
       return {
         ...dataSources,
+        productLoader,
+        orderLoader,
       };
     },
 

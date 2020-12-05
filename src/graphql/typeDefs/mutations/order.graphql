@@ -1,0 +1,4 @@
+type OrderMutation {
+  "update specific Order"
+  update(order: OrderUpdateInput!): Order @auth(requires: "admin")
+}

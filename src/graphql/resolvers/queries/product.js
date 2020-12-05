@@ -27,6 +27,10 @@ export const fieldResolvers = {
       dlog('result: %s', result);
       return result;
     },
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve reference');
+      return productLoader.load(id);
+    },
   },
   Ticket: {
     createdBy: ({ createdBy: id }) => ({ id }),
