@@ -18,11 +18,9 @@ type Order @key(fields: "id") {
   "The date this order was created"
   createdAt: Date!
   "The date this order was last updated"
-  updatedAt: Date!
+  lastUpdatedAt: Date!
   "The member who created this order"
   createdBy: PublicProfile!
-  "The last time this order was updated"
-  lastUpdatedAt: Date!
   "The member who last updated this order"
   lastUpdatedBy: PublicProfile!
 }
