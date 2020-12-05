@@ -24,6 +24,7 @@ jobs:
       - name: Slack Notification
         uses: 8398a7/action-slack@v3
         with:
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
           status: ${{ job.status }}
           author_name: PullReq CI
         env:
