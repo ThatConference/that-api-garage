@@ -7,6 +7,10 @@ const resolvers = {
     dlog('root products called');
     return {};
   },
+  orders: () => {
+    dlog('root orders called');
+    return {};
+  },
 };
 
 export default resolvers;

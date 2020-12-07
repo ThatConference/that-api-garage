@@ -1,0 +1,10 @@
+type OrdersQuery {
+  "a list of all Orders, paged"
+  all(pageSize: Int, cursor: String): PagedOrders! @auth(requires: "admin")
+
+  "return a specific order"
+  order(orderId: ID!): Order @auth(requires: "admin")
+
+  "me path for members to view their orders. Based on user.sub"
+  me: MeOrderQuery @auth(requires: "members")
+}

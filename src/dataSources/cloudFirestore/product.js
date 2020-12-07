@@ -1,9 +1,10 @@
 import debug from 'debug';
 import { utility } from '@thatconference/api';
-import { productDateForge } from '../../lib/productDateForge';
 
 const dlog = debug('that:api:garage:datasources:firebase:product');
-const { dateForge } = utility.firestoreDateForge;
+const { dateForge, entityDateForge } = utility.firestoreDateForge;
+const forgeFields = ['createdAt', 'lastUpdateAt'];
+const productDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'products';
 
@@ -45,7 +46,7 @@ const product = dbInstance => {
   }
 
   function getBatch(ids) {
-    get('getBatched called %d ids', ids.length);
+    dlog('getBatch called %d ids', ids.length);
     if (!Array.isArray(ids))
       throw new Error('getBatch must receive an array of ids');
     return Promise.all(ids.map(id => get(id)));
@@ -60,6 +61,7 @@ const product = dbInstance => {
     if (cursor) {
       const curObject = Buffer.from(cursor, 'base64').toString('utf8');
       const { curCreatedAt } = JSON.parse(curObject);
+      if (!curCreatedAt) throw new Error('Invalid cursor provided');
       query = query.startAfter(new Date(curCreatedAt));
     }
     const { size, docs } = await query.get();
@@ -70,7 +72,6 @@ const product = dbInstance => {
         id: doc.id,
         ...doc.data(),
       };
-      dlog('go forge');
       return productDateForge(r);
     });
 

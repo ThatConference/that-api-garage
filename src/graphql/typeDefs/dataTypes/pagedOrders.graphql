@@ -1,0 +1,8 @@
+type PagedOrders {
+  "the order in the current page"
+  orders: [Order]!
+  "A cursor to pass back for the next page of data"
+  cursor: String!
+  "the  numbers of records in this page"
+  count: Int!
+}

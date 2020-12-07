@@ -1,0 +1,35 @@
+"Input for creating a new Order type"
+input OrderCreateInput {
+  "Member who's order this is"
+  member: ID!
+  "Event this order is part of"
+  event: ID
+  "The Partner this order is associated with"
+  partner: ID
+  "The date this order takes place"
+  orderDate: Date!
+  "The stripe reference used to pay for this order"
+  stripeRef: String
+  "The total amount of this order"
+  total: Float!
+  "Products associated with order. Details in Stripe"
+  products: [ID!]!
+}
+
+"Input for updating an Order type"
+input OrderUpdateInput {
+  "Member who's order this is"
+  member: ID
+  "Event this order is part of"
+  event: ID
+  "The Partner this order is associated with"
+  partner: ID
+  "The date this order takes place"
+  orderDate: Date
+  "The stripe reference used to pay for this order"
+  stripeRef: String
+  "The total amount of this order"
+  total: Float
+  "Prodcuts associtate with order. Details in Stripe"
+  products: [ID!]
+}

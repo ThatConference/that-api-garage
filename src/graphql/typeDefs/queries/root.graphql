@@ -1,4 +1,6 @@
 type Query {
   "Products sold, etc."
   products: ProductsQuery
+  "A collection of products purchased by a member"
+  orders: OrdersQuery
 }

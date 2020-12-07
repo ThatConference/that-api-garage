@@ -1,4 +1,6 @@
 type Mutation {
   "Product type mutations"
   products: ProductsMutation @auth(requires: "admin")
+  "Order type mutations"
+  orders: OrdersMutation @auth(requires: "admin")
 }
