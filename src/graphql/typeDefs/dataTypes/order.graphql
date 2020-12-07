@@ -2,7 +2,7 @@ type Order @key(fields: "id") {
   "Unique id of the order"
   id: ID!
   "The member who placed this order"
-  member: PublicProfile
+  member: PublicProfile!
   "The event associated with this order"
   event: Event
   "A partner assocated with this order"
