@@ -21,8 +21,8 @@ const stripeApi = () => {
       mode: 'payment', // need to investigate if we can use this for one-time only, only
       client_reference_id: memberId,
       allow_promotion_codes: true,
-      success_url: 'https://that.us/',
-      cancel_url: 'https://that.us/',
+      success_url: envConfig.stripeSuccessUrl,
+      cancel_url: envConfig.stripeCancelUrl,
     };
     const lineItems = checkout.lineItems.map(li => ({
       price: li,
