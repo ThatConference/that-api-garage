@@ -3,4 +3,6 @@ type OrdersMutation {
   create(order: OrderCreateInput!): Order! @auth(requires: "admin")
   "mutations specific to a particular Order"
   order(orderId: ID!): OrderMutation @auth(requires: "admin")
+  "Mutation specific to checking out"
+  me: MeCheckoutMutation @auth(requires: "members")
 }

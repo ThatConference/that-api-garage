@@ -1,0 +1,4 @@
+type MeCheckoutMutation {
+  "Create a new checkout with Stripe"
+  create(checkout: CheckoutCreateInput!): String! @auth(requires: "members")
+}
