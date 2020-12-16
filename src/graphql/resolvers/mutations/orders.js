@@ -13,5 +13,9 @@ export const fieldResolvers = {
       dlog('order called with id %s', orderId);
       return { orderId };
     },
+    me: (_, __, { user }) => {
+      dlog('checkout called');
+      return { memberId: user.sub };
+    },
   },
 };
