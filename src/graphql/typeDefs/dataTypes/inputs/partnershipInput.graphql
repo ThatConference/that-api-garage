@@ -7,6 +7,21 @@ input PartnershipCreateInput {
 
   "The price of the product"
   price: Float!
+
+  "Product sale start date"
+  onSaleFrom: Date
+
+  "Product sale stop date"
+  onSaleUntil: Date
+
+  "Reference to processor for associated product (Stripe, Shopify, etc.)"
+  processor: ProcessorCreateInput
+
+  "Event this product is associated with"
+  eventId: ID
+
+  "This product is currently enabled"
+  isEnabled: Boolean!
 }
 
 input PartnershipUpdateInput {
@@ -18,4 +33,19 @@ input PartnershipUpdateInput {
 
   "The price of the product"
   price: Float
+
+  "Product sale start date"
+  onSaleFrom: Date
+
+  "Product sale stop date"
+  onSaleUntil: Date
+
+  "Reference to processor for associated product (Stripe, Shopify, etc.)"
+  processor: ProcessorCreateInput
+
+  "Event this product is associated with"
+  eventId: ID
+
+  "This product is currently enabled"
+  isEnabled: Boolean
 }

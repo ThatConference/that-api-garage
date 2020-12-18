@@ -1,0 +1,6 @@
+type ProcessorRef {
+  "the processor referenced (enum)"
+  processor: ProcessorName!
+  "References id expected by processor for the product. E.g. Stripe priceId"
+  itemRefId: String!
+}

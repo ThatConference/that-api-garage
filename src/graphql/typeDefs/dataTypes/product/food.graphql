@@ -1,4 +1,4 @@
-"Provides acces to food at events which provide it. WIP"
+"Provides access to food at events which provide it. WIP"
 type Food implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!
@@ -14,6 +14,21 @@ type Food implements ProductBase @key(fields: "id") {
 
   "The price of the product"
   price: Float!
+
+  "Product sale start date"
+  onSaleFrom: Date
+
+  "Product sale stop date"
+  onSaleUntil: Date
+
+  "Reference to processor for associated product (Stripe, Shopify, etc.)"
+  processor: ProcessorRef
+
+  "Event this product is associated with"
+  eventId: ID
+
+  "This product is currently enabled"
+  isEnabled: Boolean!
 
   "date and time product was created"
   createdAt: Date!

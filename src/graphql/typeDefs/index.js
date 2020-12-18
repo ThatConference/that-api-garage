@@ -1,8 +1,12 @@
 import path from 'path';
-import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
+import { loadFilesSync } from '@graphql-tools/load-files';
+import { mergeTypeDefs } from '@graphql-tools/merge';
+import { productTypeEnum } from '@thatconference/schema';
 
-const typesArray = fileLoader(path.join(__dirname, './**/*.graphql'), {
+const typesArray = loadFilesSync(path.join(__dirname, './**/*.graphql'), {
   recursive: true,
 });
 
-export default mergeTypes(typesArray, { all: true });
+const mergedTypes = mergeTypeDefs([typesArray, productTypeEnum], { all: true });
+
+export default mergedTypes;

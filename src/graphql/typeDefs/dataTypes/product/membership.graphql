@@ -15,6 +15,21 @@ type Membership implements ProductBase @key(fields: "id") {
   "The price of the product"
   price: Float!
 
+  "Product sale start date"
+  onSaleFrom: Date
+
+  "Product sale stop date"
+  onSaleUntil: Date
+
+  "Reference to processor for associated product (Stripe, Shopify, etc.)"
+  processor: ProcessorRef
+
+  "Event this product is associated with"
+  eventId: ID
+
+  "This product is currently enabled"
+  isEnabled: Boolean!
+
   "date and time product was created"
   createdAt: Date!
 
@@ -28,6 +43,6 @@ type Membership implements ProductBase @key(fields: "id") {
   lastUpdatedBy: PublicProfile!
 
   # Membership specific fields
-  "duraion of membership in days"
+  "duration of membership in days"
   durationInDays: Int
 }
