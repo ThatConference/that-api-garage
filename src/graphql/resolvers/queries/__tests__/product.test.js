@@ -1,18 +1,17 @@
-import { gql } from 'apollo-server';
-import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
+import { loadFilesSync } from '@graphql-tools/load-files';
+import { mergeTypeDefs } from '@graphql-tools/merge';
 import path from 'path';
 import { fieldResolvers } from '../product';
+import { productTypeEnum } from '@thatconference/schema';
 
 // Instead of reading the enter schema, we'll only look at enums
 // which what we want.
-const typesArray = fileLoader(
+const enumsTypesArray = loadFilesSync(
   path.join(__dirname, '../../../typeDefs/dataTypes/enums/*.graphql'),
 );
 
-const enumTypes = mergeTypes(typesArray, { all: true });
-const enums = gql`
-  ${enumTypes}
-`;
+const enums = mergeTypeDefs([enumsTypesArray, productTypeEnum], { all: true });
+
 const allEnums = enums.definitions.filter(e => e.kind === 'EnumTypeDefinition');
 // console.log('all enum types', allEnums);
 

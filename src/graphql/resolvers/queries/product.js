@@ -1,31 +1,13 @@
 /* eslint-disable no-unused-vars */
 import debug from 'debug';
+import { resolveType } from '@thatconference/schema';
 
 const dlog = debug('that:api:garage:query:Product');
 
 export const fieldResolvers = {
   Product: {
     __resolveType(obj, content, info) {
-      dlog('__resolveType called');
-      let result = null;
-      switch (obj.type) {
-        case 'TICKET':
-          result = 'Ticket';
-          break;
-        case 'MEMBERSHIP':
-          result = 'Membership';
-          break;
-        case 'PARTNERSHIP':
-          result = 'Partnership';
-          break;
-        case 'FOOD':
-          result = 'Food';
-          break;
-        default:
-          throw new Error('Resolver encountered unknown product type');
-      }
-      dlog('result: %s', result);
-      return result;
+      return resolveType.productType(obj.type);
     },
     __resolveReference({ id }, { dataSources: { productLoader } }) {
       dlog('resolve reference');
@@ -33,14 +15,26 @@ export const fieldResolvers = {
     },
   },
   Ticket: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve reference');
+      return productLoader.load(id);
+    },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
   },
   Membership: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve reference');
+      return productLoader.load(id);
+    },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
   },
   Partnership: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve reference');
+      return productLoader.load(id);
+    },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
   },

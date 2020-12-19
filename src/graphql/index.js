@@ -1,8 +1,4 @@
-import {
-  ApolloServer,
-  gql,
-  SchemaDirectiveVisitor,
-} from 'apollo-server-express';
+import { ApolloServer, SchemaDirectiveVisitor } from 'apollo-server-express';
 import { buildFederatedSchema } from '@apollo/federation';
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
@@ -11,7 +7,7 @@ import { isNil } from 'lodash';
 
 // Graph Types and Resolvers
 import DataLoader from 'dataloader';
-import typeDefsRaw from './typeDefs';
+import typeDefs from './typeDefs';
 import resolvers from './resolvers';
 import directives from './directives';
 import productStore from '../dataSources/cloudFirestore/product';
@@ -20,11 +16,6 @@ import orderStore from '../dataSources/cloudFirestore/order';
 const dlog = debug('that:api:garage:graphServer');
 const jwtClient = security.jwt();
 const { lifecycle } = graph.events;
-
-// convert our raw schema to gql
-const typeDefs = gql`
-  ${typeDefsRaw}
-`;
 
 /**
  * will create you a configured instance of an apollo gateway

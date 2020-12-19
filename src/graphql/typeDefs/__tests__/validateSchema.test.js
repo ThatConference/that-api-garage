@@ -2,9 +2,8 @@
 /* this test is more about successfully building the schema then the
  * resulting schema from the build.
  */
-import { gql, SchemaDirectiveVisitor } from 'apollo-server-express';
 import { buildFederatedSchema } from '@apollo/federation';
-import typeDefsRaw from '../../typeDefs';
+import typeDefs from '../../typeDefs';
 let resolvers;
 
 describe('validate schema test', () => {
@@ -30,9 +29,6 @@ describe('validate schema test', () => {
   // const directives = require('../../directives').default;
   // import directives from '../../directives';
 
-  const typeDefs = gql`
-    ${typeDefsRaw}
-  `;
   let schema = buildFederatedSchema([{ typeDefs, resolvers }]);
   // SchemaDirectiveVisitor.visitSchemaDirectives(schema, directives);
 
