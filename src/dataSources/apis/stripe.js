@@ -28,28 +28,36 @@ const stripeApi = () => {
 
   function createCheckout({ checkout, products, member }) {
     dlog(
-      'create checkout for %s, with %d line items',
+      'create checkout for %s, with %d line items (%d)',
       member.id,
       products.length,
+      checkout.products.length,
     );
+    const metadata = {
+      memberId: member.id,
+      eventId: checkout.eventId,
+      productsIds: JSON.stringify(checkout.products.map(cp => cp.productId)),
+    };
     const checkoutSessionPayload = {
       success_url: envConfig.stripeSuccessUrl,
       cancel_url: envConfig.stripeCancelUrl,
+      payment_method_types: ['card'],
+      customer: member.stripeCustomerId,
       client_reference_id: member.id,
       allow_promotion_codes: true,
+      metadata,
     };
     const modes = [];
     const lineItems = checkout.products.map(cp => {
       const product = products.find(p => p.id === cp.productId);
       if (!product) throw new Error('Product lookup mismatch. Checkout failed');
-      if (!product.processorRef)
+      if (!product.processor)
         throw new Error(
-          'Processor reference missing from product %s',
-          product.name,
+          `Processor reference missing from product ${product.name}. Checkout failed`,
         );
-      modes.push(product.processorRef.checkoutMode);
+      modes.push(product.processor.checkoutMode);
       return {
-        price: product.processorRef.itemRefId,
+        price: product.processor.itemRefId,
         quantity: cp.quantity,
         description: product.name,
       };
@@ -57,9 +65,15 @@ const stripeApi = () => {
     checkoutSessionPayload.line_items = lineItems;
     if (modes.includes('SUBSCRIPTION')) {
       checkoutSessionPayload.mode = 'subscription';
+      checkoutSessionPayload.subscription_data = { metadata };
     } else {
       checkoutSessionPayload.mode = 'payment';
+      checkoutSessionPayload.payment_intent_data = { metadata };
     }
+    dlog(
+      'our checkoutSessionPayload sending to Stripe:: %o',
+      checkoutSessionPayload,
+    );
 
     return stripe.checkout.sessions.create(checkoutSessionPayload);
   }

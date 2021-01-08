@@ -6,7 +6,7 @@ import { fieldResolvers as productCreateFields } from './productCreate';
 import { fieldResolvers as productUpdateFields } from './productUpdate';
 import { fieldResolvers as ordersFields } from './orders';
 import { fieldResolvers as orderFields } from './order';
-import { fieldResolvers as meCheckoutFields } from './meCheckouts';
+import { fieldResolvers as meCheckoutsFields } from './meCheckouts';
 import { fieldResolvers as meOrdersFields } from './meOrders';
 import { fieldResolvers as stripeChechoutFields } from './stripeCheckout';
 
@@ -21,7 +21,7 @@ export const fieldResolvers = {
   ...productUpdateFields,
   ...ordersFields,
   ...orderFields,
-  ...meCheckoutFields,
+  ...meCheckoutsFields,
   ...meOrdersFields,
   ...stripeChechoutFields,
 };

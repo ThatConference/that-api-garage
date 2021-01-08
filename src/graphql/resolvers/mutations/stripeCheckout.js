@@ -14,14 +14,16 @@ export const fieldResolvers = {
     ) => {
       dlog('create called');
       let member = await memberStore(firestore).get(memberId);
-      if (!member.profileSlug)
+      if (!member || !member.profileSlug)
         throw new Error(`Member must a profile to order items`);
       if (!member.stripeCustomerId) {
         // create stripe customer
         const stripeCust = await stripeApi().createCustomer({ member });
+        dlog('New Stripe customer object %o', stripeCust);
         // save to member record
         member = await memberStore(firestore).update({
-          stripeCustomerId: stripeCust.id,
+          profile: { stripeCustomerId: stripeCust.id },
+          memberId,
         });
       }
       // verify items
@@ -29,6 +31,13 @@ export const fieldResolvers = {
       if (!products || products.length <= 0)
         throw new Error('Checkout validation failed. Cannot complete order');
       // create new checkout session
+      return stripeApi()
+        .createCheckout({
+          checkout,
+          products,
+          member,
+        })
+        .then(co => co.id);
     },
   },
 };

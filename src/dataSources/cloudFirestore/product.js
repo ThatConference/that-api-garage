@@ -113,11 +113,11 @@ const product = dbInstance => {
   }
 
   // validates products can be sold with referenced eventId
-  function validateSale(checkout) {
+  async function validateSale(checkout) {
     dlog('validate called');
     const { eventId } = checkout;
     const productList = checkout.products.map(p => p.productId);
-    const products = getBatch(productList);
+    const products = await getBatch(productList);
     if (products.length !== productList.length) {
       dlog(
         '%o <--> %o',
