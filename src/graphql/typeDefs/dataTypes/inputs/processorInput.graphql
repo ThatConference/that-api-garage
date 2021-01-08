@@ -3,6 +3,8 @@ input ProcessorCreateInput {
   processor: ProcessorName!
   "References id expected by processor for the product. E.g. Stripe priceId"
   itemRefId: String!
+  "The Stripe mode of the Checkout Session (required for stripe)"
+  checkoutMode: StripeCheckoutMode
 }
 
 input ProcessorUpdateInput {
@@ -10,4 +12,6 @@ input ProcessorUpdateInput {
   processor: ProcessorName
   "References id expected by processor for the product. E.g. Stripe priceId"
   itemRefId: String
+  "The Stripe mode of the Checkout Session"
+  checkoutMode: StripeCheckoutMode
 }

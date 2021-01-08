@@ -112,12 +112,39 @@ const product = dbInstance => {
     return get(docRef.id);
   }
 
+  // validates products can be sold with referenced eventId
+  function validateSale(checkout) {
+    dlog('validate called');
+    const { eventId } = checkout;
+    const productList = checkout.products.map(p => p.productId);
+    const products = getBatch(productList);
+    if (products.length !== productList.length) {
+      dlog(
+        '%o <--> %o',
+        productList,
+        products.map(p => (p ? p.id : null)),
+      );
+      throw new Error('Checkout validation failed. Not all products found');
+    }
+    // validations
+    for (let i = 0; i < products.length; i += 1) {
+      const item = products[i];
+      if (item.eventId !== eventId) {
+        dlog('product eventId mismatch %o, id: %s', item, eventId);
+        throw new Error('Cannot purchase items not associated with event');
+      }
+    }
+
+    return products;
+  }
+
   return {
     get,
     getBatch,
     getPaged,
     create,
     update,
+    validateSale,
   };
 };
 

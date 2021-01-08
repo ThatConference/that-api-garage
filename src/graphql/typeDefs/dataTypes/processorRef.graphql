@@ -3,4 +3,6 @@ type ProcessorRef {
   processor: ProcessorName!
   "References id expected by processor for the product. E.g. Stripe priceId"
   itemRefId: String!
+  "The Stripe mode of the Checkout Session"
+  checkoutMode: StripeCheckoutMode
 }

@@ -1,0 +1,4 @@
+type MeOrdersMutation {
+  "Checkout a new order of items"
+  checkout: MeCheckoutsMutation! @auth(requires: "members")
+}

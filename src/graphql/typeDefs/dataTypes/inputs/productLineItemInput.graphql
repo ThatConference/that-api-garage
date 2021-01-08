@@ -1,0 +1,6 @@
+input ProductLineItemInput {
+  "The product id for this line item"
+  productId: ID!
+  "the quantity of items of productId being sold"
+  quantity: Int!
+}

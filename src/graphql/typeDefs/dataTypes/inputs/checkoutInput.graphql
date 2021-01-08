@@ -1,4 +1,0 @@
-input CheckoutCreateInput {
-  "Stripe price id(s) as line item(s) of products to purchase"
-  lineItems: [String!]!
-}
