@@ -1,7 +1,9 @@
 import debug from 'debug';
+import * as Sentry from '@sentry/node';
 import memberStore from '../../../dataSources/cloudFirestore/member';
 import productStore from '../../../dataSources/cloudFirestore/product';
 import stripeApi from '../../../dataSources/apis/stripe';
+import { CheckoutError } from '../../../lib/errors';
 
 const dlog = debug('that:api:garage:mutation:checkout:stripe');
 
@@ -15,10 +17,17 @@ export const fieldResolvers = {
       dlog('create called');
       let member = await memberStore(firestore).get(memberId);
       if (!member || !member.profileSlug)
-        throw new Error(`Member must a profile to order items`);
+        throw new Error(`Member must have a profile to order items`);
       if (!member.stripeCustomerId) {
         // create stripe customer
-        const stripeCust = await stripeApi().createCustomer({ member });
+        let stripeCust;
+        try {
+          stripeCust = await stripeApi().createCustomer({ member });
+        } catch (err) {
+          const exceptionId = Sentry.captureException(err);
+          throw new CheckoutError(exceptionId);
+        }
+
         dlog('New Stripe customer object %o', stripeCust);
         // save to member record
         member = await memberStore(firestore).update({
@@ -28,8 +37,12 @@ export const fieldResolvers = {
       }
       // verify items
       const products = await productStore(firestore).validateSale(checkout);
-      if (!products || products.length <= 0)
+      if (!products || products.length <= 0) {
+        Sentry.captureMessage(
+          'Checkout validation failed. Cannot complete order',
+        );
         throw new Error('Checkout validation failed. Cannot complete order');
+      }
       // create new checkout session
       return stripeApi()
         .createCheckout({
@@ -37,7 +50,11 @@ export const fieldResolvers = {
           products,
           member,
         })
-        .then(co => co.id);
+        .then(co => co.id)
+        .catch(err => {
+          const exceptionId = Sentry.captureException(err);
+          throw new CheckoutError(exceptionId);
+        });
     },
   },
 };
