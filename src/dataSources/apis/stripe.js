@@ -2,6 +2,7 @@ import debug from 'debug';
 import * as Sentry from '@sentry/node';
 import stripelib from 'stripe';
 import envConfig from '../../envConfig';
+import { CheckoutError } from '../../lib/errors';
 
 const dlog = debug('that:api:garage:dataource:stripe');
 const stripe = stripelib(envConfig.stripeSecretKey);
@@ -34,8 +35,8 @@ const stripeApi = () => {
     );
     if (!member.stripeCustomerId) {
       dlog('member missing stripe customer id %o', member);
-      Sentry.captureMessage('member missing stripe customer id %o', { member });
-      throw new Error('Member missing Stripe Customer Id. Checkout falied');
+      Sentry.setContext({ member }, { checkout }, { products });
+      throw new CheckoutError('member missing stripe customer id');
     }
     const metadata = {
       memberId: member.id,
@@ -55,14 +56,16 @@ const stripeApi = () => {
     const lineItems = checkout.products.map(cp => {
       const product = products.find(p => p.id === cp.productId);
       if (!product) {
-        Sentry.captureMessage('Product lookup mismatch. Checkout failed');
-        throw new Error('Product lookup mismatch. Checkout failed');
+        dlog('Product lookup mismatch. Checkout failed');
+        Sentry.setContext({ member }, { checkout }, { products });
+        throw new CheckoutError('Product lookup mismatch. Checkout failed');
       }
       if (!product.processor) {
-        Sentry.captureMessage(
+        dlog(
           `Processor reference missing from product ${product.name}. Checkout failed`,
         );
-        throw new Error(
+        Sentry.setContext({ member }, { checkout }, { products });
+        throw new CheckoutError(
           `Processor reference missing from product ${product.name}. Checkout failed`,
         );
       }

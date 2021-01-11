@@ -36,12 +36,18 @@ export const fieldResolvers = {
         });
       }
       // verify items
-      const products = await productStore(firestore).validateSale(checkout);
+      let products;
+      try {
+        products = await productStore(firestore).validateSale(checkout);
+      } catch (err) {
+        const exceptionId = Sentry.captureException(err);
+        throw new CheckoutError(exceptionId);
+      }
       if (!products || products.length <= 0) {
-        Sentry.captureMessage(
-          'Checkout validation failed. Cannot complete order',
+        const exceptionId = Sentry.captureException(
+          new Error('Checkout validation failed. Cannot complete order'),
         );
-        throw new Error('Checkout validation failed. Cannot complete order');
+        throw new CheckoutError(exceptionId);
       }
       // create new checkout session
       return stripeApi()
