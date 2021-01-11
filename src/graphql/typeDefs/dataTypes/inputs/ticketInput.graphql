@@ -18,7 +18,7 @@ input TicketCreateInput {
   processor: ProcessorCreateInput
 
   "Event this product is associated with"
-  eventId: ID
+  eventId: ID!
 
   "This product is currently enabled"
   isEnabled: Boolean!

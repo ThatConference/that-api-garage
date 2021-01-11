@@ -112,12 +112,77 @@ const product = dbInstance => {
     return get(docRef.id);
   }
 
+  // broken out to allow testing of logic after local db call
+  // which is difficult to mock within module
+  function validateSaleChecks({ checkout, products, productList }) {
+    dlog('performing checks on checkout and products');
+
+    const { eventId } = checkout;
+
+    if (products.length !== productList.length) {
+      dlog(
+        '%o <--> %o',
+        productList,
+        products.map(p => (p ? p.id : null)),
+      );
+      throw new Error('Checkout validation failed. Not all products found');
+    }
+    // validations
+    for (let i = 0; i < products.length; i += 1) {
+      const item = products[i];
+      if (item.eventId !== eventId) {
+        dlog('product eventId mismatch %o, id: %s', item, eventId);
+        throw new Error('Cannot purchase items not associated with event');
+      }
+      if (!item.isEnabled) {
+        dlog('product not enabled for sale %o', item);
+        throw new Error('Product not enabled for sale');
+      }
+      const today = new Date();
+      if (item.onSaleFrom && new Date(item.onSaleFrom) > today) {
+        dlog(
+          'product not in sale dates %s -> %s',
+          item.onSaleFrom,
+          item.onSaleUntil,
+        );
+        throw new Error('Product not available for sale (date)');
+      }
+      if (item.onSaleUntil && new Date(item.onSaleUntil) < today) {
+        dlog(
+          'product not in sale dates %s -> %s',
+          item.onSaleFrom,
+          item.onSaleUntil,
+        );
+        throw new Error('Product not available for sale (date)');
+      }
+    }
+    return true;
+  }
+
+  // validates products can be sold with referenced eventId
+  async function validateSale(checkout) {
+    dlog('validate called');
+    const productList = checkout.products.map(p => p.productId);
+    const products = await getBatch(productList);
+
+    const result = validateSaleChecks({
+      checkout,
+      products,
+      productList,
+    });
+
+    if (result) return products;
+    return null;
+  }
+
   return {
     get,
     getBatch,
     getPaged,
     create,
     update,
+    validateSaleChecks,
+    validateSale,
   };
 };
 

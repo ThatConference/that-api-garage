@@ -1,0 +1,4 @@
+input StripeCheckoutCreateInput {
+  eventId: ID!
+  products: [ProductLineItemInput!]!
+}

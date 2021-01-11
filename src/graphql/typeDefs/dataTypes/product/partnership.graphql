@@ -22,10 +22,10 @@ type Partnership implements ProductBase @key(fields: "id") {
   onSaleUntil: Date
 
   "Reference to processor for associated product (Stripe, Shopify, etc.)"
-  processor: ProcessorRef
+  processor: ProcessorRef!
 
   "Event this product is associated with"
-  eventId: ID
+  eventId: ID!
 
   "This product is currently enabled"
   isEnabled: Boolean!
