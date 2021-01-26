@@ -5,10 +5,10 @@ type Order @key(fields: "id") {
   member: PublicProfile!
   "The event associated with this order"
   event: Event
-  "A partner assocated with this order"
+  "A partner associated with this order"
   partner: Partner
-  "Products purchased with this order"
-  products: [Product]
+  "One or more Product line items on this order"
+  lineItems: [LineItem]
   "The date the order was created"
   orderDate: Date!
   "The stripe reference of this order at stripe"

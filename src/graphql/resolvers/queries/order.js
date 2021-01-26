@@ -13,9 +13,5 @@ export const fieldResolvers = {
     event: ({ event: id }) => (id ? { id } : null),
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
-    products: ({ products }, __, { dataSources: { productLoader } }) => {
-      dlog('products on order called %d', products.length);
-      return Promise.all(products.map(p => productLoader.load(p)));
-    },
   },
 };

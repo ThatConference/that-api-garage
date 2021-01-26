@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { utility } from '@thatconference/api';
 
-const dlog = debug('that:api:garage:datasources:firebase:product');
+const dlog = debug('that:api:garage:datasources:firebase:order');
 const { dateForge, entityDateForge } = utility.firestoreDateForge;
 const forgeFields = ['createdAt', 'lastUpdatedAt', 'orderDate'];
 const orderDateForge = entityDateForge({ fields: forgeFields });
