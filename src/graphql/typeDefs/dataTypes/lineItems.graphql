@@ -1,0 +1,6 @@
+type LineItem {
+  "The product on this line item"
+  product: Product
+  "The quantity of products on this line item"
+  quantity: Int
+}

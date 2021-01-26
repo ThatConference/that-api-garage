@@ -5,6 +5,7 @@ import { fieldResolvers as productFields } from './product';
 import { fieldResolvers as ordersFields } from './orders';
 import { fieldResolvers as orderFields } from './order';
 import { fieldResolvers as meOrderFields } from './meOrder';
+import { fieldResolvers as lineItemFields } from './lineItem';
 
 export default {
   ...root,
@@ -16,4 +17,5 @@ export const fieldResolvers = {
   ...ordersFields,
   ...orderFields,
   ...meOrderFields,
+  ...lineItemFields,
 };

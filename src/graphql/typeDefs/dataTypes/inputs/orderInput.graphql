@@ -12,8 +12,8 @@ input OrderCreateInput {
   stripeRef: String
   "The total amount of this order"
   total: Float!
-  "Products associated with order. Details in Stripe"
-  products: [ID!]!
+  "One or more Product line items on this order"
+  lineItems: [LineItemInput!]!
 }
 
 "Input for updating an Order type"
@@ -30,6 +30,6 @@ input OrderUpdateInput {
   stripeRef: String
   "The total amount of this order"
   total: Float
-  "Prodcuts associtate with order. Details in Stripe"
-  products: [ID!]
+  "One or more Product line items on this order"
+  lineItems: [LineItemUpdate!]
 }
