@@ -3,13 +3,11 @@ input OrderCreateInput {
   "Member who's order this is"
   member: ID!
   "Event this order is part of"
-  event: ID
+  event: ID!
   "The Partner this order is associated with"
   partner: ID
   "The date this order takes place"
   orderDate: Date!
-  "The stripe reference used to pay for this order"
-  stripeRef: String
   "The total amount of this order"
   total: Float!
   "One or more Product line items on this order"
@@ -26,8 +24,6 @@ input OrderUpdateInput {
   partner: ID
   "The date this order takes place"
   orderDate: Date
-  "The stripe reference used to pay for this order"
-  stripeRef: String
   "The total amount of this order"
   total: Float
   "One or more Product line items on this order"
