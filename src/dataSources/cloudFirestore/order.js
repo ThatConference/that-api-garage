@@ -5,8 +5,10 @@ const dlog = debug('that:api:garage:datasources:firebase:order');
 const { dateForge, entityDateForge } = utility.firestoreDateForge;
 const forgeFields = ['createdAt', 'lastUpdatedAt', 'orderDate'];
 const orderDateForge = entityDateForge({ fields: forgeFields });
+const allocationDateForge = entityDateForge({ fields: ['lastUpdatedAt'] });
 
 const collectionName = 'orders';
+const collectionAllocationName = 'orderAllocations';
 
 const scrubOrder = ({ order, isNew, userId }) => {
   dlog('scrubProduct called');
@@ -26,6 +28,7 @@ const order = dbInstance => {
   dlog('instance created');
 
   const orderCollection = dbInstance.collection(collectionName);
+  const allocationCollection = dbInstance.collection(collectionAllocationName);
 
   function get(id) {
     dlog('get called %s', id);
@@ -179,6 +182,22 @@ const order = dbInstance => {
     return get(docRef.id);
   }
 
+  function findOrderAllocations({ orderId }) {
+    dlog(`findOrderAllocations called for order %s`, orderId);
+    return allocationCollection
+      .where('order', '==', orderId)
+      .get()
+      .then(querySnap =>
+        querySnap.docs.map(d => {
+          const r = {
+            id: d.id,
+            ...d.data(),
+          };
+          return allocationDateForge(r);
+        }),
+      );
+  }
+
   return {
     get,
     getBatch,
@@ -187,6 +206,7 @@ const order = dbInstance => {
     getPagedMe,
     create,
     update,
+    findOrderAllocations,
   };
 };
 

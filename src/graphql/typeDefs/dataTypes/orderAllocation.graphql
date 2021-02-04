@@ -1,0 +1,20 @@
+"Each quantity of each line item is an OrderAllocation used to allocate products to members"
+type OrderAllocation {
+  "unique id for the orderAllocation"
+  id: ID!
+  "The event this allocation was purchased under"
+  event: Event!
+  "The order this allocation was purchased on"
+  order: Order!
+  "The product this allocation refers to"
+  product: Product!
+  "has this allocation been claimed"
+  isClaimed: Boolean!
+  "The member this allocation is allocated to"
+  allocatedTo: PublicProfile
+
+  "Member who purchased this allocation"
+  purchasedBy: PublicProfile!
+  "Last time this allocation has been updated"
+  lastUpdatedAt: Date
+}
