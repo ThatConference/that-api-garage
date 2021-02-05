@@ -7,6 +7,7 @@ import { fieldResolvers as orderFields } from './order';
 import { fieldResolvers as meOrderFields } from './meOrder';
 import { fieldResolvers as lineItemFields } from './lineItem';
 import { fieldResolvers as orderAllocationFields } from './orderAllocation';
+import { fieldResolvers as mePortalFields } from './mePortal';
 
 export default {
   ...root,
@@ -20,4 +21,5 @@ export const fieldResolvers = {
   ...meOrderFields,
   ...lineItemFields,
   ...orderAllocationFields,
+  ...mePortalFields,
 };

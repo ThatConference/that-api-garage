@@ -1,0 +1,4 @@
+type MePortal {
+  "Returns Stripe uri to customer portal"
+  stripe: URL
+}
