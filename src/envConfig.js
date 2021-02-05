@@ -14,6 +14,8 @@ const requiredConfig = () => ({
     process.env.STRIPE_SECRET_KEY || configMissing('STRIPE_SECRET_KEY'),
   stripeSuccessUrl: process.env.STRIPE_SUCCESS_URL || 'https://that.us/',
   stripeCancelUrl: process.env.STRIPE_CANCEL_URL || 'https://that.us/',
+  stripePortalReturnUrl:
+    process.env.STRIPE_PORTAL_RETURN_URL || 'https://that.us/',
 });
 
 export default requiredConfig();

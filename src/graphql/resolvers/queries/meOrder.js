@@ -19,5 +19,9 @@ export const fieldResolvers = {
       dlog(`me (${user.sub}) order called for %s`, orderId);
       return orderStore(firestore).getMe({ user, orderId });
     },
+    portal: ({ user }) => {
+      dlog('portal called');
+      return { user };
+    },
   },
 };

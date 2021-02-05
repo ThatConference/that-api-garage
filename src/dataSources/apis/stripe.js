@@ -92,9 +92,20 @@ const stripeApi = () => {
     return stripe.checkout.sessions.create(checkoutSessionPayload);
   }
 
+  function getPortalUrl(stripeCustomerId) {
+    dlog('getPortalUrl for stripe customer %s', stripeCustomerId);
+    return stripe.billingPortal.sessions
+      .create({
+        customer: stripeCustomerId,
+        return_url: envConfig.stripePortalReturnUrl,
+      })
+      .then(result => result.url);
+  }
+
   return {
     createCheckout,
     createCustomer,
+    getPortalUrl,
   };
 };
 

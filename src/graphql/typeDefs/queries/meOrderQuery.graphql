@@ -3,4 +3,6 @@ type MeOrderQuery {
   all(pageSize: Int, cursor: String): PagedOrders! @auth(requires: "members")
   "One specific order for logged in member"
   order(orderId: ID!): Order @auth(requires: "members")
+  "Access resource for third-party customer portals"
+  portal: MePortal @auth(requires: "members")
 }
