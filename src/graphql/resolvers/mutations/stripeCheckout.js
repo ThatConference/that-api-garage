@@ -4,6 +4,7 @@ import memberStore from '../../../dataSources/cloudFirestore/member';
 import productStore from '../../../dataSources/cloudFirestore/product';
 import stripeApi from '../../../dataSources/apis/stripe';
 import { CheckoutError } from '../../../lib/errors';
+import checkoutValidation from '../../../lib/checkoutValidation';
 
 const dlog = debug('that:api:garage:mutation:checkout:stripe');
 
@@ -15,6 +16,13 @@ export const fieldResolvers = {
       { dataSources: { firestore } },
     ) => {
       dlog('create called');
+      try {
+        await checkoutValidation({ checkout });
+      } catch (err) {
+        const exceptionId = Sentry.captureException(err);
+        throw new CheckoutError(exceptionId);
+      }
+
       let member = await memberStore(firestore).get(memberId);
       if (!member || !member.profileSlug)
         throw new Error(`Member must have a profile to order items`);

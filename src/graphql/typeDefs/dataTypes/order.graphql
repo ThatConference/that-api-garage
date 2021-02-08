@@ -23,4 +23,6 @@ type Order @key(fields: "id") {
   createdBy: PublicProfile!
   "The member who last updated this order"
   lastUpdatedBy: PublicProfile!
+  "The checkout  mode used for this order with Stripe"
+  stripeMode: String!
 }
