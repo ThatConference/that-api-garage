@@ -1,4 +1,6 @@
 input StripeCheckoutCreateInput {
+  "The event id this checkout is associated with"
   eventId: ID!
+  "The products being purchased in checkout MAX LINE ITEMS: 6"
   products: [ProductLineItemInput!]!
 }

@@ -42,6 +42,7 @@ const stripeApi = () => {
       memberId: member.id,
       eventId: checkout.eventId,
       productIds: JSON.stringify(checkout.products.map(cp => cp.productId)),
+      checkoutLineItems: JSON.stringify(checkout.products),
     };
     const checkoutSessionPayload = {
       success_url: envConfig.stripeSuccessUrl,

@@ -3,4 +3,10 @@ type LineItem {
   product: Product
   "The quantity of products on this line item"
   quantity: Int
+  "Denotes if this line item is bulk or individual only. Drives auto-allocation"
+  isBulkPurchase: Boolean!
+  "The price per unit purchased"
+  unitPrice: Float!
+  "The total for this line item"
+  totalAmount: Float!
 }

@@ -3,4 +3,6 @@ input ProductLineItemInput {
   productId: ID!
   "the quantity of items of productId being sold"
   quantity: Int!
+  "Denotes if this line item is bulk or individual only. Drives auto-allocation"
+  isBulkPurchase: Boolean!
 }
