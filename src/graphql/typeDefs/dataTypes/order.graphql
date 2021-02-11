@@ -15,6 +15,8 @@ type Order @key(fields: "id") {
   orderDate: Date!
   "The total amount of this order"
   total: Float!
+  "The amount discounted off of this order"
+  amountDiscounted: Float!
   "The date this order was created"
   createdAt: Date!
   "The date this order was last updated"
@@ -22,7 +24,9 @@ type Order @key(fields: "id") {
   "The member who created this order"
   createdBy: Profile!
   "The member who last updated this order"
-  lastUpdatedBy: ID!
+  lastUpdatedBy: SecureProfile!
   "The checkout  mode used for this order with Stripe"
   stripeMode: String!
+  "Return receipt url for this order"
+  receipt: URL!
 }

@@ -1,11 +1,10 @@
-"Each quantity of each line item is an OrderAllocation used to allocate products to members"
-type OrderAllocation {
+type PublicOrderAllocation {
   "unique id for the orderAllocation"
   id: ID!
   "The event this allocation was purchased under"
   event: Event!
-  "The order this allocation was purchased on"
-  order: Order!
+  "The id of the order this allocation was purchased on"
+  orderId: ID!
   "The product this allocation refers to"
   product: Product!
   "has this allocation been claimed"
@@ -15,7 +14,7 @@ type OrderAllocation {
   "The allocatedTo person has checked in or not"
   hasCheckedIn: Boolean!
   "Member who purchased this allocation"
-  purchasedBy: PublicProfile!
+  purchasedBy: SecureProfile!
   "Last time this allocation has been updated"
   lastUpdatedAt: Date
 }

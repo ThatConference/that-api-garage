@@ -3,7 +3,7 @@ import { utility } from '@thatconference/api';
 
 const dlog = debug('that:api:garage:datasources:firebase:members');
 const { entityDateForge } = utility.firestoreDateForge;
-const forgeFields = ['createdAt', 'lastUpdatedAt'];
+const forgeFields = ['createdAt', 'lastUpdatedAt', 'membershipExpirationDate'];
 const memberDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'members';
@@ -18,18 +18,36 @@ const member = dbInstance => {
     return memberCollection
       .doc(memberId)
       .get()
-      .then(docRef => {
+      .then(docSnapshot => {
         let result = null;
-        if (docRef.exists) {
+        if (docSnapshot.exists) {
           result = {
-            id: docRef.id,
-            ...docRef.data(),
+            id: docSnapshot.id,
+            ...docSnapshot.data(),
           };
           result = memberDateForge(result);
         }
 
         return result;
       });
+  }
+
+  function getIdType(memberId) {
+    return get(memberId).then(m => {
+      let typename = 'PrivateProfile';
+      if (m.canFeature) typename = 'PublicProfile';
+      return {
+        id: m.id,
+        __typename: typename,
+      };
+    });
+  }
+
+  function getBatch(ids) {
+    dlog('getBatch called %d ids', ids.length);
+    if (!Array.isArray(ids))
+      throw new Error('getBatch must receive an array of ids');
+    return Promise.all(ids.map(id => getIdType(id)));
   }
 
   async function update({ memberId, profile }) {
@@ -44,6 +62,7 @@ const member = dbInstance => {
 
   return {
     get,
+    getBatch,
     update,
   };
 };

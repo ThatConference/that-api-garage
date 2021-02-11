@@ -6,5 +6,5 @@ type OrdersQuery {
   order(orderId: ID!): Order @auth(requires: "admin")
 
   "me path for members to view their orders. Based on user.sub"
-  me: MeOrderQuery @auth(requires: "members")
+  me: MeOrdersQuery @auth(requires: "members")
 }

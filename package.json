@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@apollo/federation": "^0.20.7",
-    "@google-cloud/firestore": "^4.9.2",
+    "@google-cloud/firestore": "^4.9.3",
     "@google-cloud/functions-framework": "^1.7.1",
     "@graphql-tools/load-files": "^6.2.5",
     "@graphql-tools/merge": "^6.2.7",
@@ -40,7 +40,7 @@
     "moment": "^2.29.1",
     "response-time": "^2.3.2",
     "slugify": "^1.4.6",
-    "stripe": "^8.134.0",
+    "stripe": "^8.135.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.8"
   },
