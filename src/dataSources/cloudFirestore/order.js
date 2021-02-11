@@ -198,6 +198,22 @@ const order = dbInstance => {
       );
   }
 
+  function findMeOrderAllocations({ memberId }) {
+    dlog(`findMeOrderAlocations called for member %s`, memberId);
+    return allocationCollection
+      .where('allocatedTo', '==', memberId)
+      .get()
+      .then(querySnapshot =>
+        querySnapshot.docs.map(d => {
+          const r = {
+            id: d.id,
+            ...d.data(),
+          };
+          return allocationDateForge(r);
+        }),
+      );
+  }
+
   return {
     get,
     getBatch,
@@ -207,6 +223,7 @@ const order = dbInstance => {
     create,
     update,
     findOrderAllocations,
+    findMeOrderAllocations,
   };
 };
 

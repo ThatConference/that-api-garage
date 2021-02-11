@@ -1,10 +1,10 @@
 import debug from 'debug';
 import orderStore from '../../../dataSources/cloudFirestore/order';
 
-const dlog = debug('that:api:garage:query:MeOrderQuery');
+const dlog = debug('that:api:garage:query:MeOrdersQuery');
 
 export const fieldResolvers = {
-  MeOrderQuery: {
+  MeOrdersQuery: {
     all: (
       { user },
       { pageSize = 20, cursor },
@@ -22,6 +22,12 @@ export const fieldResolvers = {
     portal: ({ user }) => {
       dlog('portal called');
       return { user };
+    },
+    allocations: ({ user }, __, { dataSources: { firestore } }) => {
+      dlog('me allocations for %s', user.sub);
+      return orderStore(firestore).findMeOrderAllocations({
+        memberId: user.sub,
+      });
     },
   },
 };

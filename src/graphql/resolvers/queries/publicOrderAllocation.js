@@ -1,14 +1,14 @@
 export const fieldResolvers = {
-  OrderAllocation: {
+  PublicOrderAllocation: {
     event: ({ event: id }) => ({ id }),
-    order: ({ order: orderId }, __, { dataSources: { orderLoader } }) =>
-      orderLoader.load(orderId),
+    orderId: ({ order: orderId }) => orderId,
     product: ({ product: productId }, __, { dataSources: { productLoader } }) =>
       productLoader.load(productId),
     allocatedTo: ({ allocatedTo }, __, { dataSources: { memberLoader } }) => {
       if (!allocatedTo) return null;
       return memberLoader.load(allocatedTo);
     },
-    purchasedBy: ({ purchasedBy: id }) => ({ id }),
+    purchasedBy: ({ purchasedBy }, __, { dataSources: { memberLoader } }) =>
+      memberLoader.load(purchasedBy),
   },
 };

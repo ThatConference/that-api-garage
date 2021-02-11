@@ -12,6 +12,7 @@ import resolvers from './resolvers';
 import directives from './directives';
 import productStore from '../dataSources/cloudFirestore/product';
 import orderStore from '../dataSources/cloudFirestore/order';
+import memberStore from '../dataSources/cloudFirestore/member';
 
 const dlog = debug('that:api:garage:graphServer');
 const jwtClient = security.jwt();
@@ -85,10 +86,32 @@ const createServer = ({ dataSources }) => {
           }),
       );
 
+      const memberLoader = new DataLoader(ids =>
+        memberStore(firestore)
+          .getBatch(ids)
+          .then(members => {
+            if (members.includes(null)) {
+              Sentry.withScope(scope => {
+                scope.setLevel('error');
+                scope.setContext(
+                  `Members requested in memberLoader don't exist in member collection`,
+                  { ids },
+                  { members },
+                );
+                Sentry.captureMessage(
+                  `Members requested in memberLoader don't exist in member collection`,
+                );
+              });
+            }
+            return ids.map(id => members.find(m => m && m.id === id));
+          }),
+      );
+
       return {
         ...dataSources,
         productLoader,
         orderLoader,
+        memberLoader,
       };
     },
 
@@ -131,7 +154,7 @@ const createServer = ({ dataSources }) => {
 
     plugins: [
       {
-        requestDidStart(req) {
+        requestDidStart() {
           return {
             executionDidStart(requestContext) {
               lifecycle.emit('executionDidStart', {
