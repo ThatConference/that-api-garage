@@ -3,7 +3,7 @@ import { utility } from '@thatconference/api';
 
 const dlog = debug('that:api:garage:datasources:firebase:product');
 const { dateForge, entityDateForge } = utility.firestoreDateForge;
-const forgeFields = ['createdAt', 'lastUpdateAt'];
+const forgeFields = ['createdAt', 'lastUpdateAt', 'onSaleFrom', 'onSaleUntil'];
 const productDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'products';
