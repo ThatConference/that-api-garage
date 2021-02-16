@@ -1,5 +1,6 @@
 import debug from 'debug';
 import { utility } from '@thatconference/api';
+import * as Sentry from '@sentry/node';
 
 const dlog = debug('that:api:garage:datasources:firebase:product');
 const { dateForge, entityDateForge } = utility.firestoreDateForge;
@@ -132,10 +133,17 @@ const product = dbInstance => {
       const item = products[i];
       if (item.eventId !== eventId) {
         dlog('product eventId mismatch %o, id: %s', item, eventId);
+        Sentry.setTags({
+          productId: item.id,
+          eventId,
+        });
+        Sentry.setContext('product', { product: item });
         throw new Error('Cannot purchase items not associated with event');
       }
       if (!item.isEnabled) {
         dlog('product not enabled for sale %o', item);
+        Sentry.setTag('productId', item.id);
+        Sentry.setContext('product', { product: item });
         throw new Error('Product not enabled for sale');
       }
       const today = new Date();
@@ -145,6 +153,8 @@ const product = dbInstance => {
           item.onSaleFrom,
           item.onSaleUntil,
         );
+        Sentry.setTag('productId', item.id);
+        Sentry.setContext('product', { product: item });
         throw new Error('Product not available for sale (date)');
       }
       if (item.onSaleUntil && new Date(item.onSaleUntil) < today) {
@@ -153,6 +163,8 @@ const product = dbInstance => {
           item.onSaleFrom,
           item.onSaleUntil,
         );
+        Sentry.setTag('productId', item.id);
+        Sentry.setContext('product', { product: item });
         throw new Error('Product not available for sale (date)');
       }
     }
