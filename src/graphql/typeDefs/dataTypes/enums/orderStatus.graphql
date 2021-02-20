@@ -1,0 +1,6 @@
+enum OrderStatus {
+  SUBMITTED
+  COMPLETE
+  PENDING
+  HAS_ERROR
+}

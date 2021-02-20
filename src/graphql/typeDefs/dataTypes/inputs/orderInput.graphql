@@ -6,12 +6,14 @@ input OrderCreateInput {
   event: ID!
   "The Partner this order is associated with"
   partner: ID
-  "The date this order takes place"
+  "The date and time this order takes place"
   orderDate: Date!
   "The total amount of this order"
-  total: Float!
+  total: Float
   "One or more Product line items on this order"
   lineItems: [LineItemInput!]!
+  "Order status. Defaults to SUBMITTED"
+  status: OrderStatus
 }
 
 "Input for updating an Order type"
@@ -22,10 +24,12 @@ input OrderUpdateInput {
   event: ID
   "The Partner this order is associated with"
   partner: ID
-  "The date this order takes place"
+  "The date and time this order takes place"
   orderDate: Date
   "The total amount of this order"
   total: Float
   "One or more Product line items on this order"
   lineItems: [LineItemUpdate!]
+  "Order status. Defaults to SUBMITTED"
+  status: OrderStatus
 }

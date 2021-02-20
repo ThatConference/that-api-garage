@@ -15,6 +15,7 @@ describe('validate schema test', () => {
     process.env.POSTMARK_API_TOKEN = 'POSTMARK_API_TOKEN';
     process.env.STRIPE_PUBLISHABLE_KEY = 'STRIPE_PUBLISHABLE_KEY';
     process.env.STRIPE_SECRET_KEY = 'STRIPE_SECRET_KEY';
+    process.env.BOUNCER_BASE_URL = 'BOUNCER_BASE_URL';
 
     resolvers = require('../../resolvers');
   });

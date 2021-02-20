@@ -16,6 +16,8 @@ const requiredConfig = () => ({
   stripeCancelUrl: process.env.STRIPE_CANCEL_URL || 'https://that.us/',
   stripePortalReturnUrl:
     process.env.STRIPE_PORTAL_RETURN_URL || 'https://that.us/',
+  bouncerBaseUrl:
+    process.env.BOUNCER_BASE_URL || configMissing('BOUNCER_BASE_URL'),
 });
 
 export default requiredConfig();

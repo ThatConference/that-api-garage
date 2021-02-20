@@ -13,6 +13,7 @@ import directives from './directives';
 import productStore from '../dataSources/cloudFirestore/product';
 import orderStore from '../dataSources/cloudFirestore/order';
 import memberStore from '../dataSources/cloudFirestore/member';
+import BouncerApi from '../dataSources/rest/bouncer';
 
 const dlog = debug('that:api:garage:graphServer');
 const jwtClient = security.jwt();
@@ -112,6 +113,7 @@ const createServer = ({ dataSources }) => {
         productLoader,
         orderLoader,
         memberLoader,
+        bouncerApi: new BouncerApi(),
       };
     },
 
@@ -143,6 +145,7 @@ const createServer = ({ dataSources }) => {
           ...context,
           user: {
             ...validatedToken,
+            authToken: req.userContext.authToken,
             site: req.userContext.site,
             correlationId: req.userContext.correlationId,
           },

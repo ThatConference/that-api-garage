@@ -92,7 +92,6 @@ function createUserContext(req, res, next) {
     locale: req.headers.locale,
     authToken: req.headers.authorization,
     correlationId,
-    enableMocking: false,
     site,
   };
 

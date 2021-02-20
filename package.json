@@ -27,6 +27,7 @@
     "@sentry/node": "^6.1.0",
     "@thatconference/api": "~1.18.2",
     "@thatconference/schema": "^1.0.1",
+    "apollo-datasource-rest": "^0.10.0",
     "apollo-server": "^2.21.0",
     "apollo-server-express": "^2.21.0",
     "dataloader": "^2.0.0",
