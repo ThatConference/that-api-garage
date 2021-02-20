@@ -19,6 +19,7 @@ export const fieldResolvers = {
         created: Math.floor(now.getTime() / 1000),
         order: {
           ...order,
+          orderDate: new Date(order.orderDate),
           createdBy: user.sub,
           status: order.status ? order.status : 'SUBMITTED',
         },
