@@ -30,6 +30,6 @@ input OrderUpdateInput {
   total: Float
   "One or more Product line items on this order"
   lineItems: [LineItemUpdate!]
-  "Order status. Defaults to SUBMITTED"
+  "Order status"
   status: OrderStatus
 }

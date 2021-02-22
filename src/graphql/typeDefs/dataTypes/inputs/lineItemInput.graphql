@@ -1,5 +1,5 @@
 input LineItemInput {
-  "The id of the product on this line item. Must be part of event!"
+  "The id of the product on this line item. Must be part of order's event!"
   productId: ID!
   "The quantity of products on this line item"
   quantity: Int!
@@ -8,7 +8,7 @@ input LineItemInput {
 }
 
 input LineItemUpdate {
-  "The id of the product on this line item. Must be part of event!"
+  "The id of the product on this line item. Must be part of order's event!"
   productId: ID!
   "The quantity of products on this line item"
   quantity: Int!
