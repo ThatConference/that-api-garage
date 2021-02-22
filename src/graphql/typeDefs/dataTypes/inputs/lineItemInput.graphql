@@ -1,13 +1,17 @@
 input LineItemInput {
-  "The id of the product on this line item"
-  product: ID!
+  "The id of the product on this line item. Must be part of order's event!"
+  productId: ID!
   "The quantity of products on this line item"
   quantity: Int!
+  "is bulk order line. when false, qty must be 1"
+  isBulkPurchase: Boolean!
 }
 
 input LineItemUpdate {
-  "The id of the product on this line item"
-  product: ID!
+  "The id of the product on this line item. Must be part of order's event!"
+  productId: ID!
   "The quantity of products on this line item"
   quantity: Int!
+  "is bulk order line. when false, qty must be 1"
+  isBulkPurchase: Boolean!
 }

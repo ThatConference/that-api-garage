@@ -1,6 +1,6 @@
 type OrdersMutation {
   "Mutation to crate a new Order"
-  create(order: OrderCreateInput!): Order! @auth(requires: "admin")
+  create(order: OrderCreateInput!): String! @auth(requires: "admin")
   "mutations specific to a particular Order"
   order(orderId: ID!): OrderMutation @auth(requires: "admin")
   "Mutation specific to member checking out, starts order creation"
