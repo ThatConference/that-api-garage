@@ -35,5 +35,9 @@ export const fieldResolvers = {
         userId: user.sub,
       });
     },
+
+    coupon: () => {
+      throw new Error('Not implemented yet');
+    },
   },
 };

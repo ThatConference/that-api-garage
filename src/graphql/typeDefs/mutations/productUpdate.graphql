@@ -10,4 +10,6 @@ type ProductUpdate {
   "update a partnership type product"
   partnership(partnership: PartnershipUpdateInput!): Partnership!
     @auth(requires: "admin")
+
+  coupon(coupon: CouponUpdateInput!): Coupon! @auth(requires: "admin")
 }
