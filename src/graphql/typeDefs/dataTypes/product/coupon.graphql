@@ -1,0 +1,46 @@
+"A coupon is used to generate Strip promotion codes against a coupon. MANUAL ORDERS ONLY. Coupons will not work through Stripe Checkout. There are no matching price id's"
+type Coupon implements ProductBase @key(fields: "id") {
+  "The unique id of the product"
+  id: ID!
+
+  "the official displayed name of the product"
+  name: String!
+
+  "A description of the product"
+  description: String!
+
+  "What type of product is this (enum)"
+  type: ProductType!
+
+  "The price of the product"
+  price: Float!
+
+  "Product sale start date"
+  onSaleFrom: Date
+
+  "Product sale stop date"
+  onSaleUntil: Date
+
+  "Reference to processor for associated product (Stripe, Shopify, etc.)"
+  processor: ProcessorRef!
+
+  "Event this product is associated with"
+  eventId: ID!
+
+  "This product is currently enabled"
+  isEnabled: Boolean!
+
+  "date and time product was created"
+  createdAt: Date!
+
+  "member who created product"
+  createdBy: PublicProfile!
+
+  "date and time product last updated"
+  lastUpdatedAt: Date!
+
+  "member who last updated product"
+  lastUpdatedBy: PublicProfile!
+
+  # Coupon specific fields
+}

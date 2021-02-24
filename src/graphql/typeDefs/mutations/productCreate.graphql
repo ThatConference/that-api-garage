@@ -10,4 +10,7 @@ type ProductCreate {
   "create a partnership type product"
   partnership(partnership: PartnershipCreateInput!): Partnership!
     @auth(requires: "admin")
+
+  "create a coupon type product"
+  coupon(coupon: CouponCreateInput!): Coupon @auth(requires: "admin")
 }

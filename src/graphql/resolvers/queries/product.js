@@ -10,13 +10,13 @@ export const fieldResolvers = {
       return resolveType.productType(obj.type);
     },
     __resolveReference({ id }, { dataSources: { productLoader } }) {
-      dlog('resolve reference');
+      dlog('resolve product reference');
       return productLoader.load(id);
     },
   },
   Ticket: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {
-      dlog('resolve reference');
+      dlog('resolve ticket reference');
       return productLoader.load(id);
     },
     createdBy: ({ createdBy: id }) => ({ id }),
@@ -24,7 +24,7 @@ export const fieldResolvers = {
   },
   Membership: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {
-      dlog('resolve reference');
+      dlog('resolve membership reference');
       return productLoader.load(id);
     },
     createdBy: ({ createdBy: id }) => ({ id }),
@@ -32,7 +32,15 @@ export const fieldResolvers = {
   },
   Partnership: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {
-      dlog('resolve reference');
+      dlog('resolve partnership reference');
+      return productLoader.load(id);
+    },
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+  },
+  Coupon: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve coupon reference');
       return productLoader.load(id);
     },
     createdBy: ({ createdBy: id }) => ({ id }),

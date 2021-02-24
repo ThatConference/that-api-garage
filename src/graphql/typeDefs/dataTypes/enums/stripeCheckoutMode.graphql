@@ -1,4 +1,8 @@
 enum StripeCheckoutMode {
+  "A standard Stripe order. Cannot contain any subscription products"
   PAYMENT
+  "A Stripe order which contains at least on subscription product"
   SUBSCRIPTION
+  "THAT Specific Code for generating Promotion Codes for coupons"
+  COUPON
 }
