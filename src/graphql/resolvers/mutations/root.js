@@ -1,10 +1,10 @@
 import debug from 'debug';
 
-const dlog = debug('that:api:garage:mutations:root');
+const dlog = debug('that:api:garage:mutations');
 
 const resolvers = {
   products: () => {
-    dlog('root:products mutation called');
+    dlog('root mutation called');
     return {};
   },
   orders: () => {

@@ -1,7 +1,7 @@
 import debug from 'debug';
 import productStore from '../../../dataSources/cloudFirestore/product';
 
-const dlog = debug('that:api:garage:query:ProductsQuery');
+const dlog = debug('that:api:garage:query:Products');
 
 export const fieldResolvers = {
   ProductsQuery: {

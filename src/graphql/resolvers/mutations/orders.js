@@ -1,7 +1,7 @@
 import debug from 'debug';
 import validateManualOrder from '../../../lib/that/validateManualOrder';
 
-const dlog = debug('that:api:garage:mutation:OrdersMutation');
+const dlog = debug('that:api:garage:mutation:orders');
 
 export const fieldResolvers = {
   OrdersMutation: {

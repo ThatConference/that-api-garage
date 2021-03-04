@@ -2,7 +2,7 @@
 
 Our collection of entities which don't belong in the other api services.
 
-[![Actions Status](https://github.com/ThatConference/that-api-garage/workflows/Push%20Master%20CI/badge.svg)](https://github.com/ThatConference/that-api-garage/workflows/actions)
+[![Actions Status](https://github.com/ThatConference/that-api-garage/workflows/Push%20Master%20CI%20for%20Cloud%20Run/badge.svg)](https://github.com/ThatConference/that-api-garage/workflows/actions)
 
 ## Dependencies
 
