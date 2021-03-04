@@ -1,6 +1,6 @@
 import debug from 'debug';
 
-const dlog = debug('that:api:garage:mutation:MeOrdersMutation');
+const dlog = debug('that:api:garage:mutation:MeOrders');
 
 export const fieldResolvers = {
   MeOrdersMutation: {
