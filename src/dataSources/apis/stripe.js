@@ -26,7 +26,7 @@ const stripeApi = () => {
     return stripe.customers.create(newCust);
   }
 
-  function createCheckout({ checkout, products, member }) {
+  function createCheckout({ checkout, products, member, event }) {
     dlog(
       'create checkout for %s, with %d line items (%d)',
       member.id,
@@ -38,6 +38,8 @@ const stripeApi = () => {
       Sentry.setContext({ member }, { checkout }, { products });
       throw new CheckoutError('member missing stripe customer id');
     }
+    const successUrl = event.checkoutSuccess || envConfig.stripeSuccessUrl;
+    const cancelUrl = event.checkoutCancel || envConfig.stripeCancelUrl;
     const metadata = {
       memberId: member.id,
       eventId: checkout.eventId,
@@ -45,8 +47,8 @@ const stripeApi = () => {
       checkoutLineItems: JSON.stringify(checkout.products),
     };
     const checkoutSessionPayload = {
-      success_url: envConfig.stripeSuccessUrl,
-      cancel_url: envConfig.stripeCancelUrl,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       payment_method_types: ['card'],
       customer: member.stripeCustomerId,
       client_reference_id: member.id,
