@@ -1,0 +1,7 @@
+enum EventActivity {
+  Camper
+  Meals
+  PigRoast
+  Counselor
+  PreConference
+}

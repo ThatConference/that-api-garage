@@ -1,5 +1,5 @@
-"A coupon is used to generate Strip promotion codes against a coupon. MANUAL ORDERS ONLY. Coupons will not work through Stripe Checkout. There are no matching price id's"
-type Coupon implements ProductBase @key(fields: "id") {
+"Provides access to food at events which provide it. WIP"
+type Family implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!
 
@@ -45,5 +45,5 @@ type Coupon implements ProductBase @key(fields: "id") {
   "member who last updated product"
   lastUpdatedBy: PublicProfile!
 
-  # Coupon specific fields
+  # Family specific fields
 }

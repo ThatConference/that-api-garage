@@ -12,4 +12,13 @@ type ProductUpdate {
     @auth(requires: "admin")
 
   coupon(coupon: CouponUpdateInput!): Coupon! @auth(requires: "admin")
+
+  "update a food type product"
+  food(food: FoodUpdateInput!): Food! @auth(requires: "admin")
+
+  "update a training type product"
+  training(training: TrainingUpdateInput!): Training! @auth(requires: "admin")
+
+  "update a family type product"
+  family(family: FamilyUpdateInput!): Family! @auth(requires: "admin")
 }

@@ -30,6 +30,9 @@ type Food implements ProductBase @key(fields: "id") {
   "This product is currently enabled"
   isEnabled: Boolean!
 
+  "Event activities this product enables (enum)"
+  eventActivities: [EventActivity]!
+
   "date and time product was created"
   createdAt: Date!
 

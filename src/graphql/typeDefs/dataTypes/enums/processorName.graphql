@@ -3,4 +3,5 @@ enum ProcessorName {
   STRIPE
   TITO
   SHOPIFY
+  THAT
 }

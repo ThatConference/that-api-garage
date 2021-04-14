@@ -1,10 +1,7 @@
+import { constants as apiConstants } from '@thatconference/api';
+
 const constants = {
-  STRIPE: {
-    CHECKOUT_MODE: {
-      PAYMENT: 'payment',
-      SUBSCRIPTION: 'subscription',
-    },
-  },
+  ...apiConstants,
 };
 
 export default constants;

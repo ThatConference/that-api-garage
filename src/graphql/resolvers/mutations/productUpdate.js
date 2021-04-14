@@ -48,5 +48,40 @@ export const fieldResolvers = {
     coupon: () => {
       throw new Error('Not implemented yet');
     },
+
+    food: ({ productId }, { food }, { dataSources: { firestore }, user }) => {
+      dlog('update food called');
+      return productStore(firestore).update({
+        productId,
+        newProduct: food,
+        userId: user.sub,
+      });
+    },
+
+    training: (
+      { productId },
+      { training },
+      { dataSources: { firestore }, user },
+    ) => {
+      dlog('update training called');
+      return productStore(firestore).update({
+        productId,
+        newProduct: training,
+        userId: user.sub,
+      });
+    },
+
+    family: (
+      { productId },
+      { family },
+      { dataSources: { firestore }, user },
+    ) => {
+      dlog('update family called');
+      return productStore(firestore).update({
+        productId,
+        newProduct: family,
+        userId: user.sub,
+      });
+    },
   },
 };
