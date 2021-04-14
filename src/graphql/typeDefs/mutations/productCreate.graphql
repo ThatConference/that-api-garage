@@ -13,4 +13,13 @@ type ProductCreate {
 
   "create a coupon type product"
   coupon(coupon: CouponCreateInput!): Coupon @auth(requires: "admin")
+
+  "create a food type product"
+  food(food: FoodCreateInput!): Food! @auth(requires: "admin")
+
+  "create a training type product"
+  training(training: TrainingCreateInput!): Training! @auth(requires: "admin")
+
+  "create a family type product"
+  family(family: FamilyCreateInput!): Family! @auth(requires: "admin")
 }

@@ -21,6 +21,7 @@ export const fieldResolvers = {
     },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
   },
   Membership: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {
@@ -29,6 +30,7 @@ export const fieldResolvers = {
     },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
   },
   Partnership: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {
@@ -37,6 +39,7 @@ export const fieldResolvers = {
     },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
   },
   Coupon: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {
@@ -45,5 +48,33 @@ export const fieldResolvers = {
     },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
+  },
+  Food: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve food reference');
+      return productLoader.load(id);
+    },
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
+  },
+  Training: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve training reference');
+      return productLoader.load(id);
+    },
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
+  },
+  Family: {
+    __resolveReference({ id }, { dataSources: { productLoader } }) {
+      dlog('resolve family reference');
+      return productLoader.load(id);
+    },
+    createdBy: ({ createdBy: id }) => ({ id }),
+    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    eventActivities: ({ eventActivities = [] }) => eventActivities,
   },
 };

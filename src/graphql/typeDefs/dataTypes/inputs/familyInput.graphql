@@ -1,4 +1,4 @@
-input PartnershipCreateInput {
+input FamilyCreateInput {
   "the official displayed name of the product"
   name: String!
 
@@ -27,7 +27,7 @@ input PartnershipCreateInput {
   eventActivities: [EventActivity]
 }
 
-input PartnershipUpdateInput {
+input FamilyUpdateInput {
   "the official displayed name of the product"
   name: String
 

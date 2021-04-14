@@ -23,6 +23,9 @@ input MembershipCreateInput {
   "This product is currently enabled"
   isEnabled: Boolean!
 
+  "Event activities this product enables (enum)"
+  eventActivities: [EventActivity]
+
   "The Duration of membership"
   durationInDays: Int!
 }
@@ -51,6 +54,9 @@ input MembershipUpdateInput {
 
   "This product is currently enabled"
   isEnabled: Boolean
+
+  "Event activities this product enables (enum)"
+  eventActivities: [EventActivity]
 
   "The Duration of membership"
   durationInDays: Int

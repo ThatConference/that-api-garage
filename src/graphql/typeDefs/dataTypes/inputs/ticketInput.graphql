@@ -22,6 +22,9 @@ input TicketCreateInput {
 
   "This product is currently enabled"
   isEnabled: Boolean!
+
+  "Event activities this product enables (enum)"
+  eventActivities: [EventActivity]
 }
 
 input TicketUpdateInput {
@@ -48,4 +51,7 @@ input TicketUpdateInput {
 
   "This product is currently enabled"
   isEnabled: Boolean
+
+  "Event activities this product enables (enum)"
+  eventActivities: [EventActivity]
 }

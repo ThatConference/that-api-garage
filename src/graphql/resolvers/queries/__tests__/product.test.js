@@ -32,6 +32,14 @@ const types = [
     type: 'FOOD',
     result: 'Food',
   },
+  {
+    type: 'TRAINING',
+    result: 'Training',
+  },
+  {
+    type: 'FAMILY',
+    result: 'Family',
+  },
 ];
 
 describe('Product type tests', () => {

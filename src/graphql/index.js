@@ -2,7 +2,7 @@ import { ApolloServer, SchemaDirectiveVisitor } from 'apollo-server-express';
 import { buildFederatedSchema } from '@apollo/federation';
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
-import { security, graph } from '@thatconference/api';
+import { security } from '@thatconference/api';
 import { isNil } from 'lodash';
 
 // Graph Types and Resolvers
@@ -17,7 +17,6 @@ import BouncerApi from '../dataSources/rest/bouncer';
 
 const dlog = debug('that:api:garage:graphServer');
 const jwtClient = security.jwt();
-const { lifecycle } = graph.events;
 
 /**
  * will create you a configured instance of an apollo gateway
@@ -155,20 +154,7 @@ const createServer = ({ dataSources }) => {
       return context;
     },
 
-    plugins: [
-      {
-        requestDidStart() {
-          return {
-            executionDidStart(requestContext) {
-              lifecycle.emit('executionDidStart', {
-                service: 'that:api:garage',
-                requestContext,
-              });
-            },
-          };
-        },
-      },
-    ],
+    plugins: [],
 
     formatError: err => {
       dlog('formatError %O', err);
