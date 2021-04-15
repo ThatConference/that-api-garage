@@ -4,4 +4,6 @@ enum EventActivity {
   PIG_ROAST
   COUNSELOR
   PRE_CONFERENCE
+  VIRTUAL_CAMPER
+  ON_THE_LINE
 }
