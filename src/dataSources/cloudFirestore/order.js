@@ -1,5 +1,6 @@
 import debug from 'debug';
 import { utility } from '@thatconference/api';
+import constants from '../../constants';
 
 const dlog = debug('that:api:garage:datasources:firebase:order');
 const { dateForge, entityDateForge } = utility.firestoreDateForge;
@@ -214,6 +215,48 @@ const order = dbInstance => {
       );
   }
 
+  function findMeOrderAllocationsForEvent({ memberId, eventId }) {
+    dlog('findMeOrderAllocationsForEvent called');
+    const productTypes = constants.THAT.PRODUCT_TYPE;
+    return allocationCollection
+      .where('allocatedTo', '==', memberId)
+      .where('event', '==', eventId)
+      .where('productType', 'in', [
+        productTypes.TICKET,
+        productTypes.FOOD,
+        productTypes.TRAINING,
+        productTypes.FAMILY,
+      ])
+      .get()
+      .then(querySnap =>
+        querySnap.docs.map(d => {
+          const r = {
+            id: d.id,
+            ...d.data(),
+          };
+          return allocationDateForge(r);
+        }),
+      );
+  }
+
+  async function markMyAllocationsQuestionsComplete({ eventId, memberId }) {
+    dlog('markMyAllocationsQuestionsComplete called');
+
+    const allocations = await findMeOrderAllocationsForEvent({
+      memberId,
+      eventId,
+    });
+    if (allocations.length < 1) return false;
+    dlog('updating %d order allocations', allocations.length);
+    const batchWrite = dbInstance.batch();
+    allocations.forEach(a => {
+      const docRef = allocationCollection.doc(a.id);
+      batchWrite.update(docRef, { hasCompletedQuestions: true });
+    });
+
+    return batchWrite.commit().then(() => true);
+  }
+
   return {
     get,
     getBatch,
@@ -224,6 +267,8 @@ const order = dbInstance => {
     update,
     findOrderAllocations,
     findMeOrderAllocations,
+    findMeOrderAllocationsForEvent,
+    markMyAllocationsQuestionsComplete,
   };
 };
 

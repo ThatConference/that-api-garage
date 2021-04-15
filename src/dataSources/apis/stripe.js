@@ -46,8 +46,18 @@ const stripeApi = () => {
       productIds: JSON.stringify(checkout.products.map(cp => cp.productId)),
       checkoutLineItems: JSON.stringify(checkout.products),
     };
+    const eventActivities = new Set();
+    products.forEach(product => {
+      if (Array.isArray(product.eventActivities)) {
+        product.eventActivities.forEach(activity =>
+          eventActivities.add(activity),
+        );
+      }
+    });
+    const params = new URLSearchParams([...eventActivities].map(a => [a, 1]));
+    params.append('eventId', checkout.eventId);
     const checkoutSessionPayload = {
-      success_url: successUrl,
+      success_url: `${successUrl}?${params.toString()}`,
       cancel_url: cancelUrl,
       payment_method_types: ['card'],
       customer: member.stripeCustomerId,

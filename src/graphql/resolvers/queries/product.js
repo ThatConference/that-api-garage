@@ -66,7 +66,10 @@ export const fieldResolvers = {
     },
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
-    eventActivities: ({ eventActivities = [] }) => eventActivities,
+    eventActivities: ({ eventActivities = [] }) => {
+      dlog('eventActivities', eventActivities);
+      return eventActivities;
+    },
   },
   Family: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {

@@ -18,4 +18,6 @@ type OrderAllocation {
   purchasedBy: PublicProfile!
   "Last time this allocation has been updated"
   lastUpdatedAt: Date
+  "Questions for allocation have been answered"
+  hasCompletedQuestions: Boolean
 }
