@@ -1,7 +1,7 @@
 enum EventActivity {
-  Camper
-  Meals
-  PigRoast
-  Counselor
-  PreConference
+  CAMPER
+  MEALS
+  PIG_ROAST
+  COUNSELOR
+  PRE_CONFERENCE
 }

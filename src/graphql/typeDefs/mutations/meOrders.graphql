@@ -1,4 +1,6 @@
 type MeOrdersMutation {
   "Checkout a new order of items"
   checkout: MeCheckoutsMutation @auth(requires: "members")
+  "Mark Questions answered for order allocations"
+  markQuestionsComplete(eventId: ID!): Boolean @auth(requires: "members")
 }
