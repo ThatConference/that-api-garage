@@ -1,4 +1,4 @@
-"A coupon is used to generate Strip promotion codes against a coupon. MANUAL ORDERS ONLY. Coupons will not work through Stripe Checkout. There are no matching price id's"
+"WIP: A coupon is used to generate Strip promotion codes against a coupon. MANUAL ORDERS ONLY. Coupons will not work through Stripe Checkout. There are no matching price id's"
 type Coupon implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!
@@ -8,6 +8,12 @@ type Coupon implements ProductBase @key(fields: "id") {
 
   "A description of the product"
   description: String!
+
+  "A short, terse description of the product"
+  shortDescription: String
+
+  "ENUM: Reference for ui to align to specific event products"
+  uiReference: UiProductReference
 
   "What type of product is this (enum)"
   type: ProductType!

@@ -1,4 +1,4 @@
-"Provides access to food at events which provide it. WIP"
+"Provides access to family-related activities at event"
 type Family implements ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!
@@ -8,6 +8,12 @@ type Family implements ProductBase @key(fields: "id") {
 
   "A description of the product"
   description: String!
+
+  "A short, terse description of the product"
+  shortDescription: String
+
+  "ENUM: Reference for ui to align to specific event products"
+  uiReference: UiProductReference
 
   "What type of product is this (enum)"
   type: ProductType!

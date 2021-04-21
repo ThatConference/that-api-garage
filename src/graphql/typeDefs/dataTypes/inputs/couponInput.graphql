@@ -5,6 +5,12 @@ input CouponCreateInput {
   "A description of the product"
   description: String!
 
+  "A short, terse description of the product"
+  shortDescription: String
+
+  "ENUM: Reference for ui to align to specific event products"
+  uiReference: UiProductReference
+
   "The price of the product"
   price: Float!
 
@@ -30,6 +36,12 @@ input CouponUpdateInput {
 
   "A description of the product"
   description: String
+
+  "A short, terse description of the product"
+  shortDescription: String
+
+  "ENUM: Reference for ui to align to specific event products"
+  uiReference: UiProductReference
 
   "The price of the product"
   price: Float
