@@ -8,4 +8,5 @@ enum UiProductReference {
   GEEKLING
   CAMPMATE
   HOG_ROAST
+  SWAG
 }
