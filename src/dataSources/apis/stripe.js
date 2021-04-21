@@ -96,6 +96,8 @@ const stripeApi = () => {
     } else {
       checkoutSessionPayload.mode = 'payment';
       checkoutSessionPayload.payment_intent_data = { metadata };
+      checkoutSessionPayload.payment_intent_data.description =
+        'For detailed ticket information see Orders History in your user profile at https://that.us/my/settings/order-history';
     }
     dlog(
       'our checkoutSessionPayload sending to Stripe:: %o',
