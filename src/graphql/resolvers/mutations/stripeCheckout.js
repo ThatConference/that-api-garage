@@ -18,6 +18,7 @@ export const fieldResolvers = {
       { dataSources: { firestore } },
     ) => {
       dlog('create called');
+      dlog('checkout object:: %o', checkout);
       Sentry.setTag('memberId', memberId);
       Sentry.setContext({ checkout });
       try {

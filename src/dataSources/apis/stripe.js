@@ -38,6 +38,10 @@ const stripeApi = () => {
       Sentry.setContext({ member }, { checkout }, { products });
       throw new CheckoutError('member missing stripe customer id');
     }
+    const orderReference = Math.random()
+      .toString(36)
+      .substr(2, 6)
+      .toUpperCase(); // e.g. 'CM2JUR'
     const successUrl = event.checkoutSuccess || envConfig.stripeSuccessUrl;
     const cancelUrl = event.checkoutCancel || envConfig.stripeCancelUrl;
     const metadata = {
@@ -45,17 +49,30 @@ const stripeApi = () => {
       eventId: checkout.eventId,
       productIds: JSON.stringify(checkout.products.map(cp => cp.productId)),
       checkoutLineItems: JSON.stringify(checkout.products),
+      orderReference,
     };
-    const eventActivities = new Set();
+    const eventActivities = new Map();
     products.forEach(product => {
       if (Array.isArray(product.eventActivities)) {
-        product.eventActivities.forEach(activity =>
-          eventActivities.add(activity),
-        );
+        product.eventActivities.forEach(activity => {
+          const v = eventActivities.get(activity) || 0;
+          eventActivities.set(activity, v + 1);
+        });
+      }
+      if (product.uiReference === 'SWAG') {
+        const swag = 'SWAG';
+        const qty =
+          checkout.products.find(cop => cop.productId === product.id)
+            ?.quantity || 0;
+        const w = eventActivities.get(swag) || 0;
+        eventActivities.set(swag, w + qty);
       }
     });
-    const params = new URLSearchParams([...eventActivities].map(a => [a, 1]));
+    const params = new URLSearchParams([...eventActivities]);
     params.append('eventId', checkout.eventId);
+    params.append('orderReference', orderReference);
+    dlog('success string parameters :: %s', params.toString());
+
     const checkoutSessionPayload = {
       success_url: `${successUrl}?${params.toString()}`,
       cancel_url: cancelUrl,
