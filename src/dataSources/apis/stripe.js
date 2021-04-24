@@ -67,6 +67,15 @@ const stripeApi = () => {
         const w = eventActivities.get(swag) || 0;
         eventActivities.set(swag, w + qty);
       }
+      if (product.type === 'TICKET') {
+        // if we have > 1 prodcut type ticket, the order is considered bulk
+        const bulk = 'HASBULK';
+        const qty =
+          checkout.products.find(cop => cop.productId === product.id)
+            ?.quantity || 0;
+        const x = eventActivities.get(bulk) || 0;
+        if (x + qty > 1) eventActivities.set(bulk, x + qty);
+      }
     });
     const params = new URLSearchParams([...eventActivities]);
     params.append('eventId', checkout.eventId);
