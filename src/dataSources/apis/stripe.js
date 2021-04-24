@@ -52,6 +52,7 @@ const stripeApi = () => {
       orderReference,
     };
     const eventActivities = new Map();
+    const bulkName = 'HASBULK';
     products.forEach(product => {
       if (Array.isArray(product.eventActivities)) {
         product.eventActivities.forEach(activity => {
@@ -68,15 +69,15 @@ const stripeApi = () => {
         eventActivities.set(swag, w + qty);
       }
       if (product.type === 'TICKET') {
-        // if we have > 1 prodcut type ticket, the order is considered bulk
-        const bulk = 'HASBULK';
         const qty =
           checkout.products.find(cop => cop.productId === product.id)
             ?.quantity || 0;
-        const x = eventActivities.get(bulk) || 0;
-        if (x + qty > 1) eventActivities.set(bulk, x + qty);
+        const x = eventActivities.get(bulkName) || 0;
+        eventActivities.set(bulkName, x + qty);
       }
     });
+    const c = eventActivities.get(bulkName) || 0;
+    if (c < 2) eventActivities.delete(bulkName); // only use value if 2+ tickets
     const params = new URLSearchParams([...eventActivities]);
     params.append('eventId', checkout.eventId);
     params.append('orderReference', orderReference);
