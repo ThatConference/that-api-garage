@@ -6,7 +6,7 @@ import constants from '../../../constants';
 const dlog = debug('that:api:garage:query:Order');
 
 export const fieldResolvers = {
-  Order: {
+  MeOrder: {
     __resolveReference({ id }, { dataSources: { orderLoader } }) {
       dlog('resolve reference');
       return orderLoader.load(id);
@@ -14,8 +14,13 @@ export const fieldResolvers = {
     member: ({ member: id }) => ({ id }),
     partner: ({ partner: id }) => (id ? { id } : null),
     event: ({ event: id }) => (id ? { id } : null),
-    createdBy: ({ createdBy: id }) => ({ id }),
-    lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
+    createdBy: ({ createdBy: id }, __, { dataSources: { memberLoader } }) =>
+      memberLoader.load(id),
+    lastUpdatedBy: (
+      { lastUpdatedBy: id },
+      __,
+      { dataSources: { memberLoader } },
+    ) => memberLoader.load(id),
     orderAllocations: ({ id: orderId }, __, { dataSources: { firestore } }) => {
       dlog('order allocations for an order: %s', orderId);
       return orderStore(firestore).findOrderAllocations({ orderId });

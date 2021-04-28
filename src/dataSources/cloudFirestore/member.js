@@ -32,6 +32,14 @@ const member = dbInstance => {
       });
   }
 
+  function setSecureTypename(setMember) {
+    const localMember = setMember;
+    let typename = 'PrivateProfile';
+    if (setMember.canFeature) typename = 'PublicProfile';
+    localMember.__typename = typename;
+    return localMember;
+  }
+
   function getIdType(memberId) {
     return get(memberId).then(m => {
       let typename = 'PrivateProfile';
@@ -43,7 +51,7 @@ const member = dbInstance => {
     });
   }
 
-  function getBatch(ids) {
+  function getSecureBatch(ids) {
     dlog('getBatch called %d ids', ids.length);
     if (!Array.isArray(ids))
       throw new Error('getBatch must receive an array of ids');
@@ -60,10 +68,30 @@ const member = dbInstance => {
     return get(memberId);
   }
 
+  function findByEmail(emailAddress) {
+    dlog('findByEmail called for, %s', emailAddress);
+    return memberCollection
+      .where('email', '==', emailAddress)
+      .get()
+      .then(qrySnap =>
+        qrySnap.docs.map(d => {
+          const result = {
+            id: d.id,
+            ...d.data(),
+          };
+          setSecureTypename(result);
+          return memberDateForge(result);
+        }),
+      );
+  }
+
   return {
     get,
-    getBatch,
+    setSecureTypename,
+    getIdType,
+    getSecureBatch,
     update,
+    findByEmail,
   };
 };
 

@@ -1,8 +1,8 @@
 type MeOrdersQuery {
   "All orders for logged in member. Max page size 100, default 20"
-  all(pageSize: Int, cursor: String): PagedOrders! @auth(requires: "members")
+  all(pageSize: Int, cursor: String): PagedMeOrders! @auth(requires: "members")
   "One specific order for logged in member"
-  order(orderId: ID!): Order @auth(requires: "members")
+  order(orderId: ID!): MeOrder @auth(requires: "members")
   "Access resource for third-party customer portals"
   portal: MePortal @auth(requires: "members")
   "Returns product(s) allocated to me"

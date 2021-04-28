@@ -1,0 +1,4 @@
+type MeOrderAllocationMutation {
+  "assigns Order Allocation to a member"
+  allocateTo(email: EmailAddress!): Boolean
+}

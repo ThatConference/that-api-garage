@@ -1,0 +1,4 @@
+type MeOrderMutation {
+  "Mutation actions on OrderAllocation"
+  orderAllocation(orderAllocationId: ID!): MeOrderAllocationMutation
+}

@@ -1,0 +1,4 @@
+input AllocateToInput {
+  id: ID
+  email: EmailAddress
+}

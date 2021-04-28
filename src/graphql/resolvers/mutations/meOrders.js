@@ -20,5 +20,11 @@ export const fieldResolvers = {
         eventId,
       });
     },
+    order: async (_, { orderId }, { dataSources: { firestore }, user }) => {
+      dlog('order called, id: %s', orderId);
+      const order = await orderStore(firestore).getMe({ user, orderId });
+      if (!order) throw new Error(`Invalid orderId. Order not found for user`);
+      return { order };
+    },
   },
 };

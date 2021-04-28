@@ -11,7 +11,7 @@ type OrderAllocation {
   "has this allocation been claimed"
   isAllocated: Boolean!
   "The member this allocation is allocated to"
-  allocatedTo: SecureProfile
+  allocatedTo: Profile
   "The allocatedTo person has checked in or not"
   hasCheckedIn: Boolean!
   "Member who purchased this allocation"

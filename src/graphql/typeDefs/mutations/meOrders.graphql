@@ -3,4 +3,6 @@ type MeOrdersMutation {
   checkout: MeCheckoutsMutation @auth(requires: "members")
   "Mark Questions answered for order allocations"
   markQuestionsComplete(eventId: ID!): Boolean @auth(requires: "members")
+  "Mutations on a specific order placed by current member"
+  order(orderId: ID!): MeOrderMutation!
 }

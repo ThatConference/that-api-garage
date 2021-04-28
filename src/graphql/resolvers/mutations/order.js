@@ -9,5 +9,9 @@ export const fieldResolvers = {
       dlog('update order %s', orderId);
       return orderStore(firestore).update({ orderId, upOrder: order, user });
     },
+    orderAllocation: (_, { orderAllocationId }) => {
+      dlog('OrderMutation, orderallocation called, %s', orderAllocationId);
+      return { orderAllocationId };
+    },
   },
 };

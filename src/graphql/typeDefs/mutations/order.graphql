@@ -1,4 +1,8 @@
+"Internal/admin order mutations"
 type OrderMutation {
   "update specific Order"
   update(order: OrderUpdateInput!): Order @auth(requires: "admin")
+  "Mutations on Order Allocations attached to order"
+  orderAllocation(orderAllocationId: ID!): OrderAllocationMutation
+    @auth(requires: "admin")
 }

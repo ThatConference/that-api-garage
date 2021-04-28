@@ -8,7 +8,10 @@ import { fieldResolvers as ordersFields } from './orders';
 import { fieldResolvers as orderFields } from './order';
 import { fieldResolvers as meCheckoutsFields } from './meCheckouts';
 import { fieldResolvers as meOrdersFields } from './meOrders';
-import { fieldResolvers as stripeChechoutFields } from './stripeCheckout';
+import { fieldResolvers as stripeCheckoutFields } from './stripeCheckout';
+import { fieldResolvers as orderAllocationFields } from './orderAllocation';
+import { fieldResolvers as meOrderAllocationFields } from './meOrderAllocation';
+import { fieldResolvers as meOrderMutationFields } from './meOrder';
 
 export default {
   ...rootMutations,
@@ -23,5 +26,8 @@ export const fieldResolvers = {
   ...orderFields,
   ...meCheckoutsFields,
   ...meOrdersFields,
-  ...stripeChechoutFields,
+  ...stripeCheckoutFields,
+  ...orderAllocationFields,
+  ...meOrderAllocationFields,
+  ...meOrderMutationFields,
 };
