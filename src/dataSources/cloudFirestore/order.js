@@ -206,6 +206,24 @@ const order = dbInstance => {
     return get(docRef.id);
   }
 
+  function getOrderAllocation(orderAllocationId) {
+    dlog('getOrderAllocation called for %s', orderAllocationId);
+
+    return allocationCollection
+      .doc(orderAllocationId)
+      .get()
+      .then(docSnap => {
+        let result = null;
+        if (docSnap.exists) {
+          result = {
+            id: docSnap.id,
+            ...docSnap.data(),
+          };
+        }
+        return allocationDateForge(result);
+      });
+  }
+
   function updateOrderAllocation({
     orderAllocationId,
     updateAllocation,
@@ -305,7 +323,11 @@ const order = dbInstance => {
       );
   }
 
-  async function markMyAllocationsQuestionsComplete({ eventId, memberId }) {
+  async function markMyAllocationsQuestionsComplete({
+    eventId,
+    memberId,
+    orderReference,
+  }) {
     dlog('markMyAllocationsQuestionsComplete called');
 
     const allocations = await findMeOrderAllocationsForEvent({
@@ -317,7 +339,10 @@ const order = dbInstance => {
     const batchWrite = dbInstance.batch();
     allocations.forEach(a => {
       const docRef = allocationCollection.doc(a.id);
-      batchWrite.update(docRef, { hasCompletedQuestions: true });
+      batchWrite.update(docRef, {
+        hasCompletedQuestions: true,
+        questionsReference: orderReference || '',
+      });
     });
 
     return batchWrite.commit().then(() => true);
@@ -331,6 +356,7 @@ const order = dbInstance => {
     getPagedMe,
     create,
     update,
+    getOrderAllocation,
     updateOrderAllocation,
     findOrderAllocations,
     findOrderAllocationForOrder,
