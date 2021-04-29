@@ -20,4 +20,6 @@ type OrderAllocation {
   lastUpdatedAt: Date
   "Questions for allocation have been answered"
   hasCompletedQuestions: Boolean
+  "URL used for EVENT Data Collection. Options based on Product type"
+  questionsLink: URL!
 }

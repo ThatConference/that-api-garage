@@ -1,3 +1,5 @@
+import fetchAllocationsQuestionsLink from '../../../lib/that/fetchAllocationsQuestionsLink';
+
 export const fieldResolvers = {
   PublicOrderAllocation: {
     event: ({ event: id }) => ({ id }),
@@ -10,5 +12,18 @@ export const fieldResolvers = {
     },
     purchasedBy: ({ purchasedBy }, __, { dataSources: { memberLoader } }) =>
       memberLoader.load(purchasedBy),
+    isAllocated: ({ isAllocated, allocatedTo }) =>
+      isAllocated && allocatedTo?.length > 4,
+    questionsLink: (
+      { event: eventId, product: productId, id: orderAllocationId },
+      __,
+      { dataSources: { firestore } },
+    ) =>
+      fetchAllocationsQuestionsLink({
+        eventId,
+        productId,
+        firestore,
+        orderAllocationId,
+      }),
   },
 };
