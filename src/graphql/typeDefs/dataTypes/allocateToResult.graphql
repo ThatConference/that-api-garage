@@ -1,0 +1,5 @@
+type AllocateToResult {
+  result: Boolean!
+  message: String!
+  allocatedTo: SecureProfile
+}

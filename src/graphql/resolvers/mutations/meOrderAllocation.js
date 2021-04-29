@@ -22,16 +22,30 @@ export const fieldResolvers = {
       ]);
       dlog('memberToAllocate:: %o', memberToAllocate);
       dlog('orderAllocation:: %o', orderAllocationId);
-      if (memberToAllocate.length < 1)
-        throw new AllocationError(
-          `Member not found with email address ${email}`,
-        );
-      if (memberToAllocate.length > 1)
-        throw new AllocationError(
-          `Multiple members with email address ${email}. Contact us to allocate member`,
-        );
+      const result = {
+        result: false,
+        message: 'not set',
+        allocatedTo: null,
+      };
+      if (memberToAllocate.length < 1) {
+        result.message = `Member not found with email address ${email}`;
+      } else if (memberToAllocate.length > 1) {
+        result.message = `Multiple members with email address ${email}. Contact us to allocate member`;
+      } else {
+        result.result = true;
+        result.message = 'ok';
+        result.allocatedTo = {
+          ...memberToAllocate[0],
+          __typename: memberToAllocate[0].canFeature
+            ? 'PublicProfile'
+            : 'PrivateProfile',
+        };
+      }
       if (!orderAllocation)
         throw new AllocationError(`OrderAllocation requested not found`);
+
+      if (result.result === false) return result;
+
       const updateAllocation = {
         allocatedTo: memberToAllocate[0].id,
         isAllocated: true,
@@ -42,7 +56,7 @@ export const fieldResolvers = {
           updateAllocation,
           user,
         })
-        .then(() => true);
+        .then(() => result);
     },
   },
 };
