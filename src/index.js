@@ -7,6 +7,10 @@ import * as Sentry from '@sentry/node';
 import { v4 as uuidv4 } from 'uuid';
 
 import apolloGraphServer from './graphql';
+import orderAllocationEventEmitter from './events/orderAllocation';
+
+const orderAllocationEvents = orderAllocationEventEmitter();
+console.log('order allocation', orderAllocationEvents);
 
 let version;
 (async () => {
@@ -39,6 +43,9 @@ const createConfig = () => ({
   dataSources: {
     sentry: Sentry,
     firestore,
+    events: {
+      orderAllocationEvents,
+    },
   },
 });
 

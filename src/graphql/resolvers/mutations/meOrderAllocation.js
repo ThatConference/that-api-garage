@@ -10,33 +10,41 @@ export const fieldResolvers = {
     allocateTo: async (
       { order, orderAllocationId },
       { email },
-      { dataSources: { firestore }, user },
+      {
+        dataSources: {
+          firestore,
+          events: { orderAllocationEvents },
+        },
+        user,
+      },
     ) => {
       dlog('allocateTo called:: %s, %s', email);
-      const [memberToAllocate, orderAllocation] = await Promise.all([
+      const [membersResult, orderAllocation] = await Promise.all([
         memberStore(firestore).findByEmail(email),
         orderStore(firestore).findOrderAllocationForOrder({
           orderId: order.id,
           orderAllocationId,
         }),
       ]);
-      dlog('memberToAllocate:: %o', memberToAllocate);
+      dlog('membersResult:: %o', membersResult);
       dlog('orderAllocation:: %o', orderAllocationId);
       const result = {
         result: false,
         message: 'not set',
         allocatedTo: null,
       };
-      if (memberToAllocate.length < 1) {
+      let memberToAllocate;
+      if (membersResult.length < 1) {
         result.message = `Member not found with email address ${email}`;
-      } else if (memberToAllocate.length > 1) {
+      } else if (membersResult.length > 1) {
         result.message = `Multiple members with email address ${email}. Contact us to allocate member`;
       } else {
+        [memberToAllocate] = membersResult;
         result.result = true;
         result.message = 'ok';
         result.allocatedTo = {
-          ...memberToAllocate[0],
-          __typename: memberToAllocate[0].canFeature
+          ...memberToAllocate,
+          __typename: memberToAllocate.canFeature
             ? 'PublicProfile'
             : 'PrivateProfile',
         };
@@ -47,7 +55,7 @@ export const fieldResolvers = {
       if (result.result === false) return result;
 
       const updateAllocation = {
-        allocatedTo: memberToAllocate[0].id,
+        allocatedTo: memberToAllocate.id,
         isAllocated: true,
       };
       return orderStore(firestore)
@@ -56,7 +64,14 @@ export const fieldResolvers = {
           updateAllocation,
           user,
         })
-        .then(() => result);
+        .then(() => {
+          orderAllocationEvents.emit('productAllocatedTo', {
+            memberTo: memberToAllocate,
+            orderAllocation,
+            firestore,
+          });
+          return result;
+        });
     },
   },
 };
