@@ -80,13 +80,16 @@ export default function orderAllocationEvents() {
         name: event.name,
         startDate: event.startDate,
         stopDate: event.stopDate,
+        month: new Intl.DateTimeFormat('en-US', { month: 'long' }).format(
+          event.startDate,
+        ),
       },
     };
 
     return sendTransactionalEmail({
       mailTo: memberTo.email,
       templateModel,
-      templateAlias: 'allocated-to-message',
+      templateAlias: 'product-allocated-to-message',
     }).catch(err =>
       process.nextTick(() =>
         orderAllocationEmitter.emit('sendEmailError', err),
