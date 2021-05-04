@@ -15,6 +15,10 @@ export const orderAllocationSuccessUrlWithParams = ({
   dlog('creating url with parameters');
   if (!orderAllocationId)
     throw new Error('orderAllocationId is a required parameter');
+  if (!event || !event.id)
+    throw new Error('event is a required parameter as an object');
+  if (!product || !product.uiReference)
+    throw new Error('product is a required parameter as an object');
   const eventActivities = new Map();
   if (Array.isArray(product.eventActivities)) {
     product.eventActivities.forEach(activity =>
