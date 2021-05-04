@@ -5,5 +5,5 @@ type MeOrdersMutation {
   markQuestionsComplete(eventId: ID!, orderReference: String): Boolean
     @auth(requires: "members")
   "Mutations on a specific order placed by current member"
-  order(orderId: ID!): MeOrderMutation!
+  order(orderId: ID!): MeOrderMutation! @auth(requires: "members")
 }

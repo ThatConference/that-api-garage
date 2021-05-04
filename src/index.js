@@ -10,7 +10,6 @@ import apolloGraphServer from './graphql';
 import orderAllocationEventEmitter from './events/orderAllocation';
 
 const orderAllocationEvents = orderAllocationEventEmitter();
-console.log('order allocation', orderAllocationEvents);
 
 let version;
 (async () => {

@@ -1,4 +1,5 @@
 type MeOrderMutation {
   "Mutation actions on OrderAllocation"
-  orderAllocation(orderAllocationId: ID!): MeOrderAllocationMutation
+  orderAllocation(orderAllocationId: ID!): MeOrderAllocationMutation!
+    @auth(requires: "members")
 }

@@ -1,4 +1,4 @@
 type MeOrderAllocationMutation {
   "assigns Order Allocation to a member"
-  allocateTo(email: EmailAddress!): AllocateToResult!
+  allocateTo(email: EmailAddress!): AllocateToResult! @auth(requires: "members")
 }
