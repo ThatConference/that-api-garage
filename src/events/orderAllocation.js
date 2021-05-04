@@ -5,6 +5,7 @@ import { dataSources } from '@thatconference/api';
 import sendTransactionalEmail from '../lib/postmark/sendTransactional';
 import productStore from '../dataSources/cloudFirestore/product';
 import { SendEmailError } from '../lib/errors';
+import { orderAllocationSuccessUrlWithParams as questionsUrl } from '../lib/that/fetchAllocationsQuestionsLink';
 
 const dlog = debug('that:api:garage:events:orderAllocation');
 const eventStore = dataSources.cloudFirestore.event;
@@ -76,10 +77,18 @@ export default function orderAllocationEvents() {
       product: {
         name: product.name,
       },
+      orderAllocation: {
+        questionsUrl: questionsUrl({
+          event,
+          product,
+          orderAllocationId: orderAllocation.id,
+        }),
+      },
       event: {
         name: event.name,
         startDate: event.startDate,
         stopDate: event.stopDate,
+        slug: event.slug,
         month: new Intl.DateTimeFormat('en-US', { month: 'long' }).format(
           event.startDate,
         ),
