@@ -17,4 +17,6 @@ type PublicOrderAllocation {
   purchasedBy: SecureProfile!
   "Last time this allocation has been updated"
   lastUpdatedAt: Date
+  "URL used for EVENT Data Collection. Options based on Product type"
+  questionsLink: URL!
 }

@@ -4,7 +4,8 @@ import { fieldResolvers as productsFields } from './products';
 import { fieldResolvers as productFields } from './product';
 import { fieldResolvers as ordersFields } from './orders';
 import { fieldResolvers as orderFields } from './order';
-import { fieldResolvers as meOrderFields } from './meOrders';
+import { fieldResolvers as meOrderFields } from './meOrder';
+import { fieldResolvers as meOrdersFields } from './meOrders';
 import { fieldResolvers as lineItemFields } from './lineItem';
 import { fieldResolvers as orderAllocationFields } from './orderAllocation';
 import { fieldResolvers as publicOrderAllocationFields } from './publicOrderAllocation';
@@ -20,6 +21,7 @@ export const fieldResolvers = {
   ...ordersFields,
   ...orderFields,
   ...meOrderFields,
+  ...meOrdersFields,
   ...lineItemFields,
   ...orderAllocationFields,
   ...publicOrderAllocationFields,

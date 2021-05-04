@@ -1,0 +1,7 @@
+"Internal/Admin Order Allocation mutations"
+type OrderAllocationMutation {
+  "assigns Order Allocation to a member"
+  allocateTo(member: AllocateToInput!): Boolean! @auth(requires: "admin")
+  "Marks Order Allocation as refunded and removes Allocated Member"
+  setRefunded: Boolean! @auth(requires: "admin")
+}

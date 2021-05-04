@@ -11,7 +11,7 @@ type OrderAllocation {
   "has this allocation been claimed"
   isAllocated: Boolean!
   "The member this allocation is allocated to"
-  allocatedTo: SecureProfile
+  allocatedTo: Profile
   "The allocatedTo person has checked in or not"
   hasCheckedIn: Boolean!
   "Member who purchased this allocation"
@@ -20,4 +20,6 @@ type OrderAllocation {
   lastUpdatedAt: Date
   "Questions for allocation have been answered"
   hasCompletedQuestions: Boolean
+  "URL used for EVENT Data Collection. Options based on Product type"
+  questionsLink: URL!
 }

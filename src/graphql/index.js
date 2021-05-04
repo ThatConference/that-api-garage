@@ -88,7 +88,7 @@ const createServer = ({ dataSources }) => {
 
       const memberLoader = new DataLoader(ids =>
         memberStore(firestore)
-          .getBatch(ids)
+          .getSecureBatch(ids)
           .then(members => {
             if (members.includes(null)) {
               Sentry.withScope(scope => {

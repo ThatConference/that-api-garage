@@ -5,12 +5,17 @@ const dlog = debug('that:api:garage:query:orders');
 
 export const fieldResolvers = {
   OrdersQuery: {
-    all: (_, { pageSize = 20, cursor }, { dataSources: { firestore } }) => {
-      dlog('all called with page size %d', pageSize);
+    all: (
+      _,
+      { pageSize = 20, cursor, eventId },
+      { dataSources: { firestore } },
+    ) => {
+      dlog('all called with page size %d, eventId %s', pageSize, eventId);
       // No max page size
       return orderStore(firestore).getPaged({
         pageSize,
         cursor,
+        eventId,
       });
     },
 
