@@ -57,6 +57,8 @@ export const fieldResolvers = {
       const updateAllocation = {
         allocatedTo: memberToAllocate.id,
         isAllocated: true,
+        hasCompletedQuestions: false,
+        questionsReference: 'not sent',
       };
       return orderStore(firestore)
         .updateOrderAllocation({
