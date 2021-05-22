@@ -1,0 +1,7 @@
+type AssetLink {
+  linkType: AssetLinkType!
+  #url: URL!
+  link: URL!
+  action: URL
+  mimeType: String
+}

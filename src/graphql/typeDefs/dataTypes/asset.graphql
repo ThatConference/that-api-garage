@@ -1,0 +1,33 @@
+"Additional information and stuff provided by members, partners events, community and sessions"
+type Asset @key(fields: "id") {
+  "unique id of the asset"
+  id: ID!
+
+  "is asset enabled, can be displayed, interacted with, etc."
+  isEnabled: Boolean!
+
+  "(optional) body text of asset, main text area"
+  body: String
+
+  "Links associated, presented by the asset"
+  links: [AssetLink]
+
+  "thumbs-up/thumbs-down overall rating"
+  rating: Int
+
+  priority: String
+  startTime: Date
+  stopTime: Date
+
+  "Entities (a union) this asset is assigned to"
+  assignments: [Entity]
+
+  "Owner of asset, entity (a union) which manages asset (Partner, Community, Member, Event, etc.)"
+  owner: Entity!
+
+  # -- edit information
+  createdAt: Date!
+  createdBy: PublicProfile!
+  lastUpdatedAt: Date!
+  lastUpdatedBy: PublicProfile!
+}

@@ -11,6 +11,10 @@ const resolvers = {
     dlog('root:orders mutation called');
     return {};
   },
+  assets: () => {
+    dlog('root:assets mutation called');
+    return {};
+  },
 };
 
 export default resolvers;

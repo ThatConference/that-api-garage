@@ -1,0 +1,3 @@
+extend type Community @key(fields: "id") {
+  id: ID! @external
+}

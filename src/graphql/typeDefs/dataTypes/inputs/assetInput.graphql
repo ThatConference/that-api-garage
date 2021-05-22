@@ -1,0 +1,21 @@
+input AssetCreateInput {
+  isEnabled: Boolean!
+  body: String!
+
+  links: [AssetLinkInput!]
+  assignments: [AssetAssignmentInput!]
+
+  "Set owner to entity. Defaults to user if omitted"
+  setOwner: SetOwnerInput
+}
+
+input AssetUpdateInput {
+  isEnabled: Boolean
+  body: String
+
+  links: [AssetLinkInput]
+  assignments: [AssetAssignmentInput!]
+
+  # "Set owner to entiy. "
+  # setOwner: setOwnerInput
+}

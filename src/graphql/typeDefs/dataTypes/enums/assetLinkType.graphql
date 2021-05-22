@@ -1,0 +1,35 @@
+"assest links, description text is used in ui"
+enum AssetLinkType {
+  "LinkedIn"
+  LINKEDIN
+  "GitHub"
+  GITHUB
+  "YouTube"
+  YOUTUBE
+  "Instagram"
+  INSTAGRAM
+  "Twitter"
+  TWITTER
+  "Facebook"
+  FACEBOOK
+  "Twitch"
+  TWITCH
+  "TikTok"
+  TICTOK
+  "dev.to"
+  DEV_TO
+  "Dribbble"
+  DRIBBBLE
+  "Medium"
+  MEDIUM
+  "Stack Overflow"
+  STACK_OVERFLOW
+  "Website"
+  WEBSITE
+  "File"
+  FILE
+  "Document"
+  DOCUMENT
+  "Image"
+  IMAGE
+}

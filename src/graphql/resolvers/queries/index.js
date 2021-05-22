@@ -10,6 +10,9 @@ import { fieldResolvers as lineItemFields } from './lineItem';
 import { fieldResolvers as orderAllocationFields } from './orderAllocation';
 import { fieldResolvers as publicOrderAllocationFields } from './publicOrderAllocation';
 import { fieldResolvers as mePortalFields } from './mePortal';
+import { fieldResolvers as assetsFields } from './assets';
+import { fieldResolvers as assetFields } from './asset';
+import { fieldResolvers as entityFields } from './entity';
 
 export default {
   ...root,
@@ -26,4 +29,7 @@ export const fieldResolvers = {
   ...orderAllocationFields,
   ...publicOrderAllocationFields,
   ...mePortalFields,
+  ...assetsFields,
+  ...assetFields,
+  ...entityFields,
 };

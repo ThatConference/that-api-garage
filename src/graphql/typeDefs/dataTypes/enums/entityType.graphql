@@ -1,0 +1,13 @@
+"entity types, description text is used in ui"
+enum EntityType {
+  "Partner"
+  PARTNER
+  "Event"
+  EVENT
+  "Community"
+  COMMUNITY
+  "Member"
+  MEMBER
+  "Session"
+  SESSION
+}

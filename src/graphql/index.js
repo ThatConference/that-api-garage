@@ -13,6 +13,7 @@ import directives from './directives';
 import productStore from '../dataSources/cloudFirestore/product';
 import orderStore from '../dataSources/cloudFirestore/order';
 import memberStore from '../dataSources/cloudFirestore/member';
+import assetStore from '../dataSources/cloudFirestore/asset';
 import BouncerApi from '../dataSources/rest/bouncer';
 
 const dlog = debug('that:api:garage:graphServer');
@@ -107,11 +108,33 @@ const createServer = ({ dataSources }) => {
           }),
       );
 
+      const assetLoader = new DataLoader(ids =>
+        assetStore(firestore)
+          .getBatch(ids)
+          .then(assets => {
+            if (assets.includes(null)) {
+              Sentry.withScope(scope => {
+                scope.setLevel('error');
+                scope.setContext(
+                  `Assigned Asset's don't exist in assets collection`,
+                  { ids },
+                  { assets },
+                );
+                Sentry.captureMessage(
+                  `Assigned Asset's don't exist in assets collection`,
+                );
+              });
+            }
+            return ids.map(id => assets.find(a => a && a.id === id));
+          }),
+      );
+
       return {
         ...dataSources,
         productLoader,
         orderLoader,
         memberLoader,
+        assetLoader,
         bouncerApi: new BouncerApi(),
       };
     },
