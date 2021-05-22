@@ -1,0 +1,2 @@
+"Union of Entity types owning and associated with Assets"
+union Entity = Partner | Event | Community | PublicProfile | AcceptedSession

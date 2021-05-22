@@ -1,0 +1,7 @@
+"Set owner of asset when being created"
+input SetOwnerInput {
+  "Id of owner entiy, manager of group."
+  ownerId: ID!
+  "Enty type of owner."
+  entityType: EntityType!
+}

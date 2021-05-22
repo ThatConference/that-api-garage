@@ -11,6 +11,10 @@ const resolvers = {
     dlog('root orders called');
     return {};
   },
+  assets: () => {
+    dlog('root:assets query called');
+    return {};
+  },
 };
 
 export default resolvers;

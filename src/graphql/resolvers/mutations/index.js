@@ -12,6 +12,8 @@ import { fieldResolvers as stripeCheckoutFields } from './stripeCheckout';
 import { fieldResolvers as orderAllocationFields } from './orderAllocation';
 import { fieldResolvers as meOrderAllocationFields } from './meOrderAllocation';
 import { fieldResolvers as meOrderMutationFields } from './meOrder';
+import { fieldResolvers as assetsFields } from './assets';
+import { fieldResolvers as assetFields } from './asset';
 
 export default {
   ...rootMutations,
@@ -30,4 +32,6 @@ export const fieldResolvers = {
   ...orderAllocationFields,
   ...meOrderAllocationFields,
   ...meOrderMutationFields,
+  ...assetsFields,
+  ...assetFields,
 };

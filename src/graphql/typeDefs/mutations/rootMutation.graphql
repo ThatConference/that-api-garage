@@ -3,4 +3,6 @@ type Mutation {
   products: ProductsMutation @auth(requires: "admin")
   "Order type mutations"
   orders: OrdersMutation @auth(requires: "members")
+  "assets mutation path"
+  assets: AssetsMutation @auth(requires: "admin")
 }

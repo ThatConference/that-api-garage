@@ -1,0 +1,8 @@
+"An assignment of an asset to another entity"
+type AssetAssignment {
+  "Id of the assigned entity to referenced Asset"
+  entityId: ID!
+
+  "Type of Entity assigned to referenced asset"
+  entityType: EntityType!
+}

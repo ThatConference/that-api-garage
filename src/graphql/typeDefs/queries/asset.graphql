@@ -1,0 +1,3 @@
+type AssetQuery {
+  get: Asset
+}

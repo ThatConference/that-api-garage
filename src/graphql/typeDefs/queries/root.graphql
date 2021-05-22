@@ -3,4 +3,6 @@ type Query {
   products: ProductsQuery
   "A collection of products purchased by a member"
   orders: OrdersQuery
+  "Assets, additional information for Events, Sessions, members, partners, and communities"
+  assets: AssetsQuery
 }
