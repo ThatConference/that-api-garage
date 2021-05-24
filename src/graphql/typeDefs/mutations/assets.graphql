@@ -5,6 +5,9 @@ type AssetsMutation {
   "Asset specific mutations"
   asset(id: ID!): AssetMutation @auth(requires: "admin")
 
+  "NIY: me mutation path"
+  me: MeAssetsMutation @auth(requires: "member")
+
   # "Admin-scoped mutations"
   # admin: AdminAssetsMutation @auth(requires: "admin")
 }

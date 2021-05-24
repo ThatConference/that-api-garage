@@ -1,0 +1,6 @@
+type MeAssetsMutation {
+  "NIY. Member create new asset"
+  create: Asset @auth(requires: "members")
+  "NIY: me mutations on a specific asset"
+  asset(assetId: ID!): MeAssetMutation @auth(requires: "members")
+}

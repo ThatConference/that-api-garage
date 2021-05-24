@@ -20,18 +20,6 @@ export const fieldResolvers = {
     assignments: ({ id: assetId }, __, { dataSources: { firestore } }) => {
       dlog(`asset's assignments %s`, assetId);
       return assetStore(firestore).getAssetAssignments(assetId);
-      // const assignments = await assetStore(firestore).getAssetAssignments(
-      //   assetId,
-      // );
-      // const promises = assignments.map(a => {
-      //   if (a.entityType === 'SESSION') {
-      //     return sessionLoader
-      //       .load(a.id)
-      //       .then(session => ({ ...session, entityType: a.entityType }));
-      //   }
-      //   return a;
-      // });
-      // return Promise.all(promises);
     },
 
     createdBy: ({ createdBy }) => ({ id: createdBy }),

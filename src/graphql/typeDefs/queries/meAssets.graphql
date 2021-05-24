@@ -1,0 +1,6 @@
+type MeAssetsQuery {
+  "NIY: all my assets"
+  all: [Asset]
+  "NIY: A specific asset"
+  asset(assetId: ID!): Asset
+}
