@@ -8,5 +8,6 @@ export const fieldResolvers = {
       dlog('asset %s', assetId);
       return { assetId };
     },
+    me: () => ({}),
   },
 };

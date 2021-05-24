@@ -13,6 +13,7 @@ import { fieldResolvers as mePortalFields } from './mePortal';
 import { fieldResolvers as assetsFields } from './assets';
 import { fieldResolvers as assetFields } from './asset';
 import { fieldResolvers as entityFields } from './entity';
+import { fieldResolvers as meAssetsFields } from './meAssets';
 
 export default {
   ...root,
@@ -32,4 +33,5 @@ export const fieldResolvers = {
   ...assetsFields,
   ...assetFields,
   ...entityFields,
+  ...meAssetsFields,
 };

@@ -1,0 +1,4 @@
+type MeAssetMutation {
+  "NIY: Update a specific asset"
+  update: Asset @auth(requires: "member")
+}

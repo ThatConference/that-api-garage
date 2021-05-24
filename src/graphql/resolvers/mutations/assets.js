@@ -14,5 +14,6 @@ export const fieldResolvers = {
       dlog('asset mutation on %s', assetId);
       return { assetId };
     },
+    me: () => ({}),
   },
 };

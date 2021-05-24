@@ -1,3 +1,6 @@
 type AssetsQuery {
+  "asset specific query path"
   asset(assetId: ID!): AssetQuery
+  "NIY: asset me path"
+  me: MeAssetsQuery @auth(requires: "members")
 }
