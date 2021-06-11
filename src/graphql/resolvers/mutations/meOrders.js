@@ -21,11 +21,12 @@ export const fieldResolvers = {
         eventId,
         orderReference,
       );
-      if (!orderReference || (orderReference && orderReference.length < 9))
+      if (!orderReference) return false;
+      if (orderReference.length < 9)
         return orderStore(firestore).markMyAllocationsQuestionsComplete({
           memberId,
           eventId,
-          orderReference: orderReference || 'not sent',
+          orderReference,
         });
 
       const updateOA = {
