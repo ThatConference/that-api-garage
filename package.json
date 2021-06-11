@@ -1,6 +1,6 @@
 {
   "name": "that-api-garage",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "THAT Garage api. Where all the other stuff goes",
   "main": "index.js",
   "engines": {
