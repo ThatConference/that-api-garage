@@ -18,6 +18,8 @@ type Order @key(fields: "id") {
   total: Float!
   "The amount discounted off of this order"
   amountDiscounted: Float!
+  "The status of this order"
+  status: OrderStatus
   "The date this order was created"
   createdAt: Date!
   "The date this order was last updated"

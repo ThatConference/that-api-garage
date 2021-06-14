@@ -1,6 +1,8 @@
 enum OrderStatus {
-  SUBMITTED
+  "The order is complete"
   COMPLETE
-  PENDING
+  "The order has been refunded. It's allocations cannot be used"
+  REFUNDED
+  "There is an error with the order and further investigation is required"
   HAS_ERROR
 }

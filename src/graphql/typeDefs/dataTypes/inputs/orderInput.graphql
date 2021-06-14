@@ -12,7 +12,7 @@ input OrderCreateInput {
   total: Float
   "One or more Product line items on this order"
   lineItems: [LineItemInput!]!
-  "Order status. Defaults to SUBMITTED"
+  "Order status. Defaults to COMPLETE"
   status: OrderStatus
 }
 
