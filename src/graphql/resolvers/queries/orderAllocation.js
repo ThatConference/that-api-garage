@@ -12,8 +12,7 @@ export const fieldResolvers = {
       return memberLoader.load(allocatedTo);
     },
     purchasedBy: ({ purchasedBy: id }) => ({ id }),
-    isAllocated: ({ isAllocated, allocatedTo }) =>
-      isAllocated && allocatedTo?.length > 4,
+    isAllocated: ({ allocatedTo }) => allocatedTo?.length > 4,
     questionsLink: (
       { event: eventId, product: productId, id: orderAllocationId },
       __,
