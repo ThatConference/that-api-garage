@@ -21,7 +21,7 @@ export const fieldResolvers = {
           ...order,
           orderDate: new Date(order.orderDate),
           createdBy: user.sub,
-          status: order.status ? order.status : 'SUBMITTED',
+          status: order.status ? order.status : 'COMPLETE',
         },
         type: 'that.order.manual.created',
         livemode: process.NODE_ENV === 'production',

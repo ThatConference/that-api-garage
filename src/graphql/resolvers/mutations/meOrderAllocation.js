@@ -19,6 +19,11 @@ export const fieldResolvers = {
       },
     ) => {
       dlog('allocateTo called:: %s, %s', email);
+      if (!order.status || order.status !== 'COMPLETE') {
+        throw new AllocationError(
+          `Unable to allocate ticket, the order is not complete (${order.status})`,
+        );
+      }
       const [membersResult, orderAllocation] = await Promise.all([
         memberStore(firestore).findByEmail(email),
         orderStore(firestore).findOrderAllocationForOrder({
