@@ -6,6 +6,7 @@ import { fieldResolvers as ordersFields } from './orders';
 import { fieldResolvers as orderFields } from './order';
 import { fieldResolvers as meOrderFields } from './meOrder';
 import { fieldResolvers as meOrdersFields } from './meOrders';
+import { fieldResolvers as registrationOrderFields } from './registrationOrder';
 import { fieldResolvers as lineItemFields } from './lineItem';
 import { fieldResolvers as orderAllocationFields } from './orderAllocation';
 import { fieldResolvers as publicOrderAllocationFields } from './publicOrderAllocation';
@@ -26,6 +27,7 @@ export const fieldResolvers = {
   ...orderFields,
   ...meOrderFields,
   ...meOrdersFields,
+  ...registrationOrderFields,
   ...lineItemFields,
   ...orderAllocationFields,
   ...publicOrderAllocationFields,

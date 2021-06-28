@@ -14,6 +14,10 @@ type OrderAllocation {
   allocatedTo: Profile
   "The allocatedTo person has checked in or not"
   hasCheckedIn: Boolean!
+  "The date/time allocatedTo person checked in"
+  checkedInAt: Date
+  "Reference used by partners to allocate lead"
+  partnerPin: String
   "Member who purchased this allocation"
   purchasedBy: PublicProfile!
   "Last time this allocation has been updated"
