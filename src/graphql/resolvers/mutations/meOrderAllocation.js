@@ -43,6 +43,8 @@ export const fieldResolvers = {
         result.message = `Member not found with email address ${email}`;
       } else if (membersResult.length > 1) {
         result.message = `Multiple members with email address ${email}. Contact us to allocate member`;
+      } else if (orderAllocation?.hasCheckedIn === true) {
+        result.message = `Order Allocation checked-in, it cannot be re-allocated`;
       } else {
         [memberToAllocate] = membersResult;
         result.result = true;
