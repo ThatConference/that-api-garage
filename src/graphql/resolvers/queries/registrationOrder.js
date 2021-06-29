@@ -1,17 +1,18 @@
 import debug from 'debug';
 import orderStore from '../../../dataSources/cloudFirestore/order';
-import getPortalUrlFromMemberId from '../../../lib/stripe/getPortalUrlFromMemberId';
-import constants from '../../../constants';
 
-const dlog = debug('that:api:garage:query:MeOrder');
+const dlog = debug('that:api:garage:query:RegistrationOrder');
 
 export const fieldResolvers = {
-  MeOrder: {
+  RegistrationOrder: {
     __resolveReference({ id }, { dataSources: { orderLoader } }) {
       dlog('resolve reference');
       return orderLoader.load(id);
     },
-    member: ({ member: id }) => ({ id }),
+    member: ({ member: memberId }, __, { dataSources: { memberLoader } }) => {
+      if (!memberId) return null;
+      return memberLoader.load(memberId);
+    },
     partner: ({ partner: id }) => (id ? { id } : null),
     event: ({ event: id }) => (id ? { id } : null),
     createdBy: ({ createdBy: id }, __, { dataSources: { memberLoader } }) =>
@@ -24,16 +25,6 @@ export const fieldResolvers = {
     orderAllocations: ({ id: orderId }, __, { dataSources: { firestore } }) => {
       dlog('order allocations for an order: %s', orderId);
       return orderStore(firestore).findOrderAllocations({ orderId });
-    },
-    receipt: (
-      { member: memberId, stripeMode, stripePaymentIntentReceiptUrl },
-      __,
-      { dataSources: { firestore } },
-    ) => {
-      dlog('Order for %s', memberId);
-      if (stripeMode === constants.STRIPE.CHECKOUT_MODE.PAYMENT)
-        return stripePaymentIntentReceiptUrl;
-      return getPortalUrlFromMemberId({ memberId, firestore });
     },
   },
 };

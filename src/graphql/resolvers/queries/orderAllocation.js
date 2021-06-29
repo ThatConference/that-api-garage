@@ -24,5 +24,10 @@ export const fieldResolvers = {
         firestore,
         orderAllocationId,
       }),
+    hasCheckedIn: ({ checkedInAt }) => {
+      let isCheckedIn = false;
+      if (checkedInAt) isCheckedIn = true;
+      return isCheckedIn;
+    },
   },
 };

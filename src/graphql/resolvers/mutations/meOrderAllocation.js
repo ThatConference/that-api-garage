@@ -19,11 +19,16 @@ export const fieldResolvers = {
       },
     ) => {
       dlog('allocateTo called:: %s, %s', email);
+      const result = {
+        result: false,
+        message: 'not set',
+        allocatedTo: null,
+      };
       if (!order.status || order.status !== 'COMPLETE') {
-        throw new AllocationError(
-          `Unable to allocate ticket, the order is not complete (${order.status})`,
-        );
+        result.message = `Unable to allocate ticket, the order is not complete (${order.status})`;
+        return result;
       }
+
       const [membersResult, orderAllocation] = await Promise.all([
         memberStore(firestore).findByEmail(email),
         orderStore(firestore).findOrderAllocationForOrder({
@@ -33,16 +38,13 @@ export const fieldResolvers = {
       ]);
       dlog('membersResult:: %o', membersResult);
       dlog('orderAllocation:: %o', orderAllocationId);
-      const result = {
-        result: false,
-        message: 'not set',
-        allocatedTo: null,
-      };
       let memberToAllocate;
       if (membersResult.length < 1) {
         result.message = `Member not found with email address ${email}`;
       } else if (membersResult.length > 1) {
         result.message = `Multiple members with email address ${email}. Contact us to allocate member`;
+      } else if (orderAllocation?.hasCheckedIn === true) {
+        result.message = `Order Allocation checked-in, it cannot be re-allocated`;
       } else {
         [memberToAllocate] = membersResult;
         result.result = true;
