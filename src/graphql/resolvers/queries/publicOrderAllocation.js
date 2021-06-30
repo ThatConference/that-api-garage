@@ -30,5 +30,9 @@ export const fieldResolvers = {
       if (checkedInAt) isCheckedIn = true;
       return isCheckedIn;
     },
+    checkedInBy: ({ checkedInBy }, __, { dataSources: { memberLoader } }) => {
+      if (!checkedInBy) return null;
+      return memberLoader.load(checkedInBy);
+    },
   },
 };
