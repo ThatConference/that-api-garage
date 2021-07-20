@@ -15,6 +15,7 @@ import { fieldResolvers as assetsFields } from './assets';
 import { fieldResolvers as assetFields } from './asset';
 import { fieldResolvers as entityFields } from './entity';
 import { fieldResolvers as meAssetsFields } from './meAssets';
+import { fieldResolvers as registrationOrderAllocationFields } from './RegistrationOrderAllocation';
 
 export default {
   ...root,
@@ -36,4 +37,5 @@ export const fieldResolvers = {
   ...assetFields,
   ...entityFields,
   ...meAssetsFields,
+  ...registrationOrderAllocationFields,
 };
