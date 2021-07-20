@@ -1,0 +1,28 @@
+type RegistrationOrderAllocation {
+  "unique id for the orderAllocation"
+  id: ID!
+  "The event this allocation was purchased under"
+  event: Event!
+  "The id of the order this allocation was purchased on"
+  orderId: ID!
+  "The product this allocation refers to"
+  product: Product!
+  "has this allocation been claimed"
+  isAllocated: Boolean!
+  "The member this allocation is allocated to"
+  allocatedTo: RegistrationProfile
+  "The allocatedTo person has checked in or not"
+  hasCheckedIn: Boolean!
+  "The date/time allocatedTo person checked in"
+  checkedInAt: Date
+  "Person who performed check-in"
+  checkedInBy: RegistrationProfile
+  "Reference used by partners to allocate lead"
+  partnerPin: String
+  "Member who purchased this allocation"
+  purchasedBy: RegistrationProfile!
+  "Last time this allocation has been updated"
+  lastUpdatedAt: Date
+  "URL used for EVENT Data Collection. Options based on Product type"
+  questionsLink: URL!
+}
