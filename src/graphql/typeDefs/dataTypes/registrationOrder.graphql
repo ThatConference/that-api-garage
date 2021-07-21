@@ -24,4 +24,6 @@ type RegistrationOrder @key(fields: "id") {
   lastUpdatedBy: RegistrationProfile!
   "The checkout  mode used for this order with Stripe"
   stripeMode: String!
+  "Order status"
+  status: OrderStatus!
 }

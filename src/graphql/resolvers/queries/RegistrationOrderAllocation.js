@@ -25,11 +25,8 @@ export const fieldResolvers = {
         firestore,
         orderAllocationId,
       }),
-    hasCheckedIn: ({ checkedInAt }) => {
-      let isCheckedIn = false;
-      if (checkedInAt) isCheckedIn = true;
-      return isCheckedIn;
-    },
+    hasCheckedIn: ({ checkedInAt, hasCheckedIn }) =>
+      checkedInAt || hasCheckedIn,
     checkedInBy: ({ checkedInBy }, __, { dataSources: { memberLoader } }) => {
       if (!checkedInBy) return null;
       return memberLoader.load(checkedInBy);
