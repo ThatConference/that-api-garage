@@ -30,4 +30,6 @@ type OrderAllocation {
   questionsLink: URL!
   "Questions referenced to tie this allocation to question responses"
   questionsReference: String
+  "Has the order allocation received their swag at check-in"
+  receivedSwag: Boolean!
 }
