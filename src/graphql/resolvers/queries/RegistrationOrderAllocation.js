@@ -31,5 +31,6 @@ export const fieldResolvers = {
       if (!checkedInBy) return null;
       return memberLoader.load(checkedInBy);
     },
+    receivedSwag: ({ receivedSwag }) => receivedSwag === true,
   },
 };

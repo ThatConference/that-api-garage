@@ -25,4 +25,6 @@ type PublicOrderAllocation {
   lastUpdatedAt: Date
   "URL used for EVENT Data Collection. Options based on Product type"
   questionsLink: URL!
+  "Has the order allocation received their swag at check-in"
+  receivedSwag: Boolean!
 }
