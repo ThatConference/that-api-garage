@@ -346,6 +346,15 @@ const order = dbInstance => {
     return batchWrite.commit().then(() => true);
   }
 
+  function orderAllocationCountWithProduct(productId) {
+    dlog('allocationCountWithProduct, %s', productId);
+    return allocationCollection
+      .where('product', '==', productId)
+      .select()
+      .get()
+      .then(querySnap => querySnap.size);
+  }
+
   return {
     get,
     getBatch,
@@ -361,6 +370,7 @@ const order = dbInstance => {
     findMeOrderAllocations,
     findMeOrderAllocationsForEvent,
     markMyAllocationsQuestionsComplete,
+    orderAllocationCountWithProduct,
   };
 };
 

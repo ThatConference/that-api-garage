@@ -1,0 +1,8 @@
+type ProductDeleteResult {
+  "Delete product result"
+  result: Boolean!
+  "Delete result message"
+  message: String!
+  "Id of product acted upon"
+  productId: ID!
+}

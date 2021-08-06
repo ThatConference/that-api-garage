@@ -1,4 +1,6 @@
 type ProductMutation {
   "update specific Product"
   update: ProductUpdate @auth(requires: "admin")
+  "Safe product delete. Will result false if any order allocation includes product"
+  delete: ProductDeleteResult!
 }
