@@ -5,4 +5,6 @@ enum StripeCheckoutMode {
   SUBSCRIPTION
   "THAT Specific Code for generating Promotion Codes for coupons"
   COUPON
+  "THAT Specific Code for products processed by THAT Conference. E.g. Counselor Ticket"
+  THAT
 }

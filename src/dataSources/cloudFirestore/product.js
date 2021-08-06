@@ -187,6 +187,11 @@ const product = dbInstance => {
     return null;
   }
 
+  function remove(productId) {
+    dlog('delete called on product %s', productId);
+    return productCollection.doc(productId).delete();
+  }
+
   return {
     get,
     getBatch,
@@ -195,6 +200,7 @@ const product = dbInstance => {
     update,
     validateSaleChecks,
     validateSale,
+    remove,
   };
 };
 
