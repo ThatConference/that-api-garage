@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable import/no-unresolved */
 import 'dotenv/config';
-import connect from 'express';
+import express from 'express';
 import debug from 'debug';
 import { Firestore } from '@google-cloud/firestore';
 import responseTime from 'response-time';
@@ -25,7 +27,7 @@ let version;
 const dlog = debug('that:api:garage:index');
 const defaultVersion = `that-api-garage@${version}`;
 const firestore = new Firestore();
-const api = connect();
+const api = express();
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -108,18 +110,21 @@ function failure(err, req, res, next) {
   dlog('error %o', err);
   Sentry.captureException(err);
 
-  res
-    .set('Content-Type', 'application/json')
-    .status(500)
-    .json(err);
+  res.set('Content-Type', 'application/json').status(500).json(err);
 }
 
-api
-  .use(responseTime())
-  .use(useSentry)
-  .use(createUserContext)
-  .use(failure);
+api.use(responseTime()).use(useSentry).use(createUserContext).use(failure);
 
-graphServer.applyMiddleware({ app: api, path: '/' });
-
-export const handler = api;
+const port = process.env.PORT || 8005;
+graphServer
+  .start()
+  .then(() => {
+    graphServer.applyMiddleware({ app: api, path: '/' });
+    api.listen({ port }, () =>
+      console.log(`✨Garage 🚘 is running 🏃‍♂️ on port 🚢 ${port}`),
+    );
+  })
+  .catch(err => {
+    console.log(`graphServer.start() error 💥: ${err.message}`);
+    throw err;
+  });

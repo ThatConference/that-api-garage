@@ -6,7 +6,7 @@ Our collection of entities which don't belong in the other api services.
 
 ## Dependencies
 
-- Node `12+`
+- Node `14+`
 
 ## Setup and Configuration
 

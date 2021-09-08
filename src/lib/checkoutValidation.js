@@ -5,10 +5,7 @@ import * as yup from 'yup';
 const dlog = debug('that:api:garage:lineItemValidation');
 
 const lineItemSchema = yup.object().shape({
-  productId: yup
-    .string()
-    .min(16)
-    .required(),
+  productId: yup.string().min(16).required(),
   quantity: yup
     .number()
     .min(1)
@@ -18,16 +15,8 @@ const lineItemSchema = yup.object().shape({
 });
 
 const checkoutSchema = yup.object().shape({
-  eventId: yup
-    .string()
-    .min(16)
-    .required(),
-  products: yup
-    .array()
-    .min(1)
-    .max(6)
-    .required()
-    .of(lineItemSchema),
+  eventId: yup.string().min(16).required(),
+  products: yup.array().min(1).max(6).required().of(lineItemSchema),
 });
 
 export default function lineItemValidation({ checkout }) {
