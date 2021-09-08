@@ -4,10 +4,8 @@ import * as Sentry from '@sentry/node';
 import constants from '../../constants';
 
 const dlog = debug('that:api:garage:datasources:firebase:order');
-const {
-  orderAllocations: allocationDateForge,
-  orders: orderDateForge,
-} = utility.firestoreDateForge;
+const { orderAllocations: allocationDateForge, orders: orderDateForge } =
+  utility.firestoreDateForge;
 
 const collectionName = 'orders';
 const collectionAllocationName = 'orderAllocations';
