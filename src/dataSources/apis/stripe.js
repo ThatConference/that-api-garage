@@ -28,59 +28,57 @@ const stripeApi = () => {
 
   function createCheckout({ checkout, products, member, event }) {
     dlog(
-      'create checkout for %s, with %d line items (%d)',
+      'create checkout for %s, with %d line items (%d) on event %s',
       member.id,
       products.length,
       checkout.products.length,
+      event.slug,
     );
     if (!member.stripeCustomerId) {
       dlog('member missing stripe customer id %o', member);
       Sentry.setContext({ member }, { checkout }, { products });
       throw new CheckoutError('member missing stripe customer id');
     }
-    const orderReference = Math.random()
-      .toString(36)
-      .substr(2, 6)
-      .toUpperCase(); // e.g. 'CM2JUR'
     const successUrl = event.checkoutSuccess || envConfig.stripeSuccessUrl;
     const cancelUrl = event.checkoutCancel || envConfig.stripeCancelUrl;
+    const eventLoc = event.slug.split('/')[0].toLowerCase() || 'thatus';
     const metadata = {
       memberId: member.id,
       eventId: checkout.eventId,
       productIds: JSON.stringify(checkout.products.map(cp => cp.productId)),
       checkoutLineItems: JSON.stringify(checkout.products),
-      orderReference,
+      eventSlug: event.slug,
     };
-    const eventActivities = new Map();
-    const bulkName = 'HASBULK';
+    // we only care if any one of the conditions exist to send with the
+    // checkout success page. e.g. ?BULK=0&TL=on&TL=at&M=0
+    const ticketTypes = {
+      on: false,
+      at: false,
+      m: false,
+      bulk: false,
+    };
+    const onthatRefs = ['VIRTUAL_CAMPER', null, undefined];
     products.forEach(product => {
-      if (Array.isArray(product.eventActivities)) {
-        product.eventActivities.forEach(activity => {
-          const v = eventActivities.get(activity) || 0;
-          eventActivities.set(activity, v + 1);
-        });
-      }
-      if (product.uiReference === 'SWAG') {
-        const swag = 'SWAG';
-        const qty =
-          checkout.products.find(cop => cop.productId === product.id)
-            ?.quantity || 0;
-        const w = eventActivities.get(swag) || 0;
-        eventActivities.set(swag, w + qty);
-      }
-      if (product.type === 'TICKET') {
-        const qty =
-          checkout.products.find(cop => cop.productId === product.id)
-            ?.quantity || 0;
-        const x = eventActivities.get(bulkName) || 0;
-        eventActivities.set(bulkName, x + qty);
+      if (product.type === 'MEMBERSHIP') {
+        ticketTypes.m = true;
+      } else if (onthatRefs.includes(product.uiReference)) {
+        ticketTypes.on = true;
+      } else {
+        ticketTypes.at = true;
       }
     });
-    const c = eventActivities.get(bulkName) || 0;
-    if (c < 2) eventActivities.delete(bulkName); // only use value if 2+ tickets
-    const params = new URLSearchParams([...eventActivities]);
-    params.append('eventId', checkout.eventId);
-    params.append('orderReference', orderReference);
+    checkout.products.forEach(cop => {
+      if (cop.isBulkPurchase === true) {
+        ticketTypes.bulk = true;
+      }
+    });
+
+    const params = new URLSearchParams();
+    params.append('EL', eventLoc);
+    params.append('M', ticketTypes.m ? 1 : 0);
+    params.append('B', ticketTypes.bulk ? 1 : 0);
+    if (ticketTypes.on) params.append('TL', 'on');
+    if (ticketTypes.at) params.append('TL', 'at');
     dlog('success string parameters :: %s', params.toString());
 
     const checkoutSessionPayload = {
@@ -92,6 +90,7 @@ const stripeApi = () => {
       allow_promotion_codes: true,
       metadata,
     };
+
     const modes = [];
     const lineItems = checkout.products.map(cp => {
       const product = products.find(p => p.id === cp.productId);
@@ -116,6 +115,7 @@ const stripeApi = () => {
         description: product.name,
       };
     });
+
     checkoutSessionPayload.line_items = lineItems;
     if (modes.includes('SUBSCRIPTION')) {
       checkoutSessionPayload.mode = 'subscription';
@@ -124,7 +124,7 @@ const stripeApi = () => {
       checkoutSessionPayload.mode = 'payment';
       checkoutSessionPayload.payment_intent_data = { metadata };
       checkoutSessionPayload.payment_intent_data.description =
-        'For detailed ticket information see Orders History in your user profile at https://that.us/my/settings/order-history';
+        'For detailed ticket information see Orders History in your user profile at https://that.us/my/settings/order-history/';
     }
     dlog(
       'our checkoutSessionPayload sending to Stripe:: %o',
