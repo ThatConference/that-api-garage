@@ -162,6 +162,7 @@ export const fieldResolvers = {
         return result;
       }
 
+      // Short-circuit out if not in production (development/testing)
       if (
         process.env.NODE_ENV !== 'production' &&
         !envConfig.devSendOrderSpeakerRequest
