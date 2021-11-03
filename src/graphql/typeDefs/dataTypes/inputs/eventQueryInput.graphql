@@ -1,0 +1,7 @@
+# This input originates in events api. Copied hear for simplicity
+# and used for input to eventFindBy function called from that-api
+"Provides slug and id for the input of either"
+input EventQueryInput {
+  id: ID
+  slug: String
+}

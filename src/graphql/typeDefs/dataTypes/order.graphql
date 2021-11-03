@@ -32,4 +32,6 @@ type Order @key(fields: "id") {
   stripeMode: String
   "Return receipt url for this order"
   receipt: URL!
+  "The type of the order, who is it for. Speaker, regular, partner, etc. (ENUM)"
+  orderType: OrderType!
 }

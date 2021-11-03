@@ -24,7 +24,7 @@ export const fieldResolvers = {
           status: order.status ? order.status : 'COMPLETE',
         },
         type: 'that.order.manual.created',
-        livemode: process.NODE_ENV === 'production',
+        livemode: process.env.NODE_ENV === 'production',
       };
 
       // order checks

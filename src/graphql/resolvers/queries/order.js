@@ -30,5 +30,7 @@ export const fieldResolvers = {
         return stripePaymentIntentReceiptUrl;
       return getPortalUrlFromMemberId({ memberId, firestore });
     },
+    // orders are all defaulted to 'REGULAR' type orders
+    orderType: ({ orderType }) => orderType || 'REGULAR',
   },
 };

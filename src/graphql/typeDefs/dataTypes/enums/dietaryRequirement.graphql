@@ -1,0 +1,12 @@
+enum DietaryRequirement {
+  "Nope"
+  NONE
+  "Vegetarian"
+  VEGETARIAN
+  "Vegan"
+  VEGAN
+  "Gluten-free"
+  GLUTEN_FREE
+  "Other Requirement"
+  OTHER
+}

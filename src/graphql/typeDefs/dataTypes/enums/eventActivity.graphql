@@ -2,8 +2,17 @@ enum EventActivity {
   CAMPER
   MEALS
   PIG_ROAST
+  "deprecated"
   COUNSELOR
+  "Counselor presenting AT THAT Conference"
+  COUNSELOR_AT_THAT
+  "Counselor presenting ON THAT Conference"
+  COUNSELOR_ON_THAT
   PRE_CONFERENCE
+  WORKSHOPS
   VIRTUAL_CAMPER
   ON_THE_LINE
+  FAMILY
+  T_SHIRT
+  HOODIE
 }

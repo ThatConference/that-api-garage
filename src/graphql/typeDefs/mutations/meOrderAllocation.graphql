@@ -1,4 +1,8 @@
 type MeOrderAllocationMutation {
   "assigns Order Allocation to a member"
   allocateTo(email: EmailAddress!): AllocateToResult! @auth(requires: "members")
+  "write question responses to allocation"
+  saveQuestionResponses(
+    responses: AllocationQuestionResponseInput!
+  ): SaveQuestionResponsesResult!
 }

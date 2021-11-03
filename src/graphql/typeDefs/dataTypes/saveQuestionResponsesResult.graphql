@@ -1,0 +1,4 @@
+type SaveQuestionResponsesResult {
+  success: Boolean!
+  message: String
+}
