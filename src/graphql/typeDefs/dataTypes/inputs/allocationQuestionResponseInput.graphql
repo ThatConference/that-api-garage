@@ -1,0 +1,10 @@
+input AllocationQuestionResponseInput {
+  "T-Shirt size"
+  tshirtSize: TShirtSize
+  "Hoodie Size (AT THAT Speaker only)"
+  hoodieSize: HoodieSize
+  "Dietary requirements"
+  dietaryRequirement: DietaryRequirement
+  "Dietary Requirements, other"
+  dietaryOther: String
+}

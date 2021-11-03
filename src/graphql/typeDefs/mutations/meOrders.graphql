@@ -6,4 +6,9 @@ type MeOrdersMutation {
     @auth(requires: "members")
   "Mutations on a specific order placed by current member"
   order(orderId: ID!): MeOrderMutation! @auth(requires: "members")
+  "Speaker ticket orders"
+  orderSpeakerProducts(
+    findEventBy: EventQueryInput!
+    products: [UiProductReference!]!
+  ): OrderSpeakerProductsResult!
 }

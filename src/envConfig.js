@@ -18,6 +18,8 @@ const requiredConfig = () => ({
     process.env.STRIPE_PORTAL_RETURN_URL || 'https://that.us/',
   bouncerBaseUrl:
     process.env.BOUNCER_BASE_URL || configMissing('BOUNCER_BASE_URL'),
+  devSendOrderSpeakerRequest:
+    JSON.parse(process.env.DEV_SEND_ORDER_SPEAKER_REQUEST || false) || false,
 });
 
 export default requiredConfig();

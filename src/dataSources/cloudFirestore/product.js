@@ -192,6 +192,22 @@ const product = dbInstance => {
     return productCollection.doc(productId).delete();
   }
 
+  function findAllByEventId(eventId) {
+    dlog('findAllByEvent called for event %s', eventId);
+    return productCollection
+      .where('eventId', '==', eventId)
+      .get()
+      .then(({ docs }) =>
+        docs.map(p => {
+          const r = {
+            id: p.id,
+            ...p.data(),
+          };
+          return productDateForge(r);
+        }),
+      );
+  }
+
   return {
     get,
     getBatch,
@@ -201,6 +217,7 @@ const product = dbInstance => {
     validateSaleChecks,
     validateSale,
     remove,
+    findAllByEventId,
   };
 };
 

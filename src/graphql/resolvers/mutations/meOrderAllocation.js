@@ -2,6 +2,7 @@ import debug from 'debug';
 import { AllocationError } from '../../../lib/errors';
 import memberStore from '../../../dataSources/cloudFirestore/member';
 import orderStore from '../../../dataSources/cloudFirestore/order';
+import productStore from '../../../dataSources/cloudFirestore/product';
 
 const dlog = debug('that:api:garage:mutation:meOrderAllocation');
 
@@ -81,6 +82,52 @@ export const fieldResolvers = {
           });
           return result;
         });
+    },
+    saveQuestionResponses: async (
+      { order, orderAllocationId },
+      { responses },
+      { dataSources: { firestore }, user },
+    ) => {
+      dlog('saveQuestionResponses called: %o', responses);
+      const result = { success: false, message: '' };
+      const orderAllocation = await orderStore(
+        firestore,
+      ).findOrderAllocationForOrder({
+        orderId: order.id,
+        orderAllocationId,
+      });
+      if (!orderAllocation) {
+        result.message = `Allocation Id ${orderAllocationId} is not part of provided order`;
+        return result;
+      }
+      const product = await productStore(firestore).get(
+        orderAllocation.product,
+      );
+      const { eventActivities } = product;
+      if (responses.tshirtSize && !eventActivities.includes('T_SHIRT')) {
+        result.message = `Product ${product.name} doesn't include a t-shirt`;
+      } else if (responses.hoodieSize && !eventActivities.includes('HOODIE')) {
+        result.message = `Product ${product.name} doesn't include a Hoodie`;
+      }
+      if (result.message !== '') return result;
+
+      const oaUpdate = {
+        tshirtSize: responses.tshirtSize || null,
+        hoodieSize: responses.hoodieSize || null,
+        dietaryRequirements: responses.dietaryRequirements || null,
+        dietaryOther: responses.dietaryOther || null,
+        hasCompletedQuestions: true,
+      };
+
+      await orderStore(firestore).updateOrderAllocation({
+        orderAllocationId,
+        updateAllocation: oaUpdate,
+        user,
+      });
+
+      result.success = true;
+      result.message = 'Questions updated successfully';
+      return result;
     },
   },
 };

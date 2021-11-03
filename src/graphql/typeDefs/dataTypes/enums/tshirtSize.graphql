@@ -1,0 +1,32 @@
+enum TShirtSize {
+  "Youth S [6-8]"
+  YOUTH_SMALL
+  "Youth M [10-12]"
+  YOUTH_MEDIUM
+  "Youth L [12-14]"
+  YOUTH_LARGE
+  "Youth XL"
+  YOUTH_XLARGE
+  "Women's-cut Small"
+  WOMENS_CUT_SMALL
+  "Women's-cut Medium"
+  WOMENS_CUT_MEDIUM
+  "Women's-cut Large"
+  WOMENS_CUT_LARGE
+  "Women's-cut X-Large"
+  WOMENS_CUT_XLARGE
+  "Women's-cut 2X-Large"
+  WOMENS_CUT_2XLARGE
+  "Unisex Small"
+  UNISEX_SMALL
+  "Unisex Medium"
+  UNISEX_MEDIUM
+  "Unisex Large"
+  UNISEX_LARGE
+  "Unisex X-Large"
+  UNISEX_XLARGE
+  "Unisex 2X-Large"
+  UNISEX_2XLarge
+  "Unisex 3X-Large"
+  UNISEX_3XLARGE
+}

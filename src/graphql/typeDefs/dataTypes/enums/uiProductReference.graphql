@@ -3,7 +3,13 @@ enum UiProductReference {
   CAMPER
   CAMPER_NO_FOOD
   VIRTUAL_CAMPER
+  CAMPER_ON_THAT
+  "Deprecated"
   COUNSELOR
+  "Counselor presenting AT THAT Conference"
+  COUNSELOR_AT_THAT
+  "Counselor presenting ON THAT Conference"
+  COUNSELOR_ON_THAT
   WORKSHOPS
   MEALS
   GEEKLING

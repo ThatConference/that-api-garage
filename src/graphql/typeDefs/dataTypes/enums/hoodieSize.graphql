@@ -1,0 +1,14 @@
+enum HoodieSize {
+  "Unisex Small"
+  UNISEX_SMALL
+  "Unisex Medium"
+  UNISEX_MEDIUM
+  "Unisex Large"
+  UNISEX_LARGE
+  "Unisex X-Large"
+  UNISEX_XLARGE
+  "Unisex 2X-Large"
+  UNISEX_2XLarge
+  "Unisex 3X-Large"
+  UNISEX_3XLARGE
+}
