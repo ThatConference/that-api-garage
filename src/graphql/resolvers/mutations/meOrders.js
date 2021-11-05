@@ -137,6 +137,26 @@ export const fieldResolvers = {
         };
       });
 
+      // Add ON THAT ticket for speaker to give-away
+      const onThatTicket = eventProducts.find(
+        ep => ep.uiReference === 'VIRTUAL_CAMPER',
+      );
+      if (onThatTicket) {
+        newOrderLineItems.push({
+          productId: onThatTicket.id,
+          quantity: 1,
+          isBulkPurchase: true,
+        });
+      } else {
+        Sentry.configureScope(scope => {
+          scope.setLevel(Sentry.Severity.Warning);
+          scope.setTag('eventId', eventId);
+          Sentry.captureException(
+            `Unable to locate ON THAT ticket for event ${eventId} to allocate to speaker`,
+          );
+        });
+      }
+
       const now = new Date();
       const newOrderEvent = {
         id: `thatev_spkr_${now.toISOString()}`,
