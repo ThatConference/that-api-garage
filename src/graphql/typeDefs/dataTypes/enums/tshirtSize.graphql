@@ -5,8 +5,6 @@ enum TShirtSize {
   YOUTH_MEDIUM
   "Youth L [12-14]"
   YOUTH_LARGE
-  "Youth XL"
-  YOUTH_XLARGE
   "Women's-cut Small"
   WOMENS_CUT_SMALL
   "Women's-cut Medium"
@@ -17,6 +15,8 @@ enum TShirtSize {
   WOMENS_CUT_XLARGE
   "Women's-cut 2X-Large"
   WOMENS_CUT_2XLARGE
+  "Unisex X-Small"
+  UNISEX_XSMALL
   "Unisex Small"
   UNISEX_SMALL
   "Unisex Medium"
@@ -29,4 +29,6 @@ enum TShirtSize {
   UNISEX_2XLarge
   "Unisex 3X-Large"
   UNISEX_3XLARGE
+  "Unisex 4X-Large"
+  UNISEX_4XLARGE
 }
