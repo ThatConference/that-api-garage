@@ -119,7 +119,7 @@ export const fieldResolvers = {
       const oaUpdate = {
         tshirtSize: responses.tshirtSize || null,
         hoodieSize: responses.hoodieSize || null,
-        dietaryRequirements: responses.dietaryRequirements || null,
+        dietaryRequirement: responses.dietaryRequirement || null,
         dietaryOther: responses.dietaryOther || null,
         hasCompletedQuestions: true,
       };
