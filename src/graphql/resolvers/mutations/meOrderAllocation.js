@@ -65,7 +65,11 @@ export const fieldResolvers = {
         allocatedTo: memberToAllocate.id,
         isAllocated: true,
         hasCompletedQuestions: false,
-        questionsReference: 'not sent',
+        questionsReference: null,
+        tshirtSize: null,
+        hoodieSize: null,
+        dietaryRequirement: null,
+        dietaryOther: null,
       };
       return orderStore(firestore)
         .updateOrderAllocation({
