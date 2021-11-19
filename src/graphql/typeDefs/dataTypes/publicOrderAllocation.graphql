@@ -27,4 +27,17 @@ type PublicOrderAllocation {
   questionsLink: URL!
   "Has the order allocation received their swag at check-in"
   receivedSwag: Boolean!
+
+  # Question Responses
+  """
+  Any special dietary requirements for this allocation.
+  Doesn't automatically indicate food benefit
+  """
+  dietaryRequirement: DietaryRequirement
+  "Dietary Requirements, other"
+  dietaryOther: String
+  "Preferred t-shirt size"
+  tshirtSize: TShirtSize
+  "Preferred hoodie Size (AT THAT Speaker only)"
+  hoodieSize: HoodieSize
 }
