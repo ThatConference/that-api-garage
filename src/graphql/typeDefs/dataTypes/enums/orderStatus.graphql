@@ -3,6 +3,8 @@ enum OrderStatus {
   COMPLETE
   "The order has been refunded. It's allocations cannot be used"
   REFUNDED
+  "The order is cancelled, no funds returned. Usually with manual orders"
+  CANCELLED
   "There is an error with the order and further investigation is required"
   HAS_ERROR
 }
