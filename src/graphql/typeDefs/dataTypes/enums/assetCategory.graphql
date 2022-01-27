@@ -1,0 +1,8 @@
+enum AssetCategory {
+  "A reference to something, link to, article of, document, etc."
+  REFERENCE
+  "Testimonial"
+  TESTIMONIAL
+  "An ad"
+  AD
+}
