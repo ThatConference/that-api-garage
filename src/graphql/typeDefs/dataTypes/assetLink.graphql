@@ -1,7 +1,10 @@
 type AssetLink {
+  "ENUM. The type of asset which is linked. E.g. LinkedIn, Website, File, image, etc."
   linkType: AssetLinkType!
-  #url: URL!
+  "The main URI to this asset"
   link: URL!
-  action: URL
+  "The mimetype of the `link` provided. E.g. image/jpeg, text/plain, etc."
   mimeType: String
+  "An action the asset may have. E.g. click for more info, etc."
+  action: URL
 }

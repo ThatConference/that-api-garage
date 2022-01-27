@@ -6,6 +6,7 @@ import { Firestore } from '@google-cloud/firestore';
 import responseTime from 'response-time';
 import * as Sentry from '@sentry/node';
 import { v4 as uuidv4 } from 'uuid';
+import { events as apiEvents } from '@thatconference/api';
 
 import apolloGraphServer from './graphql';
 import orderAllocationEventEmitter from './events/orderAllocation';
@@ -27,6 +28,8 @@ const dlog = debug('that:api:garage:index');
 const defaultVersion = `that-api-garage@${version}`;
 const firestore = new Firestore();
 const api = express();
+const graphCdnEmitter = apiEvents.graphCdn;
+const graphCdnEvents = graphCdnEmitter(Sentry);
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -45,6 +48,7 @@ const createConfig = () => ({
     firestore,
     events: {
       orderAllocationEvents,
+      graphCdnEvents,
     },
   },
 });
