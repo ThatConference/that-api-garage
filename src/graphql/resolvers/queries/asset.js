@@ -16,14 +16,13 @@ export const fieldResolvers = {
       dlog('resolveReference %s', id);
       return assetLoader.load(id);
     },
-
+    category: ({ category }) => category || 'REFERENCE',
+    links: ({ links }) => (links?.length > 0 ? links : []),
     assignments: ({ id: assetId }, __, { dataSources: { firestore } }) => {
       dlog(`asset's assignments %s`, assetId);
       return assetStore(firestore).getAssetAssignments(assetId);
     },
-
     createdBy: ({ createdBy }) => ({ id: createdBy }),
-
     lastUpdatedBy: ({ lastUpdatedBy }) => ({ id: lastUpdatedBy }),
   },
 };

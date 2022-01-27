@@ -1,4 +1,4 @@
-"assest links, description text is used in ui"
+"assets links, description text is used in ui"
 enum AssetLinkType {
   "LinkedIn"
   LINKEDIN

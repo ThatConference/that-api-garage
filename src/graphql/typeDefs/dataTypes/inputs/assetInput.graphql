@@ -1,8 +1,13 @@
 input AssetCreateInput {
+  "is asset enabled, can be displayed, interacted with, etc."
   isEnabled: Boolean!
-  body: String!
-
+  "Asset Category. What type of asset is this"
+  category: AssetCategory!
+  "(optional) body text of asset, main text area"
+  body: String
+  "(optional) Link(s) associated, presented by the asset"
   links: [AssetLinkInput!]
+  "(optional) Entities (a union) this asset is assigned to"
   assignments: [AssetAssignmentInput!]
 
   "Set owner to entity. Defaults to user if omitted"
@@ -10,12 +15,16 @@ input AssetCreateInput {
 }
 
 input AssetUpdateInput {
+  "is asset enabled, can be displayed, interacted with, etc."
   isEnabled: Boolean
+  "Asset Category. What type of asset is this"
+  category: AssetCategory
+  "(optional) body text of asset, main text area"
   body: String
-
-  links: [AssetLinkInput]
+  "Link(s) associated, presented by the asset"
+  links: [AssetLinkInput!]
+  "Entities (a union) this asset is assigned to"
   assignments: [AssetAssignmentInput!]
-
-  # "Set owner to entiy. "
-  # setOwner: setOwnerInput
+  "Set owner to entity."
+  setOwner: SetOwnerInput
 }
