@@ -1,5 +1,5 @@
 "Base required fields for an product type"
-interface ProductBase {
+interface ProductBase @key(fields: "id") {
   "The unique id of the product"
   id: ID!
 
