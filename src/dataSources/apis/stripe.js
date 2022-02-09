@@ -84,7 +84,6 @@ const stripeApi = () => {
     const checkoutSessionPayload = {
       success_url: `${successUrl}?${params.toString()}`,
       cancel_url: cancelUrl,
-      payment_method_types: ['card'],
       customer: member.stripeCustomerId,
       client_reference_id: member.id,
       allow_promotion_codes: true,
