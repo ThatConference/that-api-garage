@@ -1,14 +1,23 @@
 type MeOrdersMutation {
   "Checkout a new order of items"
   checkout: MeCheckoutsMutation @auth(requires: "members")
+
   "Mark Questions answered for order allocations"
   markQuestionsComplete(eventId: ID!, orderReference: String!): Boolean
     @auth(requires: "members")
+    @deprecated(
+      reason: "No longer using external Question service. Complete set when questions updated in OrderAllocation"
+    )
+
   "Mutations on a specific order placed by current member"
   order(orderId: ID!): MeOrderMutation! @auth(requires: "members")
+
   "Speaker ticket orders"
   orderSpeakerProducts(
     findEventBy: EventQueryInput!
     products: [UiProductReference!]!
   ): OrderSpeakerProductsResult!
+
+  "Mutations used in Ticket enrollment process"
+  enrollment(orderAllocationId: ID!): MeOrderAllocationEnrollmentMutation
 }

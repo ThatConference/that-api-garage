@@ -43,7 +43,7 @@ export const fieldResolvers = {
       return { orderId };
     },
     me: (_, __, { user }) => {
-      dlog('checkout called');
+      dlog('orders me called');
       return { memberId: user.sub };
     },
   },

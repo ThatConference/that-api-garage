@@ -1,8 +1,13 @@
 enum UiProductReference {
+  "main event access with meals and pre-conference activities"
   EVERYTHING_CAMPER
+  "Main event access with meals"
   CAMPER
+  "Main event access with no meals"
   CAMPER_NO_FOOD
+  "ON THAT Only"
   VIRTUAL_CAMPER
+  "ON THAT Only"
   CAMPER_ON_THAT
   "Deprecated"
   COUNSELOR
@@ -10,11 +15,17 @@ enum UiProductReference {
   COUNSELOR_AT_THAT
   "Counselor presenting ON THAT Conference"
   COUNSELOR_ON_THAT
+  "Pre-conference workshops/activities"
   WORKSHOPS
+  "Includes all event meals"
   MEALS
+  "Kids"
   GEEKLING
+  "Adults"
   CAMPMATE
+  "Includes Hog Roast/BBQ meal"
   HOG_ROAST
+  "Includes swag, e.g. t-shirt"
   SWAG
   PROMO_VIRTUAL_CAMPER
   PROMO_CAMPER_NO_FOOD

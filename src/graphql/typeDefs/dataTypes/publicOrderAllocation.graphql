@@ -27,6 +27,8 @@ type PublicOrderAllocation {
   questionsLink: URL!
   "Has the order allocation received their swag at check-in"
   receivedSwag: Boolean!
+  "A UI managed field to keep track of product's enrollment status"
+  enrollmentStatus: EnrollmentStatus
 
   # Question Responses
   """

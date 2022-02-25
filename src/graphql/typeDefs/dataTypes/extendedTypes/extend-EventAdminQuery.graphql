@@ -1,0 +1,5 @@
+extend type EventAdminQuery @key(fields: "eventId") {
+  eventId: ID! @external
+
+  orderAllocations: [OrderAllocation]! @auth(requires: "admin")
+}

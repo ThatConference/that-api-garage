@@ -1,6 +1,4 @@
-type MeOrderAllocationMutation {
-  "assigns Order Allocation to a member"
-  allocateTo(email: EmailAddress!): AllocateToResult! @auth(requires: "members")
+type MeOrderAllocationEnrollmentMutation {
   "write question responses to allocation"
   saveQuestionResponses(
     responses: AllocationQuestionResponseInput!

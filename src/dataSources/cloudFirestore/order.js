@@ -256,6 +256,22 @@ const order = dbInstance => {
       );
   }
 
+  function findOrderAllocationsForEvent({ eventId }) {
+    dlog('findOrderAllocationsForEvent %s', eventId);
+    return allocationCollection
+      .where('event', '==', eventId)
+      .get()
+      .then(({ docs }) =>
+        docs.map(a => {
+          const r = {
+            id: a.id,
+            ...a.data(),
+          };
+          return allocationDateForge(r);
+        }),
+      );
+  }
+
   function findOrderAllocationForOrder({ orderId, orderAllocationId }) {
     dlog(
       'findOrderAllocation called for order: %s, allocation: %s',
@@ -364,6 +380,7 @@ const order = dbInstance => {
     getOrderAllocation,
     updateOrderAllocation,
     findOrderAllocations,
+    findOrderAllocationsForEvent,
     findOrderAllocationForOrder,
     findMeOrderAllocations,
     findMeOrderAllocationsForEvent,

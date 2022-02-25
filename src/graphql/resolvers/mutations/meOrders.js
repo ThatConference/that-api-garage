@@ -67,6 +67,7 @@ export const fieldResolvers = {
       dlog('order called, id: %s', orderId);
       const order = await orderStore(firestore).getMe({ user, orderId });
       if (!order) throw new Error(`Invalid orderId. Order not found for user`);
+      dlog('The Order: %o', order);
       return { order };
     },
     orderSpeakerProducts: async (
@@ -215,6 +216,23 @@ export const fieldResolvers = {
       result.success = true;
       result.message = 'Speaker products order sent successfully';
       return result;
+    },
+    enrollment: (
+      _,
+      { orderAllocationId },
+      { dataSources: { firestore }, user },
+    ) => {
+      dlog('enrollment path called on allocationId %s', orderAllocationId);
+      return orderStore(firestore)
+        .getOrderAllocation(orderAllocationId)
+        .then(orderAllocation => {
+          if (orderAllocation.allocatedTo !== user.sub)
+            throw new Error(
+              'OrderAllocation not assigned to current user. Cannot mutate',
+            );
+
+          return { orderAllocation };
+        });
     },
   },
 };
