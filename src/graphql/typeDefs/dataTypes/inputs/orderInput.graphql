@@ -12,7 +12,7 @@ input OrderCreateInput {
   total: Float
   "One or more Product line items on this order"
   lineItems: [LineItemInput!]!
-  "Order status. Defaults to COMPLETE when there's no value in datastore"
+  "Order status. Defaults to COMPLETE"
   status: OrderStatus
 }
 
@@ -30,6 +30,6 @@ input OrderUpdateInput {
   total: Float
   "One or more Product line items on this order"
   lineItems: [LineItemUpdate!]
-  "Order status. Defaults to COMPLETE when there's no value in datastore"
+  "Order status"
   status: OrderStatus
 }
