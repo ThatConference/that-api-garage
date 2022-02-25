@@ -11,10 +11,13 @@ enum UiProductReference {
   "Counselor presenting ON THAT Conference"
   COUNSELOR_ON_THAT
   WORKSHOPS
+  "Includes all event meals"
   MEALS
   GEEKLING
   CAMPMATE
+  "Includes Hog Roast/BBQ meal only"
   HOG_ROAST
+  "Includes swag, e.g. t-shirt"
   SWAG
   PROMO_VIRTUAL_CAMPER
   PROMO_CAMPER_NO_FOOD

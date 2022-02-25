@@ -16,6 +16,7 @@ import { fieldResolvers as assetsFields } from './assets';
 import { fieldResolvers as assetFields } from './asset';
 import { fieldResolvers as meAssetsFields } from './meAssets';
 import { fieldResolvers as meAssetFields } from './meAsset';
+import { fieldResolvers as meOrderAllocationEnrollmentFields } from './meOrderAllocationEnrollment';
 
 export default {
   ...rootMutations,
@@ -38,4 +39,5 @@ export const fieldResolvers = {
   ...assetFields,
   ...meAssetsFields,
   ...meAssetFields,
+  ...meOrderAllocationEnrollmentFields,
 };

@@ -1,19 +1,29 @@
 import debug from 'debug';
-import { AllocationError } from '../../../lib/errors';
 import memberStore from '../../../dataSources/cloudFirestore/member';
 import orderStore from '../../../dataSources/cloudFirestore/order';
+import constants from '../../../constants';
+import saveOaQuestionResponses from './shared/saveOaQuestionResponses';
+import setOaEnrollmentStatus from './shared/setOaEnrollmentStatus';
 
 const dlog = debug('that:api:garage:mutation:meOrderAllocation');
+
+function sendGraphCdnEvent({ graphCdnEvents, orderAllocationId }) {
+  graphCdnEvents.emit(
+    constants.GRAPHCDN.EVENT_NAME.PURGE,
+    constants.GRAPHCDN.PURGE.ORDER_ALLOCATION,
+    orderAllocationId,
+  );
+}
 
 export const fieldResolvers = {
   MeOrderAllocationMutation: {
     allocateTo: async (
-      { order, orderAllocationId },
+      { order, orderAllocation },
       { email },
       {
         dataSources: {
           firestore,
-          events: { orderAllocationEvents },
+          events: { orderAllocationEvents, graphCdnEvents },
         },
         user,
       },
@@ -29,15 +39,9 @@ export const fieldResolvers = {
         return result;
       }
 
-      const [membersResult, orderAllocation] = await Promise.all([
-        memberStore(firestore).findByEmail(email),
-        orderStore(firestore).findOrderAllocationForOrder({
-          orderId: order.id,
-          orderAllocationId,
-        }),
-      ]);
+      const membersResult = await memberStore(firestore).findByEmail(email);
+
       dlog('membersResult:: %o', membersResult);
-      dlog('orderAllocation:: %o', orderAllocationId);
       let memberToAllocate;
       if (membersResult.length < 1) {
         result.message = `Member not found with email address ${email}`;
@@ -56,14 +60,15 @@ export const fieldResolvers = {
             : 'PrivateProfile',
         };
       }
-      if (!orderAllocation)
-        throw new AllocationError(`OrderAllocation requested not found`);
-
       if (result.result === false) return result;
 
+      // Reset fields when allocating to new member
       const updateAllocation = {
         allocatedTo: memberToAllocate.id,
         isAllocated: true,
+        checkedInAt: null,
+        checkedInBy: null,
+        hasCheckedIn: null,
         hasCompletedQuestions: false,
         questionsReference: null,
         tshirtSize: null,
@@ -73,7 +78,7 @@ export const fieldResolvers = {
       };
       return orderStore(firestore)
         .updateOrderAllocation({
-          orderAllocationId,
+          orderAllocationId: orderAllocation.id,
           updateAllocation,
           user,
         })
@@ -83,60 +88,66 @@ export const fieldResolvers = {
             orderAllocation,
             firestore,
           });
+          sendGraphCdnEvent({
+            graphCdnEvents,
+            orderAllocationId: orderAllocation.id,
+          });
           return result;
         });
     },
-    saveQuestionResponses: async (
-      { order, orderAllocationId },
+    saveQuestionResponses: (
+      { orderAllocation },
       { responses },
-      { dataSources: { firestore }, user },
+      {
+        dataSources: {
+          firestore,
+          events: { graphCdnEvents },
+        },
+        user,
+      },
     ) => {
       dlog('saveQuestionResponses called: %o', responses);
-      const result = { success: false, message: '' };
-      const orderAllocation = await orderStore(
+
+      return saveOaQuestionResponses({
+        orderAllocation,
+        responses,
         firestore,
-      ).findOrderAllocationForOrder({
-        orderId: order.id,
-        orderAllocationId,
-      });
-      if (!orderAllocation) {
-        result.message = `Allocation Id ${orderAllocationId} is not part of provided order`;
-        return result;
-      }
-      /*
-       * The following block of code will validate that an activity exists
-       * to set a t-shirt or hoodie size on an allocation. It was decided
-       * to not do this check, though we'll keep this code here if we wish to
-       * add the logic back
-       */
-      // const product = await productStore(firestore).get(
-      //   orderAllocation.product,
-      // );
-      // const { eventActivities } = product;
-      // if (responses.tshirtSize && !eventActivities.includes('T_SHIRT')) {
-      //   result.message = `Product ${product.name} doesn't include a t-shirt`;
-      // } else if (responses.hoodieSize && !eventActivities.includes('HOODIE')) {
-      //   result.message = `Product ${product.name} doesn't include a Hoodie`;
-      // }
-      // if (result.message !== '') return result;
-
-      const oaUpdate = {
-        tshirtSize: responses.tshirtSize || null,
-        hoodieSize: responses.hoodieSize || null,
-        dietaryRequirement: responses.dietaryRequirement || null,
-        dietaryOther: responses.dietaryOther || null,
-        hasCompletedQuestions: true,
-      };
-
-      await orderStore(firestore).updateOrderAllocation({
-        orderAllocationId,
-        updateAllocation: oaUpdate,
         user,
-      });
+      }).then(result => {
+        sendGraphCdnEvent({
+          graphCdnEvents,
+          orderAllocationId: orderAllocation.id,
+        });
 
-      result.success = true;
-      result.message = 'Questions updated successfully';
-      return result;
+        return result;
+      });
+    },
+    setEnrollmentStatus: (
+      { orderAllocation },
+      { status },
+      {
+        dataSources: {
+          firestore,
+          events: { graphCdnEvents },
+        },
+        user,
+      },
+    ) => {
+      dlog('setEnrollmentStatus called %s, %s', orderAllocation.id, status);
+
+      return setOaEnrollmentStatus({
+        orderAllocationId: orderAllocation.id,
+        status,
+        firestore,
+        user,
+      }).then(result => {
+        sendGraphCdnEvent({
+          graphCdnEvents,
+          orderAllocationId: orderAllocation.id,
+        });
+
+        return result;
+      });
     },
   },
 };

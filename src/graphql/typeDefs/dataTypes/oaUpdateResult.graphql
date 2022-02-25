@@ -1,0 +1,6 @@
+type OaUpdateResult {
+  "Result of called mutation"
+  result: Boolean!
+  "Result's message, if any"
+  message: String!
+}
