@@ -68,7 +68,7 @@ export const fieldResolvers = {
         isAllocated: true,
         checkedInAt: null,
         checkedInBy: null,
-        hasCheckedIn: null,
+        hasCheckedIn: false,
         hasCompletedQuestions: false,
         questionsReference: null,
         tshirtSize: null,
