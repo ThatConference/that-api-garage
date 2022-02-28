@@ -75,6 +75,7 @@ export const fieldResolvers = {
         hoodieSize: null,
         dietaryRequirement: null,
         dietaryOther: null,
+        enrollmentStatus: 'NOT_STARTED',
       };
       return orderStore(firestore)
         .updateOrderAllocation({
