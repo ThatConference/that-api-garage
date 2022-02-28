@@ -1,6 +1,6 @@
 {
   "name": "that-api-garage",
-  "version": "2.13.0",
+  "version": "2.13.1",
   "description": "THAT Garage api. Where all the other stuff goes",
   "main": "index.js",
   "engines": {
@@ -25,8 +25,8 @@
     "@google-cloud/trace-agent": "^5.1.6",
     "@graphql-tools/load-files": "6.2.7",
     "@graphql-tools/merge": "6.2.10",
-    "@sentry/node": "^6.18.0",
-    "@thatconference/api": "~2.8.3",
+    "@sentry/node": "^6.18.1",
+    "@thatconference/api": "~2.8.4",
     "@thatconference/schema": "~1.5.0",
     "apollo-datasource-rest": "^0.14.0",
     "apollo-server-express": "2.22.2",
@@ -42,7 +42,7 @@
     "postmark": "^3.0.1",
     "response-time": "^2.3.2",
     "slugify": "^1.6.5",
-    "stripe": "^8.204.0",
+    "stripe": "^8.205.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
