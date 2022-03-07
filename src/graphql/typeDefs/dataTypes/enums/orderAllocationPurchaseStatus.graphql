@@ -1,0 +1,11 @@
+"Purchase Status of Order Allocation"
+enum OrderAllocationPurchaseStatus {
+  "The order allocation purchase is complete"
+  COMPLETE
+  "The order allocation purchase has been refunded."
+  REFUNDED
+  "The order allocation purchase is cancelled, no funds returned. Usually with manual orders"
+  CANCELLED
+  "There is an error with the order allocation purchase and further investigation is required"
+  HAS_ERROR
+}

@@ -1,5 +1,10 @@
 extend type EventAdminQuery @key(fields: "eventId") {
   eventId: ID! @external
 
-  orderAllocations: [OrderAllocation]! @auth(requires: "admin")
+  """
+  Order Allocations associated with the Event.
+  filter: filter list of Order Allocations to included enum(s)
+  """
+  orderAllocations(filter: [EnrollmentStatus]): [OrderAllocation]!
+    @auth(requires: "event:admin:orderAllocations")
 }

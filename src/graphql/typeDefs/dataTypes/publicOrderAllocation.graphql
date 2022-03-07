@@ -29,6 +29,8 @@ type PublicOrderAllocation {
   receivedSwag: Boolean!
   "A UI managed field to keep track of product's enrollment status"
   enrollmentStatus: EnrollmentStatus
+  "ENUM: purchase status of this order allocation"
+  purchaseStatus: OrderAllocationPurchaseStatus
 
   # Question Responses
   """

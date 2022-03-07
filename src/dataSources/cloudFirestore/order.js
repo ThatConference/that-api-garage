@@ -256,20 +256,29 @@ const order = dbInstance => {
       );
   }
 
-  function findOrderAllocationsForEvent({ eventId }) {
-    dlog('findOrderAllocationsForEvent %s', eventId);
-    return allocationCollection
-      .where('event', '==', eventId)
-      .get()
-      .then(({ docs }) =>
-        docs.map(a => {
-          const r = {
-            id: a.id,
-            ...a.data(),
-          };
-          return allocationDateForge(r);
-        }),
-      );
+  function findOrderAllocationsForEvent({ eventId, enrollmentStatusFilter }) {
+    dlog(
+      'findOrderAllocationsForEvent %s, filter: %o',
+      eventId,
+      enrollmentStatusFilter,
+    );
+    let query = allocationCollection.where('event', '==', eventId);
+    if (
+      Array.isArray(enrollmentStatusFilter) &&
+      enrollmentStatusFilter?.length > 0
+    ) {
+      query = query.where('enrollmentStatus', 'in', enrollmentStatusFilter);
+    }
+
+    return query.get().then(({ docs }) =>
+      docs.map(a => {
+        const r = {
+          id: a.id,
+          ...a.data(),
+        };
+        return allocationDateForge(r);
+      }),
+    );
   }
 
   function findOrderAllocationForOrder({ orderId, orderAllocationId }) {

@@ -37,5 +37,7 @@ export const fieldResolvers = {
     },
     // orders are all defaulted to 'REGUAR' type orders
     orderType: ({ orderType }) => orderType || 'REGULAR',
+    // old orders defaulted to 'COMPLETE' which would be null unless refuneded
+    status: ({ status }) => status ?? 'COMPLETE',
   },
 };

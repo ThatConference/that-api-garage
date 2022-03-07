@@ -26,5 +26,7 @@ export const fieldResolvers = {
       dlog('order allocations for an order: %s', orderId);
       return orderStore(firestore).findOrderAllocations({ orderId });
     },
+    // old orders defaulted to 'COMPLETE' which would be null unless refuneded
+    status: ({ status }) => status ?? 'COMPLETE',
   },
 };
