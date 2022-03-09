@@ -34,6 +34,12 @@ type OrderAllocation {
   receivedSwag: Boolean!
   "A UI managed field to keep track of product's enrollment status"
   enrollmentStatus: EnrollmentStatus
+  "ENUM: Reference for ui to align to specific event products"
+  uiReference: UiProductReference
+  "The most recent date a notification was sent for this orderAllocation"
+  notificationSentAt: Date
+  "ENUM: purchase status of this order allocation"
+  purchaseStatus: OrderAllocationPurchaseStatus
 
   # Question Responses
   """

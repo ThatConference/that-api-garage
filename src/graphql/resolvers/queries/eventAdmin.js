@@ -5,9 +5,17 @@ const dlog = debug('that:api:garage:query:eventAdmin');
 
 export const fieldResolvers = {
   EventAdminQuery: {
-    orderAllocations: ({ eventId }, __, { dataSources: { firestore } }) => {
+    orderAllocations: (
+      { eventId },
+      { filter },
+      { dataSources: { firestore } },
+    ) => {
       dlog('EventAdmin.orderAllocations called for event %s', eventId);
-      return orderStore(firestore).findOrderAllocationsForEvent({ eventId });
+      dlog('EventAdmin.orderAllocation filter # %O', filter);
+      return orderStore(firestore).findOrderAllocationsForEvent({
+        eventId,
+        enrollmentStatusFilter: filter,
+      });
     },
   },
 };

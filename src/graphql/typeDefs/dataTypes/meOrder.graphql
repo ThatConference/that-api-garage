@@ -17,6 +17,8 @@ type MeOrder @key(fields: "id") {
   total: Float!
   "The amount discounted off of this order"
   amountDiscounted: Float!
+  "ENUM: The (purchase) status of this order"
+  status: OrderStatus!
   "The date this order was created"
   createdAt: Date!
   "The date this order was last updated"
