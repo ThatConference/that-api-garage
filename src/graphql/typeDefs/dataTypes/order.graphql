@@ -34,4 +34,6 @@ type Order @key(fields: "id") {
   receipt: URL!
   "The type of the order, who is it for. Speaker, regular, partner, etc. (ENUM)"
   orderType: OrderType!
+  "Discounts applied to this order"
+  discounts: [OrderDiscount]!
 }

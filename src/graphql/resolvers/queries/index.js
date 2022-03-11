@@ -17,6 +17,7 @@ import { fieldResolvers as entityFields } from './entity';
 import { fieldResolvers as meAssetsFields } from './meAssets';
 import { fieldResolvers as registrationOrderAllocationFields } from './RegistrationOrderAllocation';
 import { fieldResolvers as eventAdminFields } from './eventAdmin';
+import { fieldResolvers as orderDiscountFields } from './orderDiscount';
 
 export default {
   ...root,
@@ -40,4 +41,5 @@ export const fieldResolvers = {
   ...meAssetsFields,
   ...registrationOrderAllocationFields,
   ...eventAdminFields,
+  ...orderDiscountFields,
 };
