@@ -1,0 +1,8 @@
+input OrderDiscountCreateInput {
+  name: String!
+  amount: Int
+  amountOff: Int
+  percent: Int
+}
+
+# No Update input for OrderDiscount

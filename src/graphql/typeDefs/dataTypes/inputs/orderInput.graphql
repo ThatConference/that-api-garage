@@ -1,3 +1,5 @@
+# Order records are generated in Brinks Cloud Function.
+# This does not directly create an order in the datastore.
 "Input for creating a new Order type"
 input OrderCreateInput {
   "Member who's order this is"
@@ -14,6 +16,12 @@ input OrderCreateInput {
   lineItems: [LineItemInput!]!
   "Order status. Defaults to COMPLETE"
   status: OrderStatus
+  """
+  A discount code and amounts applied to this order
+  The API will not make any adjustments based on these inputs
+  The inputs are for reference only.
+  """
+  discount: OrderDiscountCreateInput
 }
 
 "Input for updating an Order type"

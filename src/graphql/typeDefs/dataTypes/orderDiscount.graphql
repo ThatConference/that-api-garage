@@ -1,0 +1,10 @@
+type OrderDiscount {
+  "Friendly name of the discount"
+  name: String!
+  "The amount which was discounted in cents"
+  amount: Int!
+  "The amount off defined by discount in cents"
+  amountOff: Int!
+  "percentage of discount applied (as whole number)"
+  percent: Int!
+}
