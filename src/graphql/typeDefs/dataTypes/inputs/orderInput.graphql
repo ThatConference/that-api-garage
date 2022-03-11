@@ -16,6 +16,8 @@ input OrderCreateInput {
   lineItems: [LineItemInput!]!
   "Order status. Defaults to COMPLETE"
   status: OrderStatus
+  "The type of the order, who is it for. Speaker, regular, partner, etc. (ENUM). Default: REGULAR"
+  orderType: OrderType
   """
   A discount code and amounts applied to this order
   The API will not make any adjustments based on these inputs
@@ -36,8 +38,6 @@ input OrderUpdateInput {
   orderDate: Date
   "The total amount of this order"
   total: Float
-  "One or more Product line items on this order"
-  lineItems: [LineItemUpdate!]
   "Order status"
   status: OrderStatus
 }
