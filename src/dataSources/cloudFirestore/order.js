@@ -113,6 +113,29 @@ const order = dbInstance => {
     };
   }
 
+  function findByEvent(eventId) {
+    dlog('finding orders for event %s', eventId);
+    return orderCollection
+      .where('event', '==', eventId)
+      .get()
+      .then(querySnap =>
+        querySnap.docs
+          .map(doc => {
+            const r = {
+              id: doc.id,
+              ...doc.data(),
+            };
+
+            return orderDateForge(r);
+          })
+          .sort((a, b) => {
+            if (a.orderDate.getTime() > b.orderDate.getTime()) return 1;
+            if (a.orderDate.getTime() < b.orderDate.getTime()) return -1;
+            return 0;
+          }),
+      );
+  }
+
   function getMe({ user, orderId }) {
     dlog(`get ${orderId} for user ${user.sub}`);
     return orderCollection
@@ -382,6 +405,7 @@ const order = dbInstance => {
     get,
     getBatch,
     getPaged,
+    findByEvent,
     getMe,
     getPagedMe,
     create,
