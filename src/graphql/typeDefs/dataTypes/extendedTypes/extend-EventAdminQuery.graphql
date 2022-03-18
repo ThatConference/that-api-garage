@@ -7,4 +7,7 @@ extend type EventAdminQuery @key(fields: "eventId") {
   """
   orderAllocations(filter: [EnrollmentStatus]): [OrderAllocation]!
     @auth(requires: "event:admin:orderAllocations")
+
+  "Orders placed for an event"
+  orders: [Order]!
 }

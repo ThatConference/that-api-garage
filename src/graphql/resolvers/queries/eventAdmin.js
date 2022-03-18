@@ -17,5 +17,9 @@ export const fieldResolvers = {
         enrollmentStatusFilter: filter,
       });
     },
+    orders: ({ eventId }, __, { dataSources: { firestore } }) => {
+      dlog('EventAdmin.orders called for event %s', eventId);
+      return orderStore(firestore).findByEvent(eventId);
+    },
   },
 };
