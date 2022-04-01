@@ -19,7 +19,7 @@ export const fieldResolvers = {
       const updateAllocation = {
         allocatedTo: null,
         isAllocated: false,
-        status: 'REFUNDED',
+        purchaseStatus: 'REFUNDED',
       };
       return orderStore(firestore)
         .updateOrderAllocation({
@@ -38,7 +38,7 @@ export const fieldResolvers = {
       const updateAllocation = {
         allocatedTo: null,
         isAllocated: false,
-        status: 'CANCELLED',
+        purchaseStatus: 'CANCELLED',
       };
       return orderStore(firestore)
         .updateOrderAllocation({
