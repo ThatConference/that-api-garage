@@ -13,5 +13,21 @@ export const fieldResolvers = {
       dlog('OrderMutation, orderallocation called, %s', orderAllocationId);
       return { orderAllocationId };
     },
+    setRefunded: ({ orderId }, __, { dataSources: { firestore }, user }) => {
+      dlog('setRefunded called on order %s', orderId);
+      return orderStore(firestore).updateStatusOrderAndOrderAllocations({
+        orderId,
+        newStatus: 'REFUNDED',
+        user,
+      });
+    },
+    setCancelled: ({ orderId }, __, { dataSources: { firestore }, user }) => {
+      dlog('setCancelled called on order %s', orderId);
+      return orderStore(firestore).updateStatusOrderAndOrderAllocations({
+        orderId,
+        newStatus: 'CANCELLED',
+        user,
+      });
+    },
   },
 };

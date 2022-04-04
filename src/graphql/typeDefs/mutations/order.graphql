@@ -5,4 +5,8 @@ type OrderMutation {
   "Mutations on Order Allocations attached to order"
   orderAllocation(orderAllocationId: ID!): OrderAllocationMutation
     @auth(requires: "admin")
+  "Set order and all associated order allocations as REFUNDED"
+  setRefunded: Order! @auth(requires: "admin")
+  "Set order and all associated order allocations as CANCELLED"
+  setCancelled: Order! @auth(requires: "admin")
 }
