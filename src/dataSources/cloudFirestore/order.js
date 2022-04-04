@@ -401,6 +401,59 @@ const order = dbInstance => {
       .then(querySnap => querySnap.size);
   }
 
+  async function updateStatusOrderAndOrderAllocations({
+    orderId,
+    newStatus,
+    user,
+  }) {
+    dlog(
+      'updating status to %s on order %s, and its allocations',
+      newStatus,
+      orderId,
+    );
+    // validate allowed statuses for this update function
+    if (!['CANCELLED', 'REFUNDED'].includes(newStatus))
+      throw new Error(`Unable to update to unsupported status: ${newStatus}`);
+
+    const [orderExists, orderAllocationIds] = await Promise.all([
+      orderCollection
+        .doc(orderId)
+        .get()
+        .then(docRef => docRef.exists),
+      allocationCollection
+        .where('order', '==', orderId)
+        .select()
+        .get()
+        .then(querySnap => querySnap.docs.map(d => d.id)),
+    ]);
+    if (orderExists !== true)
+      throw new Error(`provided orderId, ${orderId}, does not exist`);
+
+    const lastUpdatedAt = new Date();
+    const lastUpdatedBy = user.sub;
+    const updateOrder = {
+      status: newStatus,
+      lastUpdatedAt,
+      lastUpdatedBy,
+    };
+    const updateAllocation = {
+      purchaseStatus: newStatus,
+      allocatedTo: null,
+      isAllocated: false,
+      lastUpdatedAt,
+      lastUpdatedBy,
+    };
+    const batchWrite = dbInstance.batch();
+    const orderDocRef = orderCollection.doc(orderId);
+    batchWrite.update(orderDocRef, updateOrder);
+    orderAllocationIds.forEach(oaId => {
+      const oaDocRef = allocationCollection.doc(oaId);
+      batchWrite.update(oaDocRef, updateAllocation);
+    });
+
+    return batchWrite.commit().then(() => get(orderId));
+  }
+
   return {
     get,
     getBatch,
@@ -419,6 +472,7 @@ const order = dbInstance => {
     findMeOrderAllocationsForEvent,
     markMyAllocationsQuestionsComplete,
     orderAllocationCountWithProduct,
+    updateStatusOrderAndOrderAllocations,
   };
 };
 
