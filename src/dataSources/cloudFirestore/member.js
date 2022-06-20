@@ -52,10 +52,29 @@ const member = dbInstance => {
   }
 
   function getSecureBatch(ids) {
-    dlog('getBatch called %d ids', ids.length);
     if (!Array.isArray(ids))
       throw new Error('getBatch must receive an array of ids');
-    return Promise.all(ids.map(id => getIdType(id)));
+    dlog('member getBatch called %d ids', ids.length);
+    const docRefs = ids.map(id => memberCollection.doc(id));
+    return dbInstance.getAll(...docRefs).then(docs =>
+      docs.map(doc => {
+        let result = null;
+        if (doc.exists) {
+          const memberData = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          result = {
+            id: memberData.id,
+            __typename:
+              memberData.canFeature === true
+                ? 'PublicProfile'
+                : 'PrivateProfile',
+          };
+        }
+        return result;
+      }),
+    );
   }
 
   async function update({ memberId, profile }) {

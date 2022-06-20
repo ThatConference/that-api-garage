@@ -60,8 +60,21 @@ const order = dbInstance => {
   function getBatch(ids) {
     if (!Array.isArray(ids))
       throw new Error('getBatch must receive an array of ids');
-    dlog('getBatch called %d ids', ids.length);
-    return Promise.all(ids.map(id => get(id)));
+    dlog('order getBatch called %d ids', ids.length);
+    const docRefs = ids.map(id => orderCollection.doc(id));
+    return dbInstance.getAll(...docRefs).then(docs =>
+      docs.map(doc => {
+        let result = null;
+        if (doc.exists) {
+          result = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          result = orderDateForge(result);
+        }
+        return result;
+      }),
+    );
   }
 
   async function getPaged({ pageSize, cursor, eventId }) {
