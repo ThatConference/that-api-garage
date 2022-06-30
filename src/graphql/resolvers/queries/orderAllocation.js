@@ -32,5 +32,9 @@ export const fieldResolvers = {
     },
     receivedSwag: ({ receivedSwag }) => receivedSwag === true,
     purchaseStatus: ({ purchaseStatus }) => purchaseStatus ?? 'COMPLETE',
+    dietaryRequirement: ({ dietaryRequirement }) =>
+      !dietaryRequirement ? null : dietaryRequirement,
+    tshirtSize: ({ tshirtSize }) => (!tshirtSize ? null : tshirtSize),
+    hoodieSize: ({ hoodieSize }) => (!hoodieSize ? null : hoodieSize),
   },
 };
