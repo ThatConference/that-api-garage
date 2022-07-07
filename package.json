@@ -1,6 +1,6 @@
 {
   "name": "that-api-garage",
-  "version": "2.19.1",
+  "version": "2.20.0",
   "description": "THAT Garage api. Where all the other stuff goes",
   "main": "index.js",
   "engines": {
@@ -26,7 +26,7 @@
     "@graphql-tools/load-files": "6.2.7",
     "@graphql-tools/merge": "6.2.10",
     "@sentry/node": "~6.19.7",
-    "@thatconference/api": "~2.8.5",
+    "@thatconference/api": "~2.9.2",
     "@thatconference/schema": "~1.5.0",
     "apollo-datasource-rest": "^0.14.0",
     "apollo-server-express": "2.22.2",

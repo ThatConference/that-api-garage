@@ -18,6 +18,9 @@ const requiredConfig = () => ({
     process.env.STRIPE_PORTAL_RETURN_URL || 'https://that.us/',
   bouncerBaseUrl:
     process.env.BOUNCER_BASE_URL || configMissing('BOUNCER_BASE_URL'),
+  thatRequestSigningKey:
+    process.env.THAT_REQUEST_SIGNING_KEY ||
+    configMissing('THAT_REQUEST_SIGNING_KEY'),
   devSendOrderSpeakerRequest:
     JSON.parse(process.env.DEV_SEND_ORDER_SPEAKER_REQUEST || false) || false,
 });
