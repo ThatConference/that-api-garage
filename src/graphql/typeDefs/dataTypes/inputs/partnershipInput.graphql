@@ -26,7 +26,7 @@ input PartnershipCreateInput {
   "Event this product is associated with"
   eventId: ID!
 
-  "This product is currently enabled"
+  "Is this product is enabled for use, sale, etc."
   isEnabled: Boolean!
 
   "Event activities this product enables (enum)"
@@ -61,7 +61,7 @@ input PartnershipUpdateInput {
   "Event this product is associated with"
   eventId: ID
 
-  "This product is currently enabled"
+  "Is this product is enabled for use, sale, etc."
   isEnabled: Boolean
 
   "Event activities this product enables (enum)"
