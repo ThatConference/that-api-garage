@@ -26,11 +26,14 @@ input TicketCreateInput {
   "Event this product is associated with"
   eventId: ID!
 
-  "This product is currently enabled"
+  "Is this product is enabled for use, sale, etc."
   isEnabled: Boolean!
 
   "Event activities this product enables (enum)"
   eventActivities: [EventActivity]
+
+  "Product is claimable using the checkout claim mutation"
+  isClaimable: Boolean
 }
 
 input TicketUpdateInput {
@@ -61,9 +64,12 @@ input TicketUpdateInput {
   "Event this product is associated with"
   eventId: ID
 
-  "This product is currently enabled"
+  "Is this product is enabled for use, sale, etc."
   isEnabled: Boolean
 
   "Event activities this product enables (enum)"
   eventActivities: [EventActivity]
+
+  "Product is claimable using the checkout claim mutation"
+  isClaimable: Boolean
 }

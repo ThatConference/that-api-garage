@@ -1,0 +1,4 @@
+type MeClaimResult {
+  result: Boolean!
+  message: String!
+}

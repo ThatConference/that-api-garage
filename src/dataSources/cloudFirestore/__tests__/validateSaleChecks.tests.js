@@ -11,6 +11,21 @@ const checkoutObj = {
     },
   ],
 };
+const processorStripeP = {
+  checkoutMode: 'PAYMENT',
+  itemRefId: 'price_abc123',
+  processor: 'STRIPE',
+};
+const processorStripeS = {
+  checkoutMode: 'SUBSCRIPTION',
+  itemRefId: 'price_123abc',
+  processor: 'STRIPE',
+};
+const processorThat = {
+  checkoutMode: 'THAT',
+  itemRefId: 'counselor_at_that',
+  processor: 'THAT',
+};
 const productsObj = [
   {
     id: 'productId_0',
@@ -58,10 +73,13 @@ describe('validateSaleCheck tests', () => {
 
   beforeEach(() => {
     const productStore = require('../product').default;
-    validateSaleChecks = productStore({ collection: () => {} })
-      .validateSaleChecks;
+    validateSaleChecks = productStore({
+      collection: () => {},
+    }).validateSaleChecks;
     checkout = { ...checkoutObj };
     products = [...productsObj];
+    products[0].processor = { ...processorStripeP };
+    products[1].processor = { ...processorStripeS };
     productList = [...productListObj];
   });
 
@@ -125,6 +143,32 @@ describe('validateSaleCheck tests', () => {
       expect(() => {
         validateSaleChecks({ checkout, products, productList });
       }).toThrow('Product not enabled for sale');
+    });
+  });
+  describe('Products must contian stripe processor reference', () => {
+    it('will error with no processor set', () => {
+      delete products[0].processor;
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).toThrow('Product has no processor assigned. Cannot checkout.');
+    });
+    it('will error if not using stripe processor', () => {
+      products[0].processor.processor = 'SOMETHING ELSE';
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).toThrow(`Product isn't using stripe processor. Cannot checkout.`);
+    });
+    it('1. will have itemRefId starting with price_', () => {
+      products[0].processor.itemRefId = 'some value';
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).toThrow(`processor price missing or malformed.`);
+    });
+    it('2. will have itemRefId starting with price_', () => {
+      delete products[0].processor.itemRefId;
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).toThrow(`processor price missing or malformed.`);
     });
   });
   describe('Products with dates must be within those dates', () => {
@@ -203,6 +247,27 @@ describe('validateSaleCheck tests', () => {
       expect(() => {
         validateSaleChecks({ checkout, products, productList });
       }).toThrow('Product not available for sale (date)');
+    });
+  });
+  describe('Products marked isClaimable are not sold', () => {
+    it('products without isClaimed set pass okay', () => {
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).not.toThrow();
+    });
+    it('products with isClaimed equal false pass okay', () => {
+      products[0].isClaimable = false;
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).not.toThrow();
+    });
+    it('products with isClaimed equal true throw', () => {
+      products[0].isClaimable = true;
+      expect(() => {
+        validateSaleChecks({ checkout, products, productList });
+      }).toThrow(
+        'Claimable products cannot be processed through stripe checkout',
+      );
     });
   });
 });
