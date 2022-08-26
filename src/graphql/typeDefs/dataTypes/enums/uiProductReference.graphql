@@ -27,8 +27,17 @@ enum UiProductReference {
   HOG_ROAST
   "Includes swag, e.g. t-shirt"
   SWAG
+  """
+  Claimable ticket for event. Can ONLY be checked out through checkout/claim
+  This product cannot be checked out with a strip product
+  """
+  CLAIMABLE_TICKET
+  "Virtual Camper promotional ticket"
   PROMO_VIRTUAL_CAMPER
+  "Camper NO FOOD promotional ticket"
   PROMO_CAMPER_NO_FOOD
+  "Camper promotional ticket"
   PROMO_CAMPER
+  "Everything Camper promotional ticket"
   PROMO_EVERYTHING_CAMPER
 }

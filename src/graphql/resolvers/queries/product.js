@@ -22,6 +22,7 @@ export const fieldResolvers = {
     createdBy: ({ createdBy: id }) => ({ id }),
     lastUpdatedBy: ({ lastUpdatedBy: id }) => ({ id }),
     eventActivities: ({ eventActivities = [] }) => eventActivities,
+    isClaimable: ({ isClaimable }) => isClaimable ?? false,
   },
   Membership: {
     __resolveReference({ id }, { dataSources: { productLoader } }) {

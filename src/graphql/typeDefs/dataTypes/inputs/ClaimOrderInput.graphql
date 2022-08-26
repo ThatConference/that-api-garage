@@ -1,0 +1,10 @@
+"Input value used for submitting a product claim"
+input ClaimOrderInput {
+  "The associated event"
+  eventId: ID!
+  """
+  The product to claim
+  Must be a 'claimable' product
+  """
+  productId: ID!
+}

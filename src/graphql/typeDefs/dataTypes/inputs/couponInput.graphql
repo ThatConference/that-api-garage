@@ -26,7 +26,7 @@ input CouponCreateInput {
   "Event this product is associated with"
   eventId: ID!
 
-  "This product is currently enabled"
+  "Is this product is enabled for use, sale, etc."
   isEnabled: Boolean!
 }
 
@@ -58,6 +58,6 @@ input CouponUpdateInput {
   "Event this product is associated with"
   eventId: ID
 
-  "This product is currently enabled"
+  "Is this product is enabled for use, sale, etc."
   isEnabled: Boolean
 }

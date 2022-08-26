@@ -30,7 +30,7 @@ type Coupon implements ProductBase @key(fields: "id") {
   "Reference to processor for associated product (Stripe, Shopify, etc.)"
   processor: ProcessorRef!
 
-  "Event this product is associated with"
+  "Is this product is enabled for use, sale, etc."
   eventId: ID!
 
   "This product is currently enabled"
