@@ -138,6 +138,7 @@ export const fieldResolvers = {
         };
       });
 
+      /* 
       // Add ON THAT ticket for speaker to give-away
       const onThatTicket = eventProducts.find(
         ep => ep.uiReference === 'VIRTUAL_CAMPER',
@@ -157,6 +158,7 @@ export const fieldResolvers = {
           );
         });
       }
+      */
 
       const now = new Date();
       const newOrderEvent = {
