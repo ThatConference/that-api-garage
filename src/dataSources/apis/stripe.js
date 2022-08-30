@@ -5,7 +5,9 @@ import envConfig from '../../envConfig';
 import { CheckoutError } from '../../lib/errors';
 
 const dlog = debug('that:api:garage:dataource:stripe');
-const stripe = stripelib(envConfig.stripeSecretKey);
+const stripe = stripelib(envConfig.stripe.secretKey, {
+  apiVersion: envConfig.stripe.apiVersion,
+});
 
 const stripeApi = () => {
   dlog('stripe instance created');
@@ -39,8 +41,8 @@ const stripeApi = () => {
       Sentry.setContext({ member }, { checkout }, { products });
       throw new CheckoutError('member missing stripe customer id');
     }
-    const successUrl = event.checkoutSuccess || envConfig.stripeSuccessUrl;
-    const cancelUrl = event.checkoutCancel || envConfig.stripeCancelUrl;
+    const successUrl = event.checkoutSuccess || envConfig.stripe.successUrl;
+    const cancelUrl = event.checkoutCancel || envConfig.stripe.cancelUrl;
     const eventLoc = event.slug.split('/')[0].toLowerCase() || 'thatus';
     const metadata = {
       memberId: member.id,
@@ -138,7 +140,7 @@ const stripeApi = () => {
     return stripe.billingPortal.sessions
       .create({
         customer: stripeCustomerId,
-        return_url: envConfig.stripePortalReturnUrl,
+        return_url: envConfig.stripe.portalReturnUrl,
       })
       .then(result => result.url);
   }

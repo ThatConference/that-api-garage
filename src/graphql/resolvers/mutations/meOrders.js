@@ -50,7 +50,7 @@ export const fieldResolvers = {
             Sentry.captureMessage(
               'order allocation questions completed by member not assigned to order allocation',
               { memberId, orderAllocationId: orderReference, eventId },
-              Sentry.Severity.Warning,
+              'warning',
             );
             return false;
           }
@@ -151,7 +151,7 @@ export const fieldResolvers = {
         });
       } else {
         Sentry.configureScope(scope => {
-          scope.setLevel(Sentry.Severity.Warning);
+          scope.setLevel('warning');
           scope.setTag('eventId', eventId);
           Sentry.captureException(
             `Unable to locate ON THAT ticket for event ${eventId} to allocate to speaker`,
