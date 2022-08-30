@@ -59,7 +59,7 @@ const useSentry = async (req, res, next) => {
   Sentry.addBreadcrumb({
     category: 'that-api-garage',
     message: 'garage init',
-    level: Sentry.Severity.Info,
+    level: 'info',
   });
   next();
 };

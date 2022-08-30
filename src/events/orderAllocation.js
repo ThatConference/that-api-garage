@@ -27,7 +27,7 @@ export default function orderAllocationEvents() {
         memberTo: JSON.stringify(memberTo),
         orderAllocation: JSON.stringify(orderAllocation),
       });
-      scope.setLevel(Sentry.Severity.Error);
+      scope.setLevel('error');
     });
     if (!firestore && !firestore.collection) {
       Sentry.captureException(
@@ -110,7 +110,7 @@ export default function orderAllocationEvents() {
     dlog('orderEventEmitter error:: %o', error);
     Sentry.configureScope(scope => {
       scope.setTag('eventEmitter', 'functionError');
-      scope.setLevel(Sentry.Severity.Error);
+      scope.setLevel('error');
       Sentry.captureException(error);
     });
   }
