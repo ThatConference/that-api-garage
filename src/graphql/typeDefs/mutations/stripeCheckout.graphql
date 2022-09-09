@@ -1,5 +1,5 @@
 type StripeCheckoutMutation {
   "Creates a new Stripe checkout session object"
-  create(checkout: StripeCheckoutCreateInput!): String!
+  create(checkout: StripeCheckoutCreateInput!): StripeCheckoutResult!
     @auth(requires: "members")
 }

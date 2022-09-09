@@ -1,0 +1,8 @@
+type StripeCheckoutResult {
+  "The result of the checkout successful or not"
+  success: Boolean!
+  "Informational message about the result"
+  message: String!
+  "Strip Checkout ID to use for starting checkout process"
+  stripeCheckoutId: String
+}
