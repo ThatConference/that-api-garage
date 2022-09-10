@@ -15,6 +15,10 @@ const resolvers = {
     dlog('root:assets query called');
     return {};
   },
+  affiliates: () => {
+    dlog('root:affiliates query called');
+    return {};
+  },
 };
 
 export default resolvers;

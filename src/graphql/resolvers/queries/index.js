@@ -18,6 +18,8 @@ import { fieldResolvers as meAssetsFields } from './meAssets';
 import { fieldResolvers as registrationOrderAllocationFields } from './RegistrationOrderAllocation';
 import { fieldResolvers as eventAdminFields } from './eventAdmin';
 import { fieldResolvers as orderDiscountFields } from './orderDiscount';
+import { fieldResolvers as affiliatesFields } from './affiliates';
+import { fieldResolvers as affiliateFields } from './affiliate';
 
 export default {
   ...root,
@@ -42,4 +44,6 @@ export const fieldResolvers = {
   ...registrationOrderAllocationFields,
   ...eventAdminFields,
   ...orderDiscountFields,
+  ...affiliatesFields,
+  ...affiliateFields,
 };

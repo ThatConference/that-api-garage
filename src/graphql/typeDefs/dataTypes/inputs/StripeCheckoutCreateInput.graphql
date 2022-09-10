@@ -3,4 +3,6 @@ input StripeCheckoutCreateInput {
   eventId: ID!
   "The products being purchased in checkout MAX LINE ITEMS: 6"
   products: [ProductLineItemInput!]!
+  "Affiliate code to apply to checkout"
+  affiliateCode: String
 }

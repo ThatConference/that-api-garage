@@ -1,0 +1,10 @@
+type AffiliatePromoCode {
+  "EventId promotion code is active for"
+  eventId: ID!
+  "ENUM: Type of promotion code (stripe, etc.)"
+  promoCodeType: AffiliatePromoCodeType!
+  "The actual promotion code"
+  promotionCode: String!
+  "An optional description for the promotion code"
+  description: String
+}

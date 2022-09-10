@@ -1,0 +1,9 @@
+input AffiliatePromoCodeFilterInput {
+  "Filter to as specific event id"
+  eventId: ID!
+  """
+  Filter for a specific promotion code type (stripe, etc.).
+  This is a sub-filter of eventId
+  """
+  promoCodeType: AffiliatePromoCodeType
+}

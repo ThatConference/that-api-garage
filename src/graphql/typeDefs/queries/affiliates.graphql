@@ -1,0 +1,6 @@
+type AffiliatesQuery {
+  "return all affiliates"
+  all: [Affiliate]!
+  "return a specific affiliate"
+  affiliate(affiliateId: ID!): AffiliateQuery
+}
