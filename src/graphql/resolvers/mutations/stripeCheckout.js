@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node';
 import { dataSources } from '@thatconference/api';
 import memberStore from '../../../dataSources/cloudFirestore/member';
 import productStore from '../../../dataSources/cloudFirestore/product';
+import affiliateStore from '../../../dataSources/cloudFirestore/affiliate';
 import stripeApi from '../../../dataSources/apis/stripe';
 import { CheckoutError, ValidationError } from '../../../lib/errors';
 import checkoutValidation from '../../../lib/checkoutValidation';
@@ -26,6 +27,7 @@ export const fieldResolvers = {
         message: '',
         stripeCheckoutId: null,
       };
+      let stripePromotionCode;
       try {
         // yup-based validation
         await checkoutValidation({ checkout });
@@ -35,7 +37,46 @@ export const fieldResolvers = {
         return returnResult;
       }
 
-      let member = await memberStore(firestore).get(memberId);
+      // Affiliates
+      if (checkout.affiliateCode) {
+        dlog('working with affiliate code %s', checkout.affiliateCode);
+        let affiliate;
+        let affiliatePromo;
+        try {
+          [affiliate, affiliatePromo] = await Promise.all([
+            affiliateStore(firestore).get(checkout.affiliateCode),
+            affiliateStore(firestore).findAffiliatePromoCodeForEvent({
+              affiliateId: checkout.affiliateCode,
+              eventId: checkout.eventId,
+            }),
+          ]);
+        } catch (err) {
+          const exceptionId = Sentry.captureException(err);
+          returnResult.message = `Error retrieving affiliate data. ref: ${exceptionId}`;
+          return returnResult;
+        }
+        dlog('affiliate:: %o', affiliate);
+        dlog('affiliatePromo:: %o', affiliatePromo);
+        if (!affiliate) {
+          returnResult.message = `affiliate not found`;
+        } else if (!affiliatePromo?.promotionCode) {
+          returnResult.message = `invalid affiliate promotion`;
+        }
+        if (returnResult.message.length > 0) {
+          return returnResult;
+        }
+        stripePromotionCode = affiliatePromo.promotionCode;
+      }
+
+      let member;
+      try {
+        member = await memberStore(firestore).get(memberId);
+      } catch (err) {
+        const exceptionId = Sentry.captureException(err);
+        returnResult.message = `Error retrieving member. ref ${exceptionId}`;
+        return returnResult;
+      }
+
       if (!member || !member.profileSlug) {
         Sentry.captureException(
           new CheckoutError('Member record not found for checkout'),
@@ -104,6 +145,7 @@ export const fieldResolvers = {
           products,
           member,
           event,
+          promotionCode: stripePromotionCode,
         })
         .then(co => {
           returnResult.success = true;
@@ -112,6 +154,7 @@ export const fieldResolvers = {
           return returnResult;
         })
         .catch(err => {
+          dlog('error creating checkout: %o', err.message);
           const exceptionId = Sentry.captureException(err);
           returnResult.message = `Unable to create checkout at stripe. Please contact THAT Staff. Ref: ${exceptionId}`;
           return returnResult;
