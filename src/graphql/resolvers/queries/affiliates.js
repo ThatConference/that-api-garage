@@ -13,7 +13,18 @@ export const fieldResolvers = {
       dlog('call affiliate for %s', affiliateId);
       return { affiliateId };
     },
-    // me
+    me: (_, __, { dataSources: { firestore }, user }) => {
+      dlog('me affiliates called');
+      return affiliateStore(firestore)
+        .findAffiliateByRefId({
+          referenceId: user.sub,
+          affiliateType: 'MEMBER',
+        })
+        .then(d => {
+          dlog('me:: %O', d);
+          return d;
+        });
+    },
     // us
   },
 };

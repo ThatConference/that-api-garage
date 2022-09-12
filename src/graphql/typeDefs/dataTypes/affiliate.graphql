@@ -1,6 +1,8 @@
 type Affiliate @key(fields: "id") {
   "ID and code used to reference Affiliate"
   id: ID!
+  "The name of this affiliate record"
+  name: String!
   "Description of Affiliate"
   description: String
   "type of Affiliate. e.g. member, partner, etc."

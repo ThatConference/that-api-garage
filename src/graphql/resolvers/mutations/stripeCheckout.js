@@ -42,6 +42,8 @@ export const fieldResolvers = {
         dlog('working with affiliate code %s', checkout.affiliateCode);
         let affiliate;
         let affiliatePromo;
+        // Intentially checking both to know which is missing
+        // the affiliate as a whole or simply the event for the affilitate
         try {
           [affiliate, affiliatePromo] = await Promise.all([
             affiliateStore(firestore).get(checkout.affiliateCode),

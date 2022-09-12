@@ -20,6 +20,7 @@ import { fieldResolvers as eventAdminFields } from './eventAdmin';
 import { fieldResolvers as orderDiscountFields } from './orderDiscount';
 import { fieldResolvers as affiliatesFields } from './affiliates';
 import { fieldResolvers as affiliateFields } from './affiliate';
+import { fieldResolvers as meAffiliatesFields } from './meAffiliates';
 
 export default {
   ...root,
@@ -46,4 +47,5 @@ export const fieldResolvers = {
   ...orderDiscountFields,
   ...affiliatesFields,
   ...affiliateFields,
+  ...meAffiliatesFields,
 };

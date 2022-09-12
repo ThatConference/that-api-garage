@@ -1,6 +1,8 @@
 type AffiliatesQuery {
   "return all affiliates"
-  all: [Affiliate]!
+  all: [Affiliate]! @auth(requires: "admin")
   "return a specific affiliate"
-  affiliate(affiliateId: ID!): AffiliateQuery
+  affiliate(affiliateId: ID!): AffiliateQuery @auth(requires: "admin")
+  "Affiliates path to review affiliate things"
+  me: MeAffiliatesQuery @auth(requires: "members")
 }

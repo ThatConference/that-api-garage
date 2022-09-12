@@ -22,6 +22,7 @@ const scrubAffiliate = ({ product, isNew, userId }) => {
 
 const affiliate = dbInstance => {
   dlog('instance created');
+  Sentry.setTag('app location', 'affiliate store');
 
   const affiliateCollection = dbInstance.collection(collectionName);
 
@@ -49,6 +50,34 @@ const affiliate = dbInstance => {
       .then(querySnap =>
         querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
       );
+  }
+
+  function findAffiliateByRefId({ referenceId, affiliateType }) {
+    dlog('findAffiliate %s of type %s', referenceId, affiliateType);
+    return affiliateCollection
+      .where('referenceId', '==', referenceId)
+      .where('affiliateType', '==', affiliateType)
+      .get()
+      .then(querySnap => {
+        if (querySnap.size > 1) {
+          const err = new Error('multiple affiliate records for id');
+          Sentry.withScope(scope => {
+            scope.setTags({
+              function: 'findAffilateByRefId',
+              referenceId,
+              affiliateType,
+            });
+            scope.setLevel('error');
+            scope.setContext(
+              'Affilate Ids',
+              querySnap.docs.map(q => ({ id: q.id })),
+            );
+            Sentry.captureException(err);
+          });
+          throw err;
+        }
+        return querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      });
   }
 
   function getAllAffiliatePromoCodes(affiliateId) {
@@ -102,6 +131,7 @@ const affiliate = dbInstance => {
   return {
     get,
     getAll,
+    findAffiliateByRefId,
     getAllAffiliatePromoCodes,
     findAffiliatePromoCodeForEvent,
   };

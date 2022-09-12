@@ -1,0 +1,5 @@
+type MeAffiliatesQuery {
+  "Is current member an affiliate"
+  isAffiliate: Boolean!
+  info: Affiliate
+}
