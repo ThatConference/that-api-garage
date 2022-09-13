@@ -4,6 +4,7 @@ import { dataSources } from '@thatconference/api';
 import memberStore from '../../../dataSources/cloudFirestore/member';
 import productStore from '../../../dataSources/cloudFirestore/product';
 import affiliateStore from '../../../dataSources/cloudFirestore/affiliate';
+import promoCodeStore from '../../../dataSources/cloudFirestore/affiliatePromoCode';
 import stripeApi from '../../../dataSources/apis/stripe';
 import { CheckoutError, ValidationError } from '../../../lib/errors';
 import checkoutValidation from '../../../lib/checkoutValidation';
@@ -47,7 +48,7 @@ export const fieldResolvers = {
         try {
           [affiliate, affiliatePromo] = await Promise.all([
             affiliateStore(firestore).get(checkout.affiliateCode),
-            affiliateStore(firestore).findAffiliatePromoCodeForEvent({
+            promoCodeStore(firestore).findAffiliatePromoCodeForEvent({
               affiliateId: checkout.affiliateCode,
               eventId: checkout.eventId,
             }),

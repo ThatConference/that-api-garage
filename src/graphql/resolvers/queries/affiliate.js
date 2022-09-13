@@ -1,5 +1,6 @@
 import debug from 'debug';
 import affiliateStore from '../../../dataSources/cloudFirestore/affiliate';
+import promoCodeStore from '../../../dataSources/cloudFirestore/affiliatePromoCode';
 
 const dlog = debug('that:api:garage:query:affiliate');
 
@@ -18,7 +19,7 @@ export const fieldResolvers = {
     ) => {
       dlog('query promotion codes for %', affiliateId);
       if (filter?.eventId) {
-        return affiliateStore(firestore)
+        return promoCodeStore(firestore)
           .findAffiliatePromoCodeForEvent({
             affiliateId,
             eventId: filter.eventId,
@@ -27,7 +28,7 @@ export const fieldResolvers = {
           .then(r => (r ? [r] : []));
       }
 
-      return affiliateStore(firestore).getAllAffiliatePromoCodes(affiliateId);
+      return promoCodeStore(firestore).getAllAffiliatePromoCodes(affiliateId);
     },
   },
 };

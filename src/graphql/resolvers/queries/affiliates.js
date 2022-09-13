@@ -21,7 +21,7 @@ export const fieldResolvers = {
           affiliateType: 'MEMBER',
         })
         .then(d => {
-          dlog('me:: %O', d);
+          dlog('me:: %o', d);
           return d;
         });
     },

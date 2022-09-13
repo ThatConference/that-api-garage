@@ -1,0 +1,23 @@
+input AffiliateCreateInput {
+  "ID and code used to reference Affiliate"
+  id: ID!
+  "The name of this affiliate record"
+  name: String!
+  "Description of Affiliate"
+  description: String
+  "type of Affiliate. e.g. member, partner, etc."
+  affiliateType: AffiliateType!
+  "Id of affiliate record, based on type"
+  referenceId: ID!
+}
+
+input AffiliateUpdateInput {
+  "The name of this affiliate record"
+  name: String
+  "Description of Affiliate"
+  description: String
+  "type of Affiliate. e.g. member, partner, etc."
+  affiliateType: AffiliateType
+  "Id of affiliate record, based on type"
+  referenceId: ID
+}

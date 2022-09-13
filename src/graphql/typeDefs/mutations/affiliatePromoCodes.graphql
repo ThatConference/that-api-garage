@@ -1,0 +1,6 @@
+type AffiliatePromoCodesMutation {
+  "create a new promotion code for focused affiliate"
+  create(promotionCode: AffiliatePromoCodeCreateInput!): AffiliatePromoCode
+  "perform actions on a specific promotion code for focused affiliate"
+  promotionCode(promoCodeId: ID!): AffiliatePromoCodeMutation
+}

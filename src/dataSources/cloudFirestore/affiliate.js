@@ -4,20 +4,19 @@ import * as Sentry from '@sentry/node';
 const dlog = debug('that:api:garage:datasources:firebase:affiliate');
 
 const collectionName = 'affiliates';
-const subCollectionName = 'events';
 
-const scrubAffiliate = ({ product, isNew, userId }) => {
-  dlog('scrubProduct called');
-  const scrubbedProduct = product;
-  const thedate = new Date();
+const scrubAffiliate = ({ affiliate, isNew = false, userId }) => {
+  dlog('scrubAffiliate called');
+  const scrubbedAffiliate = affiliate;
+  const now = new Date();
   if (isNew) {
-    scrubbedProduct.createdAt = thedate;
-    scrubbedProduct.createdBy = userId;
+    scrubbedAffiliate.createdAt = now;
+    scrubbedAffiliate.createdBy = userId;
   }
-  scrubbedProduct.lastUpdatedAt = thedate;
-  scrubbedProduct.lastUpdatedBy = userId;
+  scrubbedAffiliate.lastUpdatedAt = now;
+  scrubbedAffiliate.lastUpdatedBy = userId;
 
-  return scrubbedProduct;
+  return scrubbedAffiliate;
 };
 
 const affiliate = dbInstance => {
@@ -80,60 +79,39 @@ const affiliate = dbInstance => {
       });
   }
 
-  function getAllAffiliatePromoCodes(affiliateId) {
-    dlog('getAllAffiliatePromoCodes %s', affiliateId);
+  function create({ affiliate: newAffiliate, userId }) {
+    dlog('creating: %o', newAffiliate);
+    if (!newAffiliate.id)
+      throw new Error('id (code) is required to create an affiliate');
+    if (!userId) throw new Error('userId required to create new affilate');
+    const cleanAffiliate = scrubAffiliate({
+      affiliate: newAffiliate,
+      isNew: true,
+      userId,
+    });
+    const affiliateId = cleanAffiliate.id;
+    delete cleanAffiliate.id;
     return affiliateCollection
       .doc(affiliateId)
-      .collection(subCollectionName)
-      .get()
-      .then(querySnap =>
-        querySnap.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })),
-      );
+      .create(cleanAffiliate)
+      .then(() => get(affiliateId));
   }
 
-  function findAffiliatePromoCodeForEvent({
-    affiliateId,
-    eventId,
-    promoCodeType,
-  }) {
-    dlog('getAffiliatePromoCodeForEvent %s, %s', affiliateId, eventId);
+  function update({ affiliateId, affiliate: upAffiliate, userId }) {
+    dlog('update affiliate %s with %o', affiliateId, upAffiliate);
+    scrubAffiliate({ affiliate: upAffiliate, userId });
     return affiliateCollection
       .doc(affiliateId)
-      .collection(subCollectionName)
-      .doc(eventId)
-      .get()
-      .then(docSnap => {
-        let result = null;
-        if (docSnap.exists) {
-          result = {
-            id: docSnap.id,
-            ...docSnap.data(),
-          };
-          if (promoCodeType && promoCodeType !== result.promoCodeType) {
-            result = null;
-          }
-        }
-
-        return result;
-      });
+      .update(upAffiliate)
+      .then(() => get(affiliateId));
   }
-
-  // TODO: CRUD
-  // create affiliate
-  // update affiliate
-  // create promo code
-  // update promo code
-  // delete promo code
 
   return {
     get,
     getAll,
     findAffiliateByRefId,
-    getAllAffiliatePromoCodes,
-    findAffiliatePromoCodeForEvent,
+    create,
+    update,
   };
 };
 

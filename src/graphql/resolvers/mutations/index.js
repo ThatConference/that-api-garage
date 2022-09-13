@@ -17,6 +17,10 @@ import { fieldResolvers as assetFields } from './asset';
 import { fieldResolvers as meAssetsFields } from './meAssets';
 import { fieldResolvers as meAssetFields } from './meAsset';
 import { fieldResolvers as meOrderAllocationEnrollmentFields } from './meOrderAllocationEnrollment';
+import { fieldResolvers as affiliatesFields } from './affiliates';
+import { fieldResolvers as affiliateFields } from './affiliate';
+import { fieldResolvers as affiliatePromoCodes } from './affiliatePromoCodes';
+import { fieldResolvers as affiliatePromoCode } from './affiliatePromoCode';
 
 export default {
   ...rootMutations,
@@ -40,4 +44,8 @@ export const fieldResolvers = {
   ...meAssetsFields,
   ...meAssetFields,
   ...meOrderAllocationEnrollmentFields,
+  ...affiliatesFields,
+  ...affiliateFields,
+  ...affiliatePromoCodes,
+  ...affiliatePromoCode,
 };
