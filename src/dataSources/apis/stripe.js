@@ -28,7 +28,13 @@ const stripeApi = () => {
     return stripe.customers.create(newCust);
   }
 
-  function createCheckout({ checkout, products, member, event }) {
+  function createCheckout({
+    checkout,
+    products,
+    member,
+    event,
+    promotionCode,
+  }) {
     dlog(
       'create checkout for %s, with %d line items (%d) on event %s',
       member.id,
@@ -38,7 +44,9 @@ const stripeApi = () => {
     );
     if (!member.stripeCustomerId) {
       dlog('member missing stripe customer id %o', member);
-      Sentry.setContext({ member }, { checkout }, { products });
+      Sentry.setContext('member', JSON.stringify(member));
+      Sentry.setContext('checkout', JSON.stringify(checkout));
+      Sentry.setContext('products', JSON.stringify(products));
       throw new CheckoutError('member missing stripe customer id');
     }
     const successUrl = event.checkoutSuccess || envConfig.stripe.successUrl;
@@ -50,6 +58,8 @@ const stripeApi = () => {
       productIds: JSON.stringify(checkout.products.map(cp => cp.productId)),
       checkoutLineItems: JSON.stringify(checkout.products),
       eventSlug: event.slug,
+      affiliateCode: checkout.affiliateCode ?? null,
+      promotionCode: promotionCode ?? 'n/a',
     };
     // we only care if any one of the conditions exist to send with the
     // checkout success page. e.g. ?BULK=0&TL=on&TL=at&M=0
@@ -91,6 +101,14 @@ const stripeApi = () => {
       allow_promotion_codes: true,
       metadata,
     };
+    if (promotionCode) {
+      checkoutSessionPayload.discounts = [
+        {
+          promotion_code: promotionCode,
+        },
+      ];
+      delete checkoutSessionPayload.allow_promotion_codes;
+    }
 
     const modes = [];
     const lineItems = checkout.products.map(cp => {

@@ -1,0 +1,18 @@
+"""
+Promotion codes assigned to affiliate
+One promotion code per event per affiliate
+"""
+type AffiliatePromoCode {
+  "PromoCode id same as an EventId which the code is active for"
+  id: ID!
+  "Event id promotion code is associated with. same as promoCode id"
+  eventId: ID!
+  "ENUM: Type of promotion code (stripe, etc.)"
+  promoCodeType: AffiliatePromoCodeType!
+  "The actual promotion code"
+  promotionCode: String!
+  "An optional description for the promotion code"
+  description: String
+  "Reward percentage on orders for this promotion code"
+  rewardPercentage: Float!
+}

@@ -1,6 +1,7 @@
 import debug from 'debug';
 import { utility } from '@thatconference/api';
 import * as Sentry from '@sentry/node';
+import { ValidationError } from '../../lib/errors';
 
 const dlog = debug('that:api:garage:datasources:firebase:product');
 const { dateForge, entityDateForge } = utility.firestoreDateForge;
@@ -139,7 +140,9 @@ const product = dbInstance => {
         productList,
         products.map(p => (p ? p.id : null)),
       );
-      throw new Error('Checkout validation failed. Not all products found');
+      throw new ValidationError(
+        'Checkout validation failed. Not all products found',
+      );
     }
     // validations
     for (let i = 0; i < products.length; i += 1) {
@@ -151,31 +154,35 @@ const product = dbInstance => {
           eventId,
         });
         Sentry.setContext('product', { product: item });
-        throw new Error('Cannot purchase items not associated with event');
+        throw new ValidationError(
+          'Cannot purchase items not associated with event',
+        );
       }
       if (!item.isEnabled) {
         dlog('product not enabled for sale %o', item);
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error('Product not enabled for sale');
+        throw new ValidationError('Product not enabled for sale');
       }
       if (!item.processor) {
         dlog(`product doesn't have processor. id: %o`, item);
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error('Product has no processor assigned. Cannot checkout.');
+        throw new ValidationError(
+          'Product has no processor assigned. Cannot checkout.',
+        );
       } else if (item?.processor?.processor !== 'STRIPE') {
         dlog(`Product isn't using stripe processor. id: %o`, item);
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error(
+        throw new ValidationError(
           `Product isn't using stripe processor. Cannot checkout.`,
         );
       } else if (!item?.processor?.itemRefId?.startsWith('price_')) {
         dlog(`Product with missing or malformed itemRefId. id: %o`, item);
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error(
+        throw new ValidationError(
           `processor price missing or malformed. Cannot checkout.`,
         );
       }
@@ -188,7 +195,7 @@ const product = dbInstance => {
         );
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error('Product not available for sale (date)');
+        throw new ValidationError('Product not available for sale (date)');
       }
       if (item.onSaleUntil && new Date(item.onSaleUntil) < today) {
         dlog(
@@ -198,13 +205,13 @@ const product = dbInstance => {
         );
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error('Product not available for sale (date)');
+        throw new ValidationError('Product not available for sale (date)');
       }
       if (item.isClaimable === true) {
         dlog('Product is claimable and cannot be sold through stripe checkout');
         Sentry.setTag('productId', item.id);
         Sentry.setContext('product', { product: item });
-        throw new Error(
+        throw new ValidationError(
           'Claimable products cannot be processed through stripe checkout',
         );
       }

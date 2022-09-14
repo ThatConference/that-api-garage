@@ -1,0 +1,6 @@
+type AffiliatesMutation {
+  "create a new affiliate"
+  create(affiliate: AffiliateCreateInput!): Affiliate @auth(requires: "admin")
+  "specific affiliate mutations"
+  affiliate(affiliateId: ID!): AffiliateMutation @auth(requires: "admin")
+}

@@ -1,0 +1,5 @@
+type AffiliatePromoCodeMutation {
+  "update focused promotion code"
+  update(promotionCode: AffiliatePromoCodeUpdateInput!): AffiliatePromoCode
+  delete: AffiliatePromoCode
+}

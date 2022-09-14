@@ -1,0 +1,6 @@
+enum AffiliateType {
+  "Member who is an affiliate"
+  MEMBER
+  "Partner who is an affiliate"
+  PARTNER
+}

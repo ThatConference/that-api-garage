@@ -15,6 +15,10 @@ const resolvers = {
     dlog('root:assets mutation called');
     return {};
   },
+  affiliates: () => {
+    dlog('root:affiliates mutation called');
+    return {};
+  },
 };
 
 export default resolvers;

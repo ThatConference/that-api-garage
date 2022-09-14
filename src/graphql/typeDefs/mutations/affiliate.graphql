@@ -1,0 +1,10 @@
+"focused affiliate mutations"
+type AffiliateMutation {
+  "update current focused affiliate"
+  update(affiliate: AffiliateUpdateInput!): Affiliate @auth(requires: "admin")
+  """
+  manage current focused affiliate's promotion codes
+  Affiliate promotion codes are unique by affiliate and event
+  """
+  promotionCodes: AffiliatePromoCodesMutation @auth(requires: "admin")
+}

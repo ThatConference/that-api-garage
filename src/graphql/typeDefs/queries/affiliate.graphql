@@ -1,0 +1,4 @@
+type AffiliateQuery {
+  "gets the affiliate"
+  get: Affiliate
+}
