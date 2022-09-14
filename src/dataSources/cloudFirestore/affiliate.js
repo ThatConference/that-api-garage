@@ -79,7 +79,7 @@ const affiliate = dbInstance => {
       });
   }
 
-  function create({ affiliate: newAffiliate, userId }) {
+  async function create({ affiliate: newAffiliate, userId }) {
     dlog('creating: %o', newAffiliate);
     if (!newAffiliate.id)
       throw new Error('id (code) is required to create an affiliate');
@@ -89,6 +89,30 @@ const affiliate = dbInstance => {
       isNew: true,
       userId,
     });
+    const check = await findAffiliateByRefId({
+      referenceId: cleanAffiliate.referenceId,
+      affiliateType: cleanAffiliate.affiliateType,
+    });
+    if (check.length > 0) {
+      const err = new Error(
+        `reference ${cleanAffiliate.referenceId} already an affiliate (${check[0].id})`,
+      );
+      Sentry.withScope(scope => {
+        scope.setTags({
+          function: 'create',
+          referenceId: cleanAffiliate.referenceId,
+          affiliateType: cleanAffiliate.affiliateType,
+        });
+        scope.setLevel('error');
+        scope.setContext(
+          'new affiliate object',
+          JSON.stringify(cleanAffiliate),
+        );
+        scope.setContext('found affiliate', JSON.stringify(check));
+        Sentry.captureException(err);
+      });
+      throw err;
+    }
     const affiliateId = cleanAffiliate.id;
     delete cleanAffiliate.id;
     return affiliateCollection
