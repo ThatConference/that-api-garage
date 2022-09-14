@@ -7,6 +7,8 @@ input AffiliatePromoCodeCreateInput {
   promotionCode: String!
   "An optional description for the promotion code"
   description: String
+  "Reward percentage on orders for this promotion code"
+  rewardPercentage: Float
 }
 
 input AffiliatePromoCodeUpdateInput {
@@ -16,4 +18,6 @@ input AffiliatePromoCodeUpdateInput {
   promotionCode: String
   "An optional description for the promotion code"
   description: String
+  "Reward percentage on orders for this promotion code"
+  rewardPercentage: Float
 }

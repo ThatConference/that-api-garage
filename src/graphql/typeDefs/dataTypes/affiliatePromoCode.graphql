@@ -13,4 +13,6 @@ type AffiliatePromoCode {
   promotionCode: String!
   "An optional description for the promotion code"
   description: String
+  "Reward percentage on orders for this promotion code"
+  rewardPercentage: Float!
 }

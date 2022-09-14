@@ -21,6 +21,7 @@ import { fieldResolvers as orderDiscountFields } from './orderDiscount';
 import { fieldResolvers as affiliatesFields } from './affiliates';
 import { fieldResolvers as affiliateFields } from './affiliate';
 import { fieldResolvers as meAffiliatesFields } from './meAffiliates';
+import { fieldResolvers as affiliatePromoCodeFields } from './affiliatePromoCode';
 
 export default {
   ...root,
@@ -48,4 +49,5 @@ export const fieldResolvers = {
   ...affiliatesFields,
   ...affiliateFields,
   ...meAffiliatesFields,
+  ...affiliatePromoCodeFields,
 };
