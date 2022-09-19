@@ -220,6 +220,7 @@ const product = dbInstance => {
   }
 
   // validates products can be sold with referenced eventId
+  // before returning product list of checkout items
   async function validateSale(checkout) {
     dlog('validate called');
     const productList = checkout.products.map(p => p.productId);

@@ -1,11 +1,10 @@
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
-import { dataSources } from '@thatconference/api';
+import productStoreFunc from '../../dataSources/cloudFirestore/product';
 import manualOrderChecks from './manualOrderChecks';
 import claimOrderChecks from './claimOrderChecks';
 
 const dlog = debug('that:api:brinks:validateManualOrder');
-const productStoreFunc = dataSources.cloudFirestore.product;
 
 export default function validateManualOrder({
   orderData,

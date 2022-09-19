@@ -25,6 +25,12 @@ export default function manualOrderChecks({
       `'MEMBERSHIP' type products cannot be added to manual orders`,
     );
   }
-
+  const now = new Date();
+  if (products.filter(p => p.onSaleFrom && p.onSaleFrom > now).length > 0) {
+    errorList.push(`Product not available for sale (date)`);
+  }
+  if (products.filter(p => p.onSaleUntil && p.onSaleUntil < now).length > 0) {
+    errorList.push(`Product not available for sale (date)`);
+  }
   return errorList;
 }
