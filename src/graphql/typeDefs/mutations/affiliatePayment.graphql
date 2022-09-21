@@ -1,0 +1,5 @@
+type AffiliatePaymentMutation {
+  update(payment: AffiliatePaymentUpdateInput!): AffiliatePayment
+    @auth(requires: "admin")
+  delete: AffiliatePayment @auth(requires: "admin")
+}

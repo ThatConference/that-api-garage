@@ -1,0 +1,17 @@
+input AffiliatePaymentCreateInput {
+  "The date the payment was sent"
+  paymentDate: Date!
+  "The total amount of the payment"
+  amount: Float!
+  "(optional) some reference for the payment"
+  reference: String
+}
+
+input AffiliatePaymentUpdateInput {
+  "The date the payment was sent"
+  paymentDate: Date
+  "The total amount of the payment"
+  amount: Float
+  "(optional) some reference for the payment"
+  reference: String
+}

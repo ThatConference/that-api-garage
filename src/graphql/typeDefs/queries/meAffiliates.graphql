@@ -2,4 +2,6 @@ type MeAffiliatesQuery {
   "Is current member an affiliate"
   isAffiliate: Boolean!
   info: Affiliate
+  referrals(eventId: ID!): [MeAffiliateReferral]!
+  payments: [AffiliatePayment]!
 }

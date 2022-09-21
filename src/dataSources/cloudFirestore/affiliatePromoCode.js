@@ -17,7 +17,7 @@ const scrubPromoCode = ({ promoCode, isNew = false }) => {
 
 const affiliatePromoCode = dbInstance => {
   dlog('instance created');
-  Sentry.setTag('app location', 'affiliate store');
+  Sentry.setTag('app location', 'affiliate promoCode store');
 
   const affiliateCollection = dbInstance.collection(collectionName);
 

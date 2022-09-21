@@ -7,4 +7,6 @@ type AffiliateMutation {
   Affiliate promotion codes are unique by affiliate and event
   """
   promotionCodes: AffiliatePromoCodesMutation @auth(requires: "admin")
+  "Affiliate's payments path for payment CRUD"
+  payments: AffiliatePaymentsMutation @auth(requires: "admin")
 }
