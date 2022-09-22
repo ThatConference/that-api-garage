@@ -75,7 +75,12 @@ const affiliate = dbInstance => {
           });
           throw err;
         }
-        return querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const [doc] = querySnap.docs;
+
+        return {
+          id: doc.id,
+          ...doc.data(),
+        };
       });
   }
 

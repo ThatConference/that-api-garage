@@ -11,4 +11,8 @@ type Affiliate @key(fields: "id") {
   referenceId: ID!
   "Promotion codes available for this affiliate"
   promotionCodes(filter: AffiliatePromoCodeFilterInput): [AffiliatePromoCode]!
+  "Affiliates referrals by event"
+  referrals(eventId: ID!): [AffiliateReferral]!
+  "Affiliates payments"
+  payments: [AffiliatePayment]!
 }
