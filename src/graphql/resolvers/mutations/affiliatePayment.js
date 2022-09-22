@@ -8,13 +8,14 @@ export const fieldResolvers = {
     update: (
       { affiliateId, paymentId },
       { payment },
-      { dataSources: { firestore } },
+      { dataSources: { firestore }, user },
     ) => {
       dlog('updating payment %s for affiliate %s', paymentId, affiliateId);
       return paymentStore(firestore).update({
         affiliateId,
         paymentId,
         payment,
+        userId: user.sub,
       });
     },
     delete: ({ affiliateId, paymentId }, _, { dataSources: { firestore } }) => {

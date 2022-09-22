@@ -1,7 +1,11 @@
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
+import { utility } from '@thatconference/api';
 
 const dlog = debug('that:api:garage:datasources:firebase:affiliate');
+const { entityDateForge } = utility.firestoreDateForge;
+const forgeFields = ['referralDigestLastSentOn'];
+const affiliateDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'affiliates';
 
@@ -12,6 +16,9 @@ const scrubAffiliate = ({ affiliate, isNew = false, userId }) => {
   if (isNew) {
     scrubbedAffiliate.createdAt = now;
     scrubbedAffiliate.createdBy = userId;
+    scrubbedAffiliate.referralDigestLastSentOn = now;
+    scrubbedAffiliate.lastUpdatedAt = now;
+    scrubbedAffiliate.lastUpdatedBy = userId;
   }
   scrubbedAffiliate.lastUpdatedAt = now;
   scrubbedAffiliate.lastUpdatedBy = userId;
@@ -38,17 +45,18 @@ const affiliate = dbInstance => {
             ...docSnap.data(),
           };
         }
-        return result;
+        return affiliateDateForge(result);
       });
   }
 
   function getAll() {
     dlog('get all affiliates');
-    return affiliateCollection
-      .get()
-      .then(querySnap =>
-        querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-      );
+    return affiliateCollection.get().then(querySnap =>
+      querySnap.docs.map(doc => {
+        const r = { id: doc.id, ...doc.data() };
+        return affiliateDateForge(r);
+      }),
+    );
   }
 
   function findAffiliateByRefId({ referenceId, affiliateType }) {
@@ -62,7 +70,7 @@ const affiliate = dbInstance => {
           const err = new Error('multiple affiliate records for id');
           Sentry.withScope(scope => {
             scope.setTags({
-              function: 'findAffilateByRefId',
+              function: 'affilate.findAffilateByRefId',
               referenceId,
               affiliateType,
             });
@@ -76,11 +84,16 @@ const affiliate = dbInstance => {
           throw err;
         }
         const [doc] = querySnap.docs;
+        let result = null;
+        if (doc) {
+          result = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          affiliateDateForge(result);
+        }
 
-        return {
-          id: doc.id,
-          ...doc.data(),
-        };
+        return result;
       });
   }
 

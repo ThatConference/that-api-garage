@@ -10,12 +10,21 @@ const affiliatePaymentDateForge = entityDateForge({ fields: forgeFields });
 const collectionName = 'affiliates';
 const subCollectionName = 'payments';
 
-// function scrubAffiliatePayment({ payment, isNew = false }) {
-//   dlog('scrubbing payment');
-//   const cleanPayment = payment;
+function scrubAffiliatePayment({ payment, isNew = false, userId }) {
+  dlog('scrubbing payment');
+  const cleanPayment = payment;
+  const now = new Date();
+  if (isNew) {
+    cleanPayment.createdAt = now;
+    cleanPayment.createdBy = userId;
+    cleanPayment.lastUpdatedAt = now;
+    cleanPayment.lastUpdatedBy = userId;
+  }
+  cleanPayment.lastUpdatedAt = now;
+  cleanPayment.lastUpdatedBy = userId;
 
-//   return cleanPayment;
-// }
+  return cleanPayment;
+}
 
 const affiliatePayment = dbInstance => {
   dlog('instance created');
@@ -59,12 +68,16 @@ const affiliatePayment = dbInstance => {
       );
   }
 
-  function create({ affiliateId, payment }) {
+  function create({ affiliateId, payment, userId }) {
     const paymentId = `payment_${affiliateId}${Math.floor(
       new Date().getTime() / 1000,
     )}`;
     dlog('create %o for %s, id: %s', payment, affiliateId, paymentId);
-    const cleanPayment = payment;
+    const cleanPayment = scrubAffiliatePayment({
+      payment,
+      isNew: true,
+      userId,
+    });
     delete cleanPayment.id;
     return affiliateCollection
       .doc(affiliateId)
@@ -74,7 +87,7 @@ const affiliatePayment = dbInstance => {
       .then(() => get({ affiliateId, paymentId }));
   }
 
-  function update({ affiliateId, paymentId, payment }) {
+  function update({ affiliateId, paymentId, payment, userId }) {
     dlog(
       'update affiliatePayment %s for affiliate %s, %o',
       paymentId,
@@ -85,12 +98,16 @@ const affiliatePayment = dbInstance => {
       throw new Error('affiliateId is required to update affiliate payment');
     if (!paymentId)
       throw new Error('paymentId is required to update affiliate payment');
+    const cleanPayment = scrubAffiliatePayment({
+      payment,
+      userId,
+    });
 
     return affiliateCollection
       .doc(affiliateId)
       .collection(subCollectionName)
       .doc(paymentId)
-      .update(payment)
+      .update(cleanPayment)
       .then(() => get({ affiliateId, paymentId }));
   }
 
