@@ -1,6 +1,6 @@
 input AffiliatePromoCodeCreateInput {
-  "PromoCode id same as an EventId which the code is active for"
-  id: ID!
+  "Event associated with this promo code"
+  eventId: ID!
   "ENUM: Type of promotion code (stripe, etc.)"
   promoCodeType: AffiliatePromoCodeType!
   "The actual promotion code"
