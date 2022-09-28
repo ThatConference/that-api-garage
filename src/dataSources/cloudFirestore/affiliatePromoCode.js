@@ -1,7 +1,11 @@
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
+import { utility } from '@thatconference/api';
 
-const dlog = debug('that:api:garage:datasources:firebase:affiliate');
+const dlog = debug('that:api:garage:datasources:firebase:affiliatePromoCodes');
+const { entityDateForge } = utility.firestoreDateForge;
+const forgeFields = ['lastUpdatedAt', 'createdAt'];
+const promoCodeDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'affiliatePromoCodes';
 // const subCollectionName = 'events';
@@ -43,16 +47,11 @@ const affiliatePromoCode = dbInstance => {
             id: docSnap.id,
             ...docSnap.data(),
           };
+          result = promoCodeDateForge(result);
         }
 
         return result;
       });
-  }
-
-  function getByAffiliateEvent({ affiliateId, eventId }) {
-    dlog('getByAffiliateEvent called: %s, %s', affiliateId, eventId);
-    const affiliatePromoCodeId = createPromoCodeId({ affiliateId, eventId });
-    return get(affiliatePromoCodeId);
   }
 
   function getAllAffiliatePromoCodes(affiliateId) {
@@ -61,10 +60,13 @@ const affiliatePromoCode = dbInstance => {
       .where('affiliateId', '==', affiliateId)
       .get()
       .then(querySnap =>
-        querySnap.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })),
+        querySnap.docs.map(doc => {
+          const r = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          return promoCodeDateForge(r);
+        }),
       );
   }
 
@@ -108,10 +110,27 @@ const affiliatePromoCode = dbInstance => {
           id: doc.id,
           ...doc.data(),
         };
+        result = promoCodeDateForge(result);
       }
 
       return result;
     });
+  }
+
+  function findAllPromoCodesForEvent(eventId) {
+    dlog('findAllPromoCodesForEvent %s', eventId);
+    return affiliatePromoCodeCollection
+      .where('eventId', '==', eventId)
+      .get()
+      .then(querySnap =>
+        querySnap.docs.map(doc => {
+          const r = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          return promoCodeDateForge(r);
+        }),
+      );
   }
 
   function create({ affiliateId, promotionCode: newPromoCode }) {
@@ -169,9 +188,9 @@ const affiliatePromoCode = dbInstance => {
 
   return {
     get,
-    getByAffiliateEvent,
     getAllAffiliatePromoCodes,
     findAffiliatePromoCodeForEvent,
+    findAllPromoCodesForEvent,
     create,
     update,
     remove,

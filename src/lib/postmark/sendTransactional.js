@@ -7,8 +7,10 @@ const dlog = debug('that:api:garage:postmark:sendTransactional');
 
 export default function sendTransactional({
   mailTo,
+  mailFrom = 'hello@thatconference.com',
   templateAlias,
   templateModel,
+  additionalProps = {},
 }) {
   dlog('postmark sendTransactional called');
   if (!mailTo || !templateAlias) {
@@ -23,8 +25,9 @@ export default function sendTransactional({
 
   return postmark.sendEmailWithTemplate({
     TemplateAlias: templateAlias,
-    From: 'hello@thatconference.com',
+    From: mailFrom,
     To: mailTo,
     TemplateModel,
+    ...additionalProps,
   });
 }

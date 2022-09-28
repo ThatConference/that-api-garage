@@ -17,11 +17,7 @@ export const fieldResolvers = {
       );
       return promoCodeStore(firestore).create({ affiliateId, promotionCode });
     },
-    promotionCode: (
-      { affiliateId },
-      { promoCodeId },
-      { dataSources: { firestore } },
-    ) => {
+    promotionCode: ({ affiliateId }, { promoCodeId }) => {
       dlog('mutate promotion code %s, affiliate %s', promoCodeId, affiliateId);
       return { affiliateId, promoCodeId };
     },

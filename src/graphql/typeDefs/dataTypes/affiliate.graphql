@@ -15,4 +15,6 @@ type Affiliate @key(fields: "id") {
   referrals(eventId: ID!): [AffiliateReferral]!
   "Affiliates payments"
   payments: [AffiliatePayment]!
+  "The last date that the affiliate referral digest was sent on"
+  referralDigestLastSentOn: Date!
 }

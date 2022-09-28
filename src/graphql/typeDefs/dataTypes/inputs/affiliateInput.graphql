@@ -9,6 +9,8 @@ input AffiliateCreateInput {
   affiliateType: AffiliateType!
   "Id of affiliate record, based on type"
   referenceId: ID!
+  "The last date that the affiliate referral digest was sent on"
+  referralDigestLastSentOn: Date
 }
 
 input AffiliateUpdateInput {
@@ -20,4 +22,6 @@ input AffiliateUpdateInput {
   affiliateType: AffiliateType
   "Id of affiliate record, based on type"
   referenceId: ID
+  "The last date that the affiliate referral digest was sent on"
+  referralDigestLastSentOn: Date!
 }

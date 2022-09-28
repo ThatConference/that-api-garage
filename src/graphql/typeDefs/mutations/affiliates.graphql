@@ -3,4 +3,7 @@ type AffiliatesMutation {
   create(affiliate: AffiliateCreateInput!): Affiliate @auth(requires: "admin")
   "specific affiliate mutations"
   affiliate(affiliateId: ID!): AffiliateMutation @auth(requires: "admin")
+  "Generate Affiliate referral digest"
+  generateReferralDigest(params: ReferralDigestInput!): String
+    @auth(requires: "admin")
 }
