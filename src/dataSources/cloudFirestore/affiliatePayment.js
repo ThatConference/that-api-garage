@@ -4,7 +4,7 @@ import { utility } from '@thatconference/api';
 
 const dlog = debug('that:api:garage:datasources:firebase:affiliate');
 const { entityDateForge } = utility.firestoreDateForge;
-const forgeFields = ['paymentDate'];
+const forgeFields = ['paymentDate', 'createdAt', 'lastUpdatedAt'];
 const affiliatePaymentDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'affiliates';

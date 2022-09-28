@@ -16,7 +16,10 @@ const scrubPromoCode = ({ promoCode, isNew = false }) => {
   const now = new Date();
   if (isNew) {
     scrubbedPromoCode.createdAt = now;
+    scrubbedPromoCode.lastUpdatedAt = now;
   }
+  scrubbedPromoCode.lastUpdatedAt = now;
+
   return scrubbedPromoCode;
 };
 
