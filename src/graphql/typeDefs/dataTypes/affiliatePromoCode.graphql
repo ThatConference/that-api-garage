@@ -3,9 +3,10 @@ Promotion codes assigned to affiliate
 One promotion code per event per affiliate
 """
 type AffiliatePromoCode {
-  "PromoCode id same as an EventId which the code is active for"
   id: ID!
-  "Event id promotion code is associated with. same as promoCode id"
+  "(key) Affiliate associated with this promo code"
+  affiliateId: ID!
+  "(key) Event associated with this promo code"
   eventId: ID!
   "ENUM: Type of promotion code (stripe, etc.)"
   promoCodeType: AffiliatePromoCodeType!

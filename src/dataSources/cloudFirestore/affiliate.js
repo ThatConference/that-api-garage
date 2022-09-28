@@ -1,7 +1,11 @@
 import debug from 'debug';
 import * as Sentry from '@sentry/node';
+import { utility } from '@thatconference/api';
 
 const dlog = debug('that:api:garage:datasources:firebase:affiliate');
+const { entityDateForge } = utility.firestoreDateForge;
+const forgeFields = ['referralDigestLastSentOn', 'lastUpdatedAt', 'createdAt'];
+const affiliateDateForge = entityDateForge({ fields: forgeFields });
 
 const collectionName = 'affiliates';
 
@@ -12,6 +16,9 @@ const scrubAffiliate = ({ affiliate, isNew = false, userId }) => {
   if (isNew) {
     scrubbedAffiliate.createdAt = now;
     scrubbedAffiliate.createdBy = userId;
+    scrubbedAffiliate.referralDigestLastSentOn = now;
+    scrubbedAffiliate.lastUpdatedAt = now;
+    scrubbedAffiliate.lastUpdatedBy = userId;
   }
   scrubbedAffiliate.lastUpdatedAt = now;
   scrubbedAffiliate.lastUpdatedBy = userId;
@@ -38,17 +45,37 @@ const affiliate = dbInstance => {
             ...docSnap.data(),
           };
         }
-        return result;
+        return affiliateDateForge(result);
       });
   }
 
   function getAll() {
     dlog('get all affiliates');
-    return affiliateCollection
-      .get()
-      .then(querySnap =>
-        querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() })),
-      );
+    return affiliateCollection.get().then(querySnap =>
+      querySnap.docs.map(doc => {
+        const r = { id: doc.id, ...doc.data() };
+        return affiliateDateForge(r);
+      }),
+    );
+  }
+
+  function getBatch(ids) {
+    if (!Array.isArray(ids))
+      throw new Error('getBatch only accepts an array of id values');
+    const docRefs = ids.map(id => dbInstance.doc(`${collectionName}/${id}`));
+    return dbInstance.getAll(...docRefs).then(docSnaps =>
+      docSnaps.map(docSnap => {
+        let result = null;
+        if (docSnap.exists) {
+          result = {
+            id: docSnap.id,
+            ...docSnap.data(),
+          };
+          affiliateDateForge(result);
+        }
+        return result;
+      }),
+    );
   }
 
   function findAffiliateByRefId({ referenceId, affiliateType }) {
@@ -62,7 +89,7 @@ const affiliate = dbInstance => {
           const err = new Error('multiple affiliate records for id');
           Sentry.withScope(scope => {
             scope.setTags({
-              function: 'findAffilateByRefId',
+              function: 'affilate.findAffilateByRefId',
               referenceId,
               affiliateType,
             });
@@ -75,7 +102,17 @@ const affiliate = dbInstance => {
           });
           throw err;
         }
-        return querySnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const [doc] = querySnap.docs;
+        let result = null;
+        if (doc) {
+          result = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          affiliateDateForge(result);
+        }
+
+        return result;
       });
   }
 
@@ -130,12 +167,38 @@ const affiliate = dbInstance => {
       .then(() => get(affiliateId));
   }
 
+  function batchUpdate({ affiliateUpdates, userId }) {
+    dlog('batch update on %d affiliate records', affiliateUpdates?.length);
+    if (!Array.isArray(affiliateUpdates)) {
+      throw new Error(
+        `batchUpdate, affiliateUpdates property must be an array`,
+      );
+    }
+    const batchWrite = dbInstance.batch();
+    affiliateUpdates.forEach((au, idx) => {
+      if (!au.id) {
+        throw new Error(
+          `Batch session value missing id, cannot update batch. index: ${idx}`,
+        );
+      }
+      const docRef = affiliateCollection.doc(au.id);
+      const upAffiliate = scrubAffiliate({ affiliate: au, userId });
+      delete upAffiliate.id;
+      dlog('updating: %o', upAffiliate);
+      batchWrite.update(docRef, upAffiliate);
+    });
+
+    return batchWrite.commit().then(() => true);
+  }
+
   return {
     get,
     getAll,
+    getBatch,
     findAffiliateByRefId,
     create,
     update,
+    batchUpdate,
   };
 };
 

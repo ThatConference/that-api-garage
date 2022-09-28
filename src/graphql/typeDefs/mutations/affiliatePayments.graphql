@@ -1,0 +1,7 @@
+type AffiliatePaymentsMutation {
+  "Create a new payment for current affiliate"
+  create(payment: AffiliatePaymentCreateInput!): AffiliatePayment
+    @auth(requires: "admin")
+  "Focus to a specific payment"
+  payment(paymentId: ID!): AffiliatePaymentMutation @auth(requires: "admin")
+}

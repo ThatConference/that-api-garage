@@ -163,10 +163,25 @@ const stripeApi = () => {
       .then(result => result.url);
   }
 
+  // https://stripe.com/docs/api/promotion_codes/retrieve?lang=node
+  // The returned object includes coupon promo code is part of
+  function findPromoCodeDetails(stripePromoCode) {
+    dlog('getPromoCodeDetails called for %s', stripePromoCode);
+    return stripe.promotionCodes.retrieve(stripePromoCode);
+  }
+
+  // https://stripe.com/docs/api/coupons/retrieve?lang=node
+  function findCouponDetails(couponId) {
+    dlog('findCouponDetails called on couponId %s', couponId);
+    return stripe.coupons.retrieve(couponId);
+  }
+
   return {
     createCheckout,
     createCustomer,
     getPortalUrl,
+    findPromoCodeDetails,
+    findCouponDetails,
   };
 };
 

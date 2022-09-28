@@ -9,7 +9,7 @@ export const fieldResolvers = {
       dlog('all called');
       return affiliateStore(firestore).getAll();
     },
-    affiliate: (_, { affiliateId }, { dataSources: { firestore } }) => {
+    affiliate: (_, { affiliateId }) => {
       dlog('call affiliate for %s', affiliateId);
       return { affiliateId };
     },

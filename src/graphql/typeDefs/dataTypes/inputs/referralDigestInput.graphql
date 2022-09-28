@@ -1,0 +1,6 @@
+input ReferralDigestInput {
+  "The event to scope the digest referrals to"
+  eventId: ID!
+  "Number of days the digest spans back from now (default 7)"
+  spanInDays: Int
+}

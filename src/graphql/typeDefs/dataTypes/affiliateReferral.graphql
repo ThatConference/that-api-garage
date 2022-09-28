@@ -1,0 +1,4 @@
+type AffiliateReferral {
+  orderId: ID!
+  orderTotal: Float!
+}

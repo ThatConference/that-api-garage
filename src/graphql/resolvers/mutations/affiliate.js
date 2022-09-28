@@ -18,5 +18,6 @@ export const fieldResolvers = {
       });
     },
     promotionCodes: ({ affiliateId }) => ({ affiliateId }),
+    payments: ({ affiliateId }) => ({ affiliateId }),
   },
 };

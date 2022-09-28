@@ -149,6 +149,23 @@ const order = dbInstance => {
       );
   }
 
+  function findByPromoCodeEvent({ promoCode, eventId }) {
+    dlog('findByPromoCodeEvent %s, %s', promoCode, eventId);
+    return orderCollection
+      .where('event', '==', eventId)
+      .where('includesPromoCodes', 'array-contains', promoCode)
+      .get()
+      .then(querySnap =>
+        querySnap.docs.map(doc => {
+          const r = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          return orderDateForge(r);
+        }),
+      );
+  }
+
   function getMe({ user, orderId }) {
     dlog(`get ${orderId} for user ${user.sub}`);
     return orderCollection
@@ -472,6 +489,7 @@ const order = dbInstance => {
     getBatch,
     getPaged,
     findByEvent,
+    findByPromoCodeEvent,
     getMe,
     getPagedMe,
     create,
