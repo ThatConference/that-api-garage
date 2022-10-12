@@ -141,11 +141,10 @@ const affiliate = dbInstance => {
           affiliateType: cleanAffiliate.affiliateType,
         });
         scope.setLevel('error');
-        scope.setContext(
-          'new affiliate object',
-          JSON.stringify(cleanAffiliate),
-        );
-        scope.setContext('found affiliate', JSON.stringify(check));
+        scope.setContext('new affiliate object', {
+          cleanAffiliate: JSON.stringify(cleanAffiliate),
+        });
+        scope.setContext('found affiliate', { check: JSON.stringify(check) });
         Sentry.captureException(err);
       });
       throw err;

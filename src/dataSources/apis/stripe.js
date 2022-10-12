@@ -44,9 +44,9 @@ const stripeApi = () => {
     );
     if (!member.stripeCustomerId) {
       dlog('member missing stripe customer id %o', member);
-      Sentry.setContext('member', JSON.stringify(member));
-      Sentry.setContext('checkout', JSON.stringify(checkout));
-      Sentry.setContext('products', JSON.stringify(products));
+      Sentry.setContext('member', { member: JSON.stringify(member) });
+      Sentry.setContext('checkout', { checkout: JSON.stringify(checkout) });
+      Sentry.setContext('products', { products: JSON.stringify(products) });
       throw new CheckoutError('member missing stripe customer id');
     }
     const successUrl = event.checkoutSuccess || envConfig.stripe.successUrl;
