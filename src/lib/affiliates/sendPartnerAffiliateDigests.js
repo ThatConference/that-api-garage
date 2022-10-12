@@ -56,7 +56,7 @@ export default function sendPartnerAffiliateDigests({
         scope.setTag('function', 'sendPartnerAffilateDigests');
         scope.setTag('contact count', contacts.length);
         scope.setTag('total order count', orders.length);
-        scope.setContext('affiliate', JSON.stringify(affiliate));
+        scope.setContext('affiliate', { affiliate });
         scope.setLevel('warning');
         Sentry.captureMessage(
           `No partner contacts for affliate ${affiliate.id}`,

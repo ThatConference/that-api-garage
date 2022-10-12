@@ -38,6 +38,7 @@ export const fieldResolvers = {
       { dataSources: { firestore }, user },
     ) => {
       dlog('finding affiliate referrals for %s', user.sub);
+      // TODO: These 'referrals' still need to be defined before this call can be completed
     },
     payments: (affiliate, __, { dataSources: { firestore }, user }) => {
       dlog('finding affiliate payments for %s', user.sub);

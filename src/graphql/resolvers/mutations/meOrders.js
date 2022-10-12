@@ -201,9 +201,11 @@ export const fieldResolvers = {
         dlog('Order Result from Bouncer', orderRes);
       } catch (err) {
         Sentry.setTags('eventId', eventId);
-        Sentry.setContext('products', products);
-        Sentry.setContext('eventOrder', JSON.stringify(newOrderEvent));
-        Sentry.setContext('order result', orderRes);
+        Sentry.setContext('products', { products });
+        Sentry.setContext('eventOrder', {
+          newOrderEvent: JSON.stringify(newOrderEvent),
+        });
+        Sentry.setContext('order result', { orderRes });
         Sentry.captureException(err);
         result.message = `There was an error submitting the order. Please try again.`;
         return result;

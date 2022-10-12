@@ -58,7 +58,7 @@ export default function sendMemberAffiliateDigests({
       Sentry.configureScope(scope => {
         scope.setTag('function', 'sendMemberAffiliateDigests');
         scope.setLevel('warning');
-        scope.setContext('memberAffiliate', JSON.stringify(memberAffiliate));
+        scope.setContext('memberAffiliate', { memberAffiliate });
         Sentry.captureMessage(
           `No member record found for member affilite ${memberAffiliate.id}`,
         );

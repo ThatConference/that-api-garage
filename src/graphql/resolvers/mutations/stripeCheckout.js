@@ -22,7 +22,9 @@ export const fieldResolvers = {
       dlog('create called');
       dlog('checkout object:: %o', checkout);
       Sentry.setTag('memberId', memberId);
-      Sentry.setContext('checkout input object', JSON.stringify(checkout));
+      Sentry.setContext('checkout input object', {
+        checkout: JSON.stringify(checkout),
+      });
       const returnResult = {
         success: false,
         message: '',
