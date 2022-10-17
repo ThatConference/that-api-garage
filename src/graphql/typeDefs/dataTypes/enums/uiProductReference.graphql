@@ -21,8 +21,12 @@ enum UiProductReference {
   MEALS
   "Kids"
   GEEKLING
+  "Kids including food"
+  GEEKLING_WITH_FOOD
   "Adults"
   CAMPMATE
+  "Adults including food"
+  CAMPMATE_WITH_FOOD
   "Includes Hog Roast/BBQ meal"
   HOG_ROAST
   "Includes swag, e.g. t-shirt"
