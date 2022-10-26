@@ -130,7 +130,7 @@ const affiliate = dbInstance => {
       referenceId: cleanAffiliate.referenceId,
       affiliateType: cleanAffiliate.affiliateType,
     });
-    if (check.length > 0) {
+    if (check?.length > 0) {
       const err = new Error(
         `reference ${cleanAffiliate.referenceId} already an affiliate (${check[0].id})`,
       );
