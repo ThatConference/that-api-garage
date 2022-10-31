@@ -190,11 +190,17 @@ const createServer = ({ dataSources }) => {
     formatError: err => {
       dlog('formatError %O', err);
 
+      Sentry.addBreadcrumb({
+        category: 'apollo server',
+        message: 'graphql format error discovered',
+        level: 'warning',
+      });
+
       Sentry.withScope(scope => {
         scope.setTag('formatError', true);
         scope.setLevel('warning');
-        scope.setExtra('originalError', err.originalError);
-        scope.setExtra('path', err.path);
+        scope.setContext('originalError', err.originalError);
+        scope.setContext('path', err.path);
         scope.setContext('error object', err);
         Sentry.captureException(err);
       });
