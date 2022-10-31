@@ -152,9 +152,12 @@ const createServer = ({ dataSources }) => {
 
       if (!isNil(req.headers.authorization)) {
         dlog('validating token for %o:', req.headers.authorization);
+        const authRef = req.headers.authorization?.substring(
+          req.headers.authorization.length - 8,
+        );
         Sentry.addBreadcrumb({
           category: 'graphql context',
-          message: 'user has authToken',
+          message: `user has authToken (${authRef})`,
           level: 'info',
         });
 
@@ -192,6 +195,7 @@ const createServer = ({ dataSources }) => {
         scope.setLevel('warning');
         scope.setExtra('originalError', err.originalError);
         scope.setExtra('path', err.path);
+        scope.setContext('error object', err);
         Sentry.captureException(err);
       });
 
