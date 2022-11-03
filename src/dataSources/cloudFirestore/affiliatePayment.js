@@ -28,7 +28,9 @@ function scrubAffiliatePayment({ payment, isNew = false, userId }) {
 
 const affiliatePayment = dbInstance => {
   dlog('instance created');
-  Sentry.setTag('app location', 'affiliate payment store');
+  Sentry.configureScope(scope =>
+    scope.setTag('app location', 'affiliate payment store'),
+  );
 
   const affiliateCollection = dbInstance.collection(collectionName);
 

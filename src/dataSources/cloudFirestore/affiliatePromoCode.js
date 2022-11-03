@@ -33,7 +33,9 @@ function isAffilateInPromoCodeId({ affiliateId, promoCodeId }) {
 
 const affiliatePromoCode = dbInstance => {
   dlog('instance created');
-  Sentry.setTag('app location', 'affiliate promoCode store');
+  Sentry.configureScope(scope =>
+    scope.setTag('app location', 'affiliate promoCode store'),
+  );
 
   const affiliatePromoCodeCollection = dbInstance.collection(collectionName);
 

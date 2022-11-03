@@ -21,9 +21,9 @@ export const fieldResolvers = {
     ) => {
       dlog('create called');
       dlog('checkout object:: %o', checkout);
-      Sentry.setTag('memberId', memberId);
-      Sentry.setContext('checkout input object', {
-        checkout: JSON.stringify(checkout),
+      Sentry.configureScope(scope => {
+        scope.setTag('memberId', memberId);
+        scope.setContext('checkout input object', checkout);
       });
       const returnResult = {
         success: false,

@@ -149,39 +149,49 @@ const product = dbInstance => {
       const item = products[i];
       if (item.eventId !== eventId) {
         dlog('product eventId mismatch %o, id: %s', item, eventId);
-        Sentry.setTags({
-          productId: item.id,
-          eventId,
+        Sentry.configureScope(scope => {
+          scope.setTags({
+            productId: item.id,
+            eventId,
+          });
+          scope.setContext('product', { product: item });
         });
-        Sentry.setContext('product', { product: item });
         throw new ValidationError(
           'Cannot purchase items not associated with event',
         );
       }
       if (!item.isEnabled) {
         dlog('product not enabled for sale %o', item);
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError('Product not enabled for sale');
       }
       if (!item.processor) {
         dlog(`product doesn't have processor. id: %o`, item);
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError(
           'Product has no processor assigned. Cannot checkout.',
         );
       } else if (item?.processor?.processor !== 'STRIPE') {
         dlog(`Product isn't using stripe processor. id: %o`, item);
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError(
           `Product isn't using stripe processor. Cannot checkout.`,
         );
       } else if (!item?.processor?.itemRefId?.startsWith('price_')) {
         dlog(`Product with missing or malformed itemRefId. id: %o`, item);
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError(
           `processor price missing or malformed. Cannot checkout.`,
         );
@@ -193,8 +203,10 @@ const product = dbInstance => {
           item.onSaleFrom,
           item.onSaleUntil,
         );
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError('Product not available for sale (date)');
       }
       if (item.onSaleUntil && new Date(item.onSaleUntil) < today) {
@@ -203,14 +215,18 @@ const product = dbInstance => {
           item.onSaleFrom,
           item.onSaleUntil,
         );
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError('Product not available for sale (date)');
       }
       if (item.isClaimable === true) {
         dlog('Product is claimable and cannot be sold through stripe checkout');
-        Sentry.setTag('productId', item.id);
-        Sentry.setContext('product', { product: item });
+        Sentry.configureScope(scope => {
+          scope.setTag('productId', item.id);
+          scope.setContext('product', { product: item });
+        });
         throw new ValidationError(
           'Claimable products cannot be processed through stripe checkout',
         );

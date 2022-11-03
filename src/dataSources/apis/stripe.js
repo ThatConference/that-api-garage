@@ -115,14 +115,22 @@ const stripeApi = () => {
       const product = products.find(p => p.id === cp.productId);
       if (!product) {
         dlog('Product lookup mismatch. Checkout failed');
-        Sentry.setContext({ member }, { checkout }, { products });
+        Sentry.setContext('product details', {
+          member,
+          checkout,
+          products,
+        });
         throw new CheckoutError('Product lookup mismatch. Checkout failed');
       }
       if (!product.processor) {
         dlog(
           `Processor reference missing from product ${product.name}. Checkout failed`,
         );
-        Sentry.setContext({ member }, { checkout }, { products });
+        Sentry.setContext('product details', {
+          member,
+          checkout,
+          products,
+        });
         throw new CheckoutError(
           `Processor reference missing from product ${product.name}. Checkout failed`,
         );
