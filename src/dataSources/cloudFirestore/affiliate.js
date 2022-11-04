@@ -28,7 +28,9 @@ const scrubAffiliate = ({ affiliate, isNew = false, userId }) => {
 
 const affiliate = dbInstance => {
   dlog('instance created');
-  Sentry.setTag('app location', 'affiliate store');
+  Sentry.configureScope(scope =>
+    scope.setTag('app location', 'affiliate store'),
+  );
 
   const affiliateCollection = dbInstance.collection(collectionName);
 
