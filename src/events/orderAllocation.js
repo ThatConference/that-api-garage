@@ -68,6 +68,8 @@ export default function orderAllocationEvents() {
       );
       return undefined;
     }
+    const hasWorkshop =
+      orderAllocation.eventActivities?.includes('PRE_CONFERENCE');
 
     const templateModel = {
       member: {
@@ -93,7 +95,20 @@ export default function orderAllocationEvents() {
           event.startDate,
         ),
       },
+      sections: {
+        isOrderEmail: false,
+        hasMultipleTickets: false,
+        hasWorkshop,
+      },
     };
+
+    if (hasWorkshop === true) {
+      templateModel.sections.hasWorkshop = {
+        event: {
+          slug: event.slug,
+        },
+      };
+    }
 
     return sendTransactionalEmail({
       mailTo: memberTo.email,
