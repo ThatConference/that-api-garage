@@ -112,12 +112,19 @@ function createUserContext(req, res, next) {
 
 function failure(err, req, res, next) {
   dlog('error %o', err);
-  Sentry.captureException(err);
+  console.log('Error from express:', err.message);
+  // Sentry.captureException(err);
 
   res.set('Content-Type', 'application/json').status(500).json(err);
 }
 
-api.use(responseTime()).use(useSentry).use(createUserContext).use(failure);
+api
+  .use(Sentry.Handlers.requestHandler())
+  .use(responseTime())
+  .use(useSentry)
+  .use(createUserContext)
+  .use(Sentry.Handlers.errorHandler())
+  .use(failure);
 
 const port = process.env.PORT || 8005;
 graphServer
