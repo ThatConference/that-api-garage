@@ -309,11 +309,16 @@ const order = dbInstance => {
       );
   }
 
-  function findOrderAllocationsForEvent({ eventId, enrollmentStatusFilter }) {
+  function findOrderAllocationsForEvent({
+    eventId,
+    enrollmentStatusFilter,
+    orderTypesFilter,
+  }) {
     dlog(
-      'findOrderAllocationsForEvent %s, filter: %o',
+      'findOrderAllocationsForEvent %s, filter: %o, orderTypes: %o',
       eventId,
       enrollmentStatusFilter,
+      orderTypesFilter,
     );
     let query = allocationCollection.where('event', '==', eventId);
     if (
@@ -321,6 +326,9 @@ const order = dbInstance => {
       enrollmentStatusFilter?.length > 0
     ) {
       query = query.where('enrollmentStatus', 'in', enrollmentStatusFilter);
+    }
+    if (Array.isArray(orderTypesFilter) && orderTypesFilter?.length > 0) {
+      query = query.where('orderType', 'in', orderTypesFilter);
     }
 
     return query.get().then(({ docs }) =>

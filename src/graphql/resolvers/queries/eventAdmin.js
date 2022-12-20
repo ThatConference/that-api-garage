@@ -7,14 +7,16 @@ export const fieldResolvers = {
   EventAdminQuery: {
     orderAllocations: (
       { eventId },
-      { filter },
+      { filter, orderTypes },
       { dataSources: { firestore } },
     ) => {
       dlog('EventAdmin.orderAllocations called for event %s', eventId);
       dlog('EventAdmin.orderAllocation filter # %O', filter);
+      dlog('EventAdmin.orderAllocation orderTypes:: %O', orderTypes);
       return orderStore(firestore).findOrderAllocationsForEvent({
         eventId,
         enrollmentStatusFilter: filter,
+        orderTypesFilter: orderTypes,
       });
     },
     orders: ({ eventId }, __, { dataSources: { firestore } }) => {
