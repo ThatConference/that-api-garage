@@ -24,6 +24,11 @@ const scrubProduct = ({ product, isNew, userId }) => {
   return scrubbedProduct;
 };
 
+function isValidDate(d) {
+  // eslint-disable-next-line no-restricted-globals
+  return d instanceof Date && !isNaN(d);
+}
+
 const product = dbInstance => {
   dlog('instance created');
 
@@ -75,8 +80,19 @@ const product = dbInstance => {
 
     if (cursor) {
       const curObject = Buffer.from(cursor, 'base64').toString('utf8');
+      dlog('🚯 curObject" %O', curObject);
       const { curCreatedAt } = JSON.parse(curObject);
       if (!curCreatedAt) throw new Error('Invalid cursor provided');
+
+      const startAfterdate = new Date(curCreatedAt);
+      if (!isValidDate(startAfterdate)) {
+        Sentry.setTags({
+          rawCursor: cursor,
+          cursor: curObject,
+        });
+        throw new Error('Invalid cursor provided');
+      }
+
       query = query.startAfter(new Date(curCreatedAt));
     }
     const { size, docs } = await query.get();
