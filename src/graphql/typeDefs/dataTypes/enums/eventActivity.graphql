@@ -8,11 +8,18 @@ enum EventActivity {
   COUNSELOR_AT_THAT
   "Counselor presenting ON THAT Conference"
   COUNSELOR_ON_THAT
+  "Includes workshops"
   PRE_CONFERENCE
+  "Includes workshops"
   WORKSHOPS
   VIRTUAL_CAMPER
   ON_THE_LINE
+  "Includes Family track activities"
   FAMILY
+  "Includes a t-shirt"
   T_SHIRT
+  "Includes a hoodie"
   HOODIE
+  "Expo Hall only access"
+  EXPO_HALL
 }
