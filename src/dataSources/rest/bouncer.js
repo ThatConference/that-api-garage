@@ -1,20 +1,22 @@
 import debug from 'debug';
-import { RESTDataSource } from 'apollo-datasource-rest';
+import { RESTDataSource } from '@apollo/datasource-rest';
 import { security } from '@thatconference/api';
 import envConfig from '../../envConfig';
 
 const dlog = debug('that:api:garage:dataSources:rest:bouncer');
 
 class BouncerApi extends RESTDataSource {
-  constructor() {
+  constructor({ authToken }) {
     super();
     this.baseURL = envConfig.bouncerBaseUrl;
+    this.authToken = authToken;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  willSendRequest(request) {
-    dlog('willSendRequest:: %o', request);
-    request.headers.set('Authorization', this.context.user.authToken);
+  willSendRequest(_path, request) {
+    dlog('⚡ willSendRequest:: %o', request);
+    dlog('🚯 THIS: %O', this);
+    request.headers.authorization = this.authToken;
   }
 
   async postManualOrderEvent(thatEvent) {
@@ -25,12 +27,15 @@ class BouncerApi extends RESTDataSource {
     if (signature?.isOk !== true || !signature?.thatSig) {
       throw new Error(`unable to sign request: ${signature?.message}`);
     }
-    return this.post('thatmanualorder', thatEvent, {
+    const v4Payload = {
+      body: thatEvent,
       headers: {
         'Content-Type': 'application/json',
         'that-request-signature': signature.thatSig,
+        'brett-head': 'head/json',
       },
-    });
+    };
+    return this.post('thatmanualorder', v4Payload);
   }
 }
 

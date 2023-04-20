@@ -33,6 +33,11 @@ const scrubOrderAllocation = ({ orderAllocation, userId }) => {
   return scrubbedOa;
 };
 
+function isValidDate(d) {
+  // eslint-disable-next-line no-restricted-globals
+  return d instanceof Date && !isNaN(d);
+}
+
 const order = dbInstance => {
   dlog('instance created');
 
@@ -85,13 +90,34 @@ const order = dbInstance => {
 
     if (cursor) {
       const curObject = Buffer.from(cursor, 'base64').toString('utf8');
-      const { curCreatedAt, curEventId } = JSON.parse(curObject);
-      // where() must come before startAfter()/startAt()
+      dlog('🚯 curObject" %O', curObject);
+      let curCreatedAt;
+      let curEventId;
+      try {
+        ({ curCreatedAt, curEventId } = JSON.parse(curObject));
+      } catch (err) {
+        Sentry.setTags({
+          rawCursor: cursor,
+          cursor: curObject,
+        });
+        Sentry.captureException(err);
+        throw new Error('Invalid cursor provided');
+      }
       if (eventId && curEventId !== eventId)
         throw new Error('Invalid cursor provided');
+      // where() fn must come before startAfter()/startAt()
       if (curEventId) query = query.where('event', '==', curEventId);
       if (!curCreatedAt) throw new Error('Invalid cursor provided');
-      query = query.startAfter(new Date(curCreatedAt));
+
+      const startAfterdate = new Date(curCreatedAt);
+      if (!isValidDate(startAfterdate)) {
+        Sentry.setTags({
+          rawCursor: cursor,
+          cursor: curObject,
+        });
+        throw new Error('Invalid cursor provided');
+      }
+      query = query.startAfter(startAfterdate);
     } else if (!cursor && eventId) {
       query = query.where('event', '==', eventId);
     }
