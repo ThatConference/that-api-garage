@@ -15,7 +15,7 @@ class BouncerApi extends RESTDataSource {
   // eslint-disable-next-line class-methods-use-this
   willSendRequest(_path, request) {
     dlog('⚡ willSendRequest:: %o', request);
-    dlog('🚯 THIS: %O', this);
+    // dlog('🚯 THIS: %O', this);
     request.headers.authorization = this.authToken;
   }
 
@@ -32,7 +32,6 @@ class BouncerApi extends RESTDataSource {
       headers: {
         'Content-Type': 'application/json',
         'that-request-signature': signature.thatSig,
-        'brett-head': 'head/json',
       },
     };
     return this.post('thatmanualorder', v4Payload);
