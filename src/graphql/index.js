@@ -45,93 +45,6 @@ const createServerParts = ({ dataSources, httpServer }) => {
     schema,
   );
 
-  dlog('🚜 assembling datasources');
-  const { firestore } = dataSources;
-  const amendedDataSources = {
-    ...dataSources,
-    // bouncerApi: new BouncerApi(),
-    productLoader: new DataLoader(ids =>
-      productStore(firestore)
-        .getBatch(ids)
-        .then(products => {
-          if (products.includes(null)) {
-            Sentry.withScope(scope => {
-              scope.setLevel('error');
-              scope.setContext(
-                `Assigned products dont exist in products collection`,
-                { ids },
-                { products },
-              );
-              Sentry.captureMessage(
-                `Assigned products dont exist in products collection`,
-              );
-            });
-          }
-          return ids.map(id => products.find(p => p && p.id === id));
-        }),
-    ),
-    orderLoader: new DataLoader(ids =>
-      orderStore(firestore)
-        .getBatch(ids)
-        .then(orders => {
-          if (orders.includes(null)) {
-            Sentry.withScope(scope => {
-              scope.setLevel('error');
-              scope.setContext(
-                `Assigned orders dont exist in orders collection`,
-                { ids },
-                { orders },
-              );
-              Sentry.captureMessage(
-                `Assigned orders dont exist in orders collection`,
-              );
-            });
-          }
-          return ids.map(id => orders.find(o => o && o.id === id));
-        }),
-    ),
-    memberLoader: new DataLoader(ids =>
-      memberStore(firestore)
-        .getSecureBatch(ids)
-        .then(members => {
-          if (members.includes(null)) {
-            Sentry.withScope(scope => {
-              scope.setLevel('error');
-              scope.setContext(
-                `Members requested in memberLoader don't exist in member collection`,
-                { ids },
-                { members },
-              );
-              Sentry.captureMessage(
-                `Members requested in memberLoader don't exist in member collection`,
-              );
-            });
-          }
-          return ids.map(id => members.find(m => m && m.id === id));
-        }),
-    ),
-    assetLoader: new DataLoader(ids =>
-      assetStore(firestore)
-        .getBatch(ids)
-        .then(assets => {
-          if (assets.includes(null)) {
-            Sentry.withScope(scope => {
-              scope.setLevel('error');
-              scope.setContext(
-                `Assigned Asset's don't exist in assets collection`,
-                { ids },
-                { assets },
-              );
-              Sentry.captureMessage(
-                `Assigned Asset's don't exist in assets collection`,
-              );
-            });
-          }
-          return ids.map(id => assets.find(a => a && a.id === id));
-        }),
-    ),
-  };
-
   dlog('🚜 creating new apollo server instance');
   const graphQlServer = new ApolloServer({
     schema,
@@ -164,9 +77,91 @@ const createServerParts = ({ dataSources, httpServer }) => {
   dlog('🚜 creating createContext function');
   const createContext = async ({ req, res }) => {
     dlog('🚜 building graphql user context');
+    dlog('🚜 assembling datasources');
+    const { firestore } = dataSources;
     let context = {
       dataSources: {
-        ...amendedDataSources,
+        ...dataSources,
+        productLoader: new DataLoader(ids =>
+          productStore(firestore)
+            .getBatch(ids)
+            .then(products => {
+              if (products.includes(null)) {
+                Sentry.withScope(scope => {
+                  scope.setLevel('error');
+                  scope.setContext(
+                    `Assigned products dont exist in products collection`,
+                    { ids },
+                    { products },
+                  );
+                  Sentry.captureMessage(
+                    `Assigned products dont exist in products collection`,
+                  );
+                });
+              }
+              return ids.map(id => products.find(p => p && p.id === id));
+            }),
+        ),
+        orderLoader: new DataLoader(ids =>
+          orderStore(firestore)
+            .getBatch(ids)
+            .then(orders => {
+              if (orders.includes(null)) {
+                Sentry.withScope(scope => {
+                  scope.setLevel('error');
+                  scope.setContext(
+                    `Assigned orders dont exist in orders collection`,
+                    { ids },
+                    { orders },
+                  );
+                  Sentry.captureMessage(
+                    `Assigned orders dont exist in orders collection`,
+                  );
+                });
+              }
+              return ids.map(id => orders.find(o => o && o.id === id));
+            }),
+        ),
+        memberLoader: new DataLoader(ids =>
+          memberStore(firestore)
+            .getSecureBatch(ids)
+            .then(members => {
+              if (members.includes(null)) {
+                Sentry.withScope(scope => {
+                  scope.setLevel('error');
+                  scope.setContext(
+                    `Members requested in memberLoader don't exist in member collection`,
+                    { ids },
+                    { members },
+                  );
+                  Sentry.captureMessage(
+                    `Members requested in memberLoader don't exist in member collection`,
+                  );
+                });
+              }
+              return ids.map(id => members.find(m => m && m.id === id));
+            }),
+        ),
+        assetLoader: new DataLoader(ids =>
+          assetStore(firestore)
+            .getBatch(ids)
+            .then(assets => {
+              if (assets.includes(null)) {
+                Sentry.withScope(scope => {
+                  scope.setLevel('error');
+                  scope.setContext(
+                    `Assigned Asset's don't exist in assets collection`,
+                    { ids },
+                    { assets },
+                  );
+                  Sentry.captureMessage(
+                    `Assigned Asset's don't exist in assets collection`,
+                  );
+                });
+              }
+              return ids.map(id => assets.find(a => a && a.id === id));
+            }),
+        ),
       },
     };
 
@@ -198,7 +193,7 @@ const createServerParts = ({ dataSources, httpServer }) => {
           correlationId: req.userContext.correlationId,
         },
         dataSources: {
-          ...amendedDataSources,
+          ...context.dataSources,
           bouncerApi: new BouncerApi({ authToken: req.userContext.authToken }),
         },
       };
