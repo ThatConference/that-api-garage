@@ -9,6 +9,7 @@ import envConfig from '../../../envConfig';
 const dlog = debug('that:api:garage:mutation:MeOrders');
 const eventSpeakerStore = dataSources.cloudFirestore.eventSpeaker;
 const { eventFindBy } = lib;
+const { manualOrderEvent } = validate;
 
 export const fieldResolvers = {
   MeOrdersMutation: {
@@ -179,7 +180,7 @@ export const fieldResolvers = {
       };
 
       try {
-        await validate.manualOrderEvent(newOrderEvent);
+        await manualOrderEvent(newOrderEvent);
       } catch (err) {
         result.message = `order validation failed: ${err.message}`;
         return result;
