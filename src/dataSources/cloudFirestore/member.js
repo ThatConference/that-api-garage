@@ -1,5 +1,6 @@
 import debug from 'debug';
 import { utility } from '@thatconference/api';
+import { isString } from 'lodash';
 
 const dlog = debug('that:api:garage:datasources:firebase:members');
 const { entityDateForge } = utility.firestoreDateForge;
@@ -88,9 +89,11 @@ const member = dbInstance => {
   }
 
   function findByEmail(emailAddress) {
-    dlog('findByEmail called for, %s', emailAddress);
+    let email = emailAddress;
+    if (!isString(emailAddress)) email = '';
+    dlog('findByEmail called for, %s', email);
     return memberCollection
-      .where('email', '==', emailAddress)
+      .where('email', '==', email.toLowerCase())
       .get()
       .then(qrySnap =>
         qrySnap.docs.map(d => {
