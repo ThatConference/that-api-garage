@@ -44,4 +44,6 @@ enum UiProductReference {
   PROMO_CAMPER
   "Everything Camper promotional ticket"
   PROMO_EVERYTHING_CAMPER
+  "A membership-type product"
+  MEMBERSHIP
 }
