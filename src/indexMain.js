@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-unresolved */
-import express from 'express';
 import http from 'node:http';
+import express from 'express';
 import { json } from 'body-parser';
 import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
@@ -14,19 +14,9 @@ import { events as apiEvents } from '@thatconference/api';
 
 import apolloGraphServer from './graphql';
 import orderAllocationEventEmitter from './events/orderAllocation';
+import { version } from './package.json';
 
 const orderAllocationEvents = orderAllocationEventEmitter();
-
-let version;
-(async () => {
-  let p;
-  try {
-    p = await import('./package.json');
-  } catch {
-    p = await import('../package.json');
-  }
-  version = p.version;
-})();
 
 const dlog = debug('that:api:garage:index');
 const defaultVersion = `that-api-garage@${version}`;
@@ -113,6 +103,11 @@ function createUserContext(req, res, next) {
   next();
 }
 
+function getVersion(req, res) {
+  dlog('method %s, defaultVersion %s', req.method, defaultVersion);
+  return res.json({ version: defaultVersion });
+}
+
 function failure(err, req, res, next) {
   dlog('error %o', err);
   console.log('Error from express:', err.message);
@@ -120,14 +115,6 @@ function failure(err, req, res, next) {
 
   res.set('Content-Type', 'application/json').status(500).json(err);
 }
-
-// api
-//   .use(Sentry.Handlers.requestHandler())
-//   .use(responseTime())
-//   .use(useSentry)
-//   .use(createUserContext)
-//   .use(Sentry.Handlers.errorHandler())
-//   .use(failure);
 
 api.use(
   Sentry.Handlers.requestHandler(),
@@ -137,6 +124,7 @@ api.use(
   sentryMark,
   createUserContext,
 );
+api.use('/version', getVersion);
 
 const { graphQlServer, createContext } = graphServerParts;
 
