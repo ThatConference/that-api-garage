@@ -15,6 +15,7 @@ import { events as apiEvents } from '@thatconference/api';
 import apolloGraphServer from './graphql';
 import orderAllocationEventEmitter from './events/orderAllocation';
 import { version } from './package.json';
+import constants from './constants';
 
 const orderAllocationEvents = orderAllocationEventEmitter();
 
@@ -90,7 +91,13 @@ function createUserContext(req, res, next) {
     const host = refererHost.match(rxHost);
     if (host) [, site] = host;
   } else {
-    site = 'www.thatconference.com';
+    site = 'thatconference.com';
+  }
+  let domain;
+  if (constants.ALLOWED_DOMAINS.includes(site)) {
+    domain = site;
+  } else {
+    domain = 'thatconference.com';
   }
 
   req.userContext = {
@@ -98,6 +105,7 @@ function createUserContext(req, res, next) {
     authToken: req.headers.authorization,
     correlationId,
     site,
+    domain,
   };
 
   next();

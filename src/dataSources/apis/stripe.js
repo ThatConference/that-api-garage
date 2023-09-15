@@ -34,6 +34,7 @@ const stripeApi = () => {
     member,
     event,
     promotionCode,
+    domain,
   }) {
     dlog(
       'create checkout for %s, with %d line items (%d) on event %s',
@@ -49,8 +50,27 @@ const stripeApi = () => {
       Sentry.setContext('products', { products: JSON.stringify(products) });
       throw new CheckoutError('member missing stripe customer id');
     }
-    const successUrl = event.checkoutSuccess || envConfig.stripe.successUrl;
-    const cancelUrl = event.checkoutCancel || envConfig.stripe.cancelUrl;
+    let successUrl = event.checkoutSuccess;
+    if (event.checkoutSuccess) {
+      if (event.checkoutSuccess.startsWith('https://')) {
+        successUrl = event.checkoutSuccess.replace('that.us', domain);
+      } else {
+        successUrl = `https://${domain}${event.checkoutSuccess}`;
+      }
+    } else {
+      successUrl = envConfig.stripe.successUrl;
+    }
+    let cancelUrl = event.checkoutCancel;
+    if (event.checkoutCancel) {
+      if (event.checkoutCancel.startsWith('https://')) {
+        cancelUrl = event.checkoutCancel.replace('that.us', domain);
+      } else {
+        cancelUrl = `https://${domain}${event.checkoutSuccess}`;
+      }
+    } else {
+      cancelUrl = envConfig.stripe.cancelUrl;
+    }
+
     const eventLoc = event.slug.split('/')[0].toLowerCase() || 'thatus';
     const metadata = {
       memberId: member.id,

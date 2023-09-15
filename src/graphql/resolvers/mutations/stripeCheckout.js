@@ -17,7 +17,7 @@ export const fieldResolvers = {
     create: async (
       { memberId },
       { checkout },
-      { dataSources: { firestore } },
+      { dataSources: { firestore }, user: { domain } },
     ) => {
       dlog('create called');
       dlog('checkout object:: %o', checkout);
@@ -151,6 +151,7 @@ export const fieldResolvers = {
           member,
           event,
           promotionCode: stripePromotionCode,
+          domain,
         })
         .then(co => {
           returnResult.success = true;
