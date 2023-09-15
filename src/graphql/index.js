@@ -84,6 +84,11 @@ const createServerParts = ({ dataSources, httpServer }) => {
     dlog('🚜 assembling datasources');
     const { firestore } = dataSources;
     let context = {
+      user: {
+        site: req.userContext.site,
+        correlationId: req.userContext.correlationId,
+        domain: req.userContext.domain,
+      },
       dataSources: {
         ...dataSources,
         productLoader: new DataLoader(ids =>
@@ -195,6 +200,7 @@ const createServerParts = ({ dataSources, httpServer }) => {
           authToken: req.userContext.authToken,
           site: req.userContext.site,
           correlationId: req.userContext.correlationId,
+          domain: req.userContext.domain,
         },
         dataSources: {
           ...context.dataSources,
