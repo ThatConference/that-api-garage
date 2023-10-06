@@ -183,6 +183,10 @@ export const fieldResolvers = {
         await manualOrderEvent(newOrderEvent);
       } catch (err) {
         result.message = `order validation failed: ${err.message}`;
+        Sentry.setTag('subSystem', 'order validation');
+        Sentry.setContext('products', { products });
+        Sentry.setContext('eventOrder', { newOrderEvent });
+        Sentry.captureException(err);
         return result;
       }
 
