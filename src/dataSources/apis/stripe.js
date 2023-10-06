@@ -71,7 +71,7 @@ const stripeApi = () => {
       cancelUrl = envConfig.stripe.cancelUrl;
     }
 
-    const eventLoc = event.slug.split('/')[0].toLowerCase() || 'thatus';
+    const eventLoc = event.slug.split('/')[0]?.toLowerCase() || 'thatus';
     const metadata = {
       memberId: member.id,
       eventId: checkout.eventId,
@@ -119,6 +119,7 @@ const stripeApi = () => {
       customer: member.stripeCustomerId,
       client_reference_id: member.id,
       allow_promotion_codes: true,
+      billing_address_collection: 'required',
       metadata,
     };
     if (promotionCode) {
