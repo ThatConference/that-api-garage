@@ -35,6 +35,7 @@ const stripeApi = () => {
     event,
     promotionCode,
     domain,
+    checkoutUiMode = 'hosted',
   }) {
     dlog(
       'create checkout for %s, with %d line items (%d) on event %s',
@@ -120,8 +121,15 @@ const stripeApi = () => {
       client_reference_id: member.id,
       allow_promotion_codes: true,
       billing_address_collection: 'required',
+      ui_mode: checkoutUiMode,
       metadata,
     };
+    if (checkoutUiMode === 'embedded') {
+      checkoutSessionPayload.return_url = checkoutSessionPayload.success_url;
+      delete checkoutSessionPayload.success_url;
+      delete checkoutSessionPayload.cancel_url;
+    }
+
     if (promotionCode) {
       checkoutSessionPayload.discounts = [
         {

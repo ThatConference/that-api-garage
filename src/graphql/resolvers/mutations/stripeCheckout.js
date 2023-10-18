@@ -30,6 +30,20 @@ export const fieldResolvers = {
         message: '',
         stripeCheckoutId: null,
       };
+      // Validate/setup checkout UI Mode
+      let checkoutUiMode = 'hosted';
+      if (checkout?.uiMode) {
+        if (checkout.uiMode === 'HOSTED') {
+          checkoutUiMode = 'hosted';
+        } else if (checkout.uiMode === 'EMBEDDED') {
+          checkoutUiMode = 'embedded';
+        } else {
+          const msg = `unknown stripe checkout ui mode value provided: ${checkout.uiMode}`;
+          const exceptionId = Sentry.captureException(new Error(msg));
+          returnResult.message = `msg. ref: ${exceptionId}`;
+          return returnResult;
+        }
+      }
       let stripePromotionCode;
       try {
         // yup-based validation
@@ -152,6 +166,7 @@ export const fieldResolvers = {
           event,
           promotionCode: stripePromotionCode,
           domain,
+          checkoutUiMode,
         })
         .then(co => {
           returnResult.success = true;
