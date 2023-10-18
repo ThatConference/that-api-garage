@@ -5,4 +5,6 @@ input StripeCheckoutCreateInput {
   products: [ProductLineItemInput!]!
   "Affiliate code to apply to checkout"
   affiliateCode: String
+  "Stripe UI Mode, embed or hosted. Default=HOSTED"
+  uiMode: StripeCheckoutUiMode
 }

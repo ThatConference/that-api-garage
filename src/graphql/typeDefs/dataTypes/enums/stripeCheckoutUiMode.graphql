@@ -1,0 +1,6 @@
+enum StripeCheckoutUiMode {
+  "(default) hosted mode"
+  HOSTED
+  "Embedded mode"
+  EMBEDDED
+}
