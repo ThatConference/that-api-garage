@@ -172,6 +172,7 @@ export const fieldResolvers = {
           returnResult.success = true;
           returnResult.message = 'success';
           returnResult.stripeCheckoutId = co.id;
+          returnResult.stripeClientSecret = co.client_secret ?? null;
           return returnResult;
         })
         .catch(err => {
