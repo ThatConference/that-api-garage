@@ -3,6 +3,8 @@ type StripeCheckoutResult {
   success: Boolean!
   "Informational message about the result"
   message: String!
-  "Strip Checkout ID to use for starting checkout process"
+  "Stripe Checkout ID to use for starting checkout process"
   stripeCheckoutId: String
+  "Stripe Checkout client_secret value for embedded checkouts"
+  stripeClientSecret: String
 }
