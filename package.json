@@ -1,6 +1,6 @@
 {
   "name": "that-api-garage",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "THAT Garage api. Where all the other stuff goes",
   "main": "index.js",
   "engines": {
@@ -28,7 +28,7 @@
     "@graphql-tools/load-files": "^7.0.0",
     "@graphql-tools/merge": "^9.0.1",
     "@sentry/node": "~7.84.0",
-    "@thatconference/api": "^4.5.0",
+    "@thatconference/api": "^4.5.1",
     "@thatconference/schema": "^4.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
